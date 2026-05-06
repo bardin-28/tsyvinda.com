@@ -15,7 +15,7 @@ export default function Home() {
           priority
         />
         <div className={styles.intro}>
-          <h1>Home FE | Pipeline up!</h1>
+          <h1>Home FE | Pipeline finally up!</h1>
           <nav className={styles.nav}>
             <Link href="/">home</Link>
             <Link href="/about">about</Link>
