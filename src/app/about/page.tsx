@@ -14,21 +14,10 @@ export default function About() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
+       <p>Trying to hack me or what?</p>
+       <h1>Nothing here! <br/> GO AWAY FROM THIS PAGE!</h1>
         <div className={styles.intro}>
-          <h1>About FE</h1>
-
-            <nav className={styles.nav}>
-                <Link href="/">home</Link>
-                <Link href="/about">about</Link>
-            </nav>
+            <Link href="/">GO</Link>
         </div>
       </main>
     </div>

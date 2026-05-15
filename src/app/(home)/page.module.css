@@ -180,3 +180,35 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 767px) {
+  .main {
+    gap: 36px;
+    padding: 24px 16px;
+  }
+
+  .avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .link {
+    padding: 12px 20px;
+    font-size: 0.88rem;
+  }
+
+  .blob1 {
+    width: 340px;
+    height: 340px;
+  }
+
+  .blob2 {
+    width: 280px;
+    height: 280px;
+  }
+
+  .blob3 {
+    width: 220px;
+    height: 220px;
+  }
+}
+
