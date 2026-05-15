@@ -1,6 +1,14 @@
+import { Metadata } from 'next'
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function About() {
   return (
