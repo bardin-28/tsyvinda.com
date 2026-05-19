@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "next start",
     "lint": "eslint",
     "test": "jest --config config/jest.config.ts",
     "test:watch": "jest --config config/jest.config.ts --watch",
     "test:ci": "jest --config config/jest.config.ts --ci --coverage",
-    "storybook": "storybook dev -p 6006 -c config/storybook",
-    "build-storybook": "storybook build -c config/storybook"
+    "storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook dev -p 6006 -c config/storybook",
+    "build-storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook build -c config/storybook"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
