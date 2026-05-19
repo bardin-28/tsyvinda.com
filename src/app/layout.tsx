@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import Script from "next/script";
+import { AVATAR, DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/lib/site";
+import { personSchema, websiteSchema } from "@/lib/schemas";
 import "./(home)/globals.css";
 
 const roboto = Roboto({
@@ -11,20 +13,24 @@ const roboto = Roboto({
 
 const GA_ID = process.env.GA_ID ?? "";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Vladyslav Tsyvinda",
-  url: "https://tsyvinda.com",
-  sameAs: [
-    "https://linkedin.com/in/bardin28",
-    "https://t.me/Bardin28",
-    "https://instagram.com/bardin_28",
-  ],
+export const viewport: Viewport = {
+  themeColor: "#fd7e14",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export const metadata: Metadata = {
-  title: "Vladyslav Tsyvinda",
+  title: {
+    default: NAME,
+    template: `%s — ${NAME}`,
+  },
+  applicationName: NAME,
+  authors: [{ name: NAME, url: SITE_URL }],
+  creator: NAME,
+  publisher: NAME,
+  generator: "Next.js",
+  keywords: KEYWORDS,
   icons: {
     icon: [
       { url: "/favicon/favicon.svg", type: "image/svg+xml" },
@@ -33,29 +39,44 @@ export const metadata: Metadata = {
     ],
     apple: { url: "/favicon/favicon.png", sizes: "180x180" },
   },
-  description:
-    "Personal website of Vladyslav Tsyvinda — get in touch via LinkedIn, Telegram, or Instagram.",
-  metadataBase: new URL("https://tsyvinda.com"),
+  description: DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
   openGraph: {
-    type: "website",
-    url: "https://tsyvinda.com",
-    siteName: "Vladyslav Tsyvinda",
-    title: "Vladyslav Tsyvinda",
-    description:
-      "Personal website of Vladyslav Tsyvinda — get in touch via LinkedIn, Telegram, or Instagram.",
+    type: "profile",
+    url: SITE_URL,
+    siteName: NAME,
+    title: NAME,
+    description: DESCRIPTION,
     locale: "en_US",
+    images: [
+      {
+        url: AVATAR.url,
+        width: AVATAR.width,
+        height: AVATAR.height,
+        alt: NAME,
+        type: "image/jpeg",
+      },
+    ],
   },
   twitter: {
     card: "summary",
-    title: "Vladyslav Tsyvinda",
-    description:
-      "Personal website of Vladyslav Tsyvinda — get in touch via LinkedIn, Telegram, or Instagram.",
+    title: NAME,
+    description: DESCRIPTION,
+    images: [AVATAR.url],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
   },
+  category: "technology",
 };
 
 export default function RootLayout({
@@ -66,9 +87,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={roboto.variable}>
       <head>
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body>

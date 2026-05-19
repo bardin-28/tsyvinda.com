@@ -307,10 +307,23 @@ export default function CylinderScene() {
   }, []);
 
   return (
-    <div
-      ref={mountRef}
-      style={{ position: "fixed", inset: 0, zIndex: 1, pointerEvents: "none" }}
-      aria-hidden="true"
-    />
+    <>
+      <div
+        ref={mountRef}
+        style={{ position: "fixed", inset: 0, zIndex: 1, pointerEvents: "none" }}
+        aria-hidden="true"
+      />
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+          background:
+            "radial-gradient(ellipse at center, rgba(8, 8, 16, 0.35) 0%, rgba(8, 8, 16, 0.65) 100%)",
+        }}
+        aria-hidden="true"
+      />
+    </>
   );
 }

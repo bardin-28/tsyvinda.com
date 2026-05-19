@@ -119,6 +119,10 @@
   gap: 0 20px;
 }
 
+.nameWrap {
+  margin: 0;
+}
+
 .nameWord {
   display: block;
   font-size: clamp(3rem, 8vw, 6.5rem);
@@ -127,6 +131,85 @@
   line-height: 1.05;
   color: #ffffff;
   font-family: var(--font-roboto), system-ui, sans-serif;
+}
+
+.role {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: -28px 0 0;
+  padding: 8px 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.roleDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fd7e14;
+  box-shadow: 0 0 10px #fd7e14;
+  animation: rolePulse 2s ease-in-out infinite;
+}
+
+@keyframes rolePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.roleText {
+  background: linear-gradient(135deg, #fd7e14 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.roleDivider {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.roleSub {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.aboutLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.aboutLink:hover {
+  transform: translateY(-2px);
+  color: #fd7e14;
+  border-color: rgba(253, 126, 20, 0.4);
+  background: rgba(253, 126, 20, 0.08);
+}
+
+.aboutLink svg {
+  transition: transform 0.25s ease;
+}
+
+.aboutLink:hover svg {
+  transform: translateX(3px);
 }
 
 .links {
@@ -182,7 +265,7 @@
 
 @media (max-width: 767px) {
   .main {
-    gap: 36px;
+    gap: 30px;
     padding: 24px 16px;
   }
 
@@ -194,6 +277,25 @@
   .link {
     padding: 12px 20px;
     font-size: 0.88rem;
+  }
+
+  .role {
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    text-align: center;
+    margin-top: -12px;
+  }
+
+  .roleDivider {
+    display: none;
+  }
+
+  .roleSub {
+    width: 100%;
+    text-align: center;
+    font-size: 0.78rem;
   }
 
   .blob1 {
