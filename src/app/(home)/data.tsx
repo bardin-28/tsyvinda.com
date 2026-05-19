@@ -45,6 +45,17 @@ export const LINKS: SocialLink[] = [
       </svg>
     ),
   },
+  {
+    label: "Email",
+    href: SOCIAL_LINKS.email,
+    className: styles.linkEmail,
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+        <path d="M3 6.5l9 7 9-7" />
+      </svg>
+    ),
+  },
 ];
 
 export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];

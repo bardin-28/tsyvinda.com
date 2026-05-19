@@ -5,10 +5,13 @@ export const ALTERNATE_NAME = "Bardin28";
 export const DESCRIPTION =
   "Vladyslav Tsyvinda — Software engineer & Front-end Lead with 6+ years building scalable React, Next.js, and TypeScript products across MedTech, FinTech, PropTech, TravelTech, and EdTech.";
 
+export const EMAIL = "bardindeveloper@gmail.com";
+
 export const SOCIAL_LINKS = {
   linkedin: "https://linkedin.com/in/bardin28",
   telegram: "https://t.me/Bardin28",
   instagram: "https://instagram.com/bardin_28",
+  email: `mailto:${EMAIL}`,
 } as const;
 
 export const AVATAR = {

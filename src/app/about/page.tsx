@@ -261,7 +261,7 @@ export default function About() {
         >
           <h2 className={styles.ctaTitle}>Let&rsquo;s build something.</h2>
           <p className={styles.ctaText}>
-            Open to senior frontend / lead engineer roles. Reach me on any channel below.
+            Open to discuss new projects. Reach me on any channel below.
           </p>
           <div className={styles.ctaLinks}>
             <Link href="/" className={styles.ctaLink}>

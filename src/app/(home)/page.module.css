@@ -249,6 +249,11 @@
   box-shadow: 0 4px 30px rgba(225, 48, 108, 0.35);
 }
 
+.linkEmail {
+  background: #fd7e14;
+  box-shadow: 0 4px 30px rgba(253, 126, 20, 0.35);
+}
+
 .avatar {
   width: 88px;
   height: 88px;
