@@ -56,7 +56,10 @@ services:
 
   app:
     restart: ${RESTART_POLICY}
-    build: .
+    build:
+      context: .
+      args:
+        - API_URL=${API_URL}
     hostname: ${COMPOSE_PROJECT_NAME}-fe-app
     environment:
       - VIRTUAL_HOST=${FRONTEND_HOST}
