@@ -63,5 +63,7 @@ services:
       - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=${FRONTEND_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - API_URL=${API_URL}
+      - GA_ID=${GA_ID}
     networks:
       - app-frontend
