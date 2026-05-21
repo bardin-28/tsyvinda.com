@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { AVATAR, NAME } from "@/lib/site";
+import { AVATAR, NAME } from "@/shared/lib/site";
+import { ROUTES } from "@/shared/const";
+import { AuthButton } from "@/shared/components";
 import styles from "./page.module.css";
 import {
   EASE,
@@ -16,9 +18,9 @@ import {
   linkVariants,
   roleVariants,
   wordVariants,
-} from "./data";
+} from "./const";
 
-const CylinderScene = dynamic(() => import("./CylinderScene/CylinderScene"), { ssr: false });
+const CylinderScene = dynamic(() => import("@/app/(home)/components/CylinderScene/CylinderScene"), { ssr: false });
 
 export default function Home() {
   return (
@@ -32,6 +34,15 @@ export default function Home() {
       </div>
 
       <div className={styles.noise} aria-hidden="true" />
+
+      <motion.nav
+        className={styles.topNav}
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: EASE, delay: 0.2 }}
+      >
+        <AuthButton />
+      </motion.nav>
 
       <main className={styles.main}>
         <motion.div
@@ -108,7 +119,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE, delay: 0.85 }}
         >
-          <Link href="/about" className={styles.aboutLink} aria-label="Read about Vladyslav Tsyvinda">
+          <Link href={ROUTES.ABOUT} className={styles.aboutLink} aria-label="Read about Vladyslav Tsyvinda">
             <span>More about me</span>
             <svg
               width="14"

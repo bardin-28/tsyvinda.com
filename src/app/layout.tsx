@@ -1,8 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import Script from "next/script";
-import { AVATAR, DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/lib/site";
-import { personSchema, websiteSchema } from "@/lib/schemas";
+import { AVATAR, DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/shared/lib/site";
+import {
+  homeBreadcrumbSchema,
+  homePageSchema,
+  personSchema,
+  siteNavigationSchema,
+  websiteSchema,
+} from "@/shared/lib/schemas";
+import { UserProvider } from "@/shared/contexts/UserContext";
+import { AntdProvider } from "@/shared/providers/AntdProvider";
 import "./(home)/globals.css";
 
 const roboto = Roboto({
@@ -97,9 +105,23 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(homeBreadcrumbSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageSchema) }}
+        />
       </head>
       <body>
-        {children}
+        <AntdProvider>
+          <UserProvider>{children}</UserProvider>
+        </AntdProvider>
         {GA_ID && (
           <>
             <Script

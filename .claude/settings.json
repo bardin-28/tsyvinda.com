@@ -11,7 +11,10 @@
       "Bash(git diff *)",
       "Bash(git add *)",
       "Bash(rtk ls *)",
-      "Bash(rtk read *)"
+      "Bash(rtk read *)",
+      "Read(**/.env.example)",
+      "Edit(**/.env.example)",
+      "Write(**/.env.example)"
     ],
     "deny": [
       "Bash(rm -rf *)",

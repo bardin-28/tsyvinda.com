@@ -1,4 +1,4 @@
-import { aboutMetadata, breadcrumbSchema, profilePageSchema } from "./about-meta";
+import { aboutMetadata, breadcrumbSchema, profilePageSchema } from "./const/seo";
 
 export const metadata = aboutMetadata;
 

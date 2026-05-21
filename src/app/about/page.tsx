@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { AVATAR, NAME } from "@/lib/site";
+import { AVATAR, NAME } from "@/shared/lib/site";
+import { ROUTES } from "@/shared/const";
+import { AuthButton } from "@/shared/components";
 import styles from "./page.module.css";
 import {
   EDUCATION,
@@ -13,9 +15,9 @@ import {
   INDUSTRIES,
   STACK,
   STATS,
-} from "./data";
+} from "./const";
 
-const AboutScene = dynamic(() => import("./AboutScene/AboutScene"), { ssr: false });
+const AboutScene = dynamic(() => import("@/app/about/components/AboutScene/AboutScene"), { ssr: false });
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -68,13 +70,14 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: EASE }}
         >
-          <Link href="/" className={styles.backLink} aria-label="Back to home">
+          <Link href={ROUTES.HOME} className={styles.backLink} aria-label="Back to home">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5" />
               <path d="M12 19l-7-7 7-7" />
             </svg>
             <span>Home</span>
           </Link>
+          <AuthButton />
         </motion.nav>
 
         <section className={styles.hero}>
@@ -264,7 +267,7 @@ export default function About() {
             Open to discuss new projects. Reach me on any channel below.
           </p>
           <div className={styles.ctaLinks}>
-            <Link href="/" className={styles.ctaLink}>
+            <Link href={ROUTES.HOME} className={styles.ctaLink}>
               <span>Contact channels</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14" />

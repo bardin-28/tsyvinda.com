@@ -75,7 +75,64 @@ export const websiteSchema = {
   "@id": `${SITE_URL}/#website`,
   url: SITE_URL,
   name: NAME,
+  alternateName: "Bardin28",
   description: DESCRIPTION,
   inLanguage: "en",
   publisher: { "@id": `${SITE_URL}/#person` },
+};
+
+export const siteNavigationSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SiteNavigationElement",
+      "@id": `${SITE_URL}/#nav-home`,
+      name: "Home",
+      description: "Contact channels and intro.",
+      url: SITE_URL,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "@id": `${SITE_URL}/#nav-about`,
+      name: "About",
+      description: "Bio, stack, experience, education.",
+      url: `${SITE_URL}/about`,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+    },
+  ],
+};
+
+export const homeBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": `${SITE_URL}/#breadcrumb`,
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: SITE_URL,
+    },
+  ],
+};
+
+export const homePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${SITE_URL}/#webpage`,
+  url: SITE_URL,
+  name: NAME,
+  description: DESCRIPTION,
+  inLanguage: "en",
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  primaryImageOfPage: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}${AVATAR.url}`,
+    width: AVATAR.width,
+    height: AVATAR.height,
+  },
+  about: { "@id": `${SITE_URL}/#person` },
+  mainEntity: { "@id": `${SITE_URL}/#person` },
+  breadcrumb: { "@id": `${SITE_URL}/#breadcrumb` },
 };

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AVATAR, SITE_URL, SOCIAL_LINKS } from "@/lib/site";
+import { AVATAR, SITE_URL, SOCIAL_LINKS } from "@/shared/lib/site";
 
 export const ABOUT_PATH = "/about";
 export const ABOUT_URL = `${SITE_URL}${ABOUT_PATH}`;

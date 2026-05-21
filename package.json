@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev",
+    "dev:https": "NODE_OPTIONS='--max-old-space-size=4096' next dev --experimental-https --experimental-https-key ./certs/local.tsyvinda.com-key.pem --experimental-https-cert ./certs/local.tsyvinda.com.pem -H local.tsyvinda.com -p 443",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "next start",
     "lint": "eslint",
@@ -14,14 +15,16 @@
     "build-storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook build -c config/storybook"
   },
   "dependencies": {
+    "antd": "^6.4.3",
+    "formik": "^2.4.9",
     "framer-motion": "^12.38.0",
     "next": "16.2.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "three": "^0.184.0"
+    "three": "^0.184.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/three": "^0.184.1",
     "@storybook/nextjs": "^10.4.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -30,6 +33,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.184.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
     "identity-obj-proxy": "^3.0.0",

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { SOCIAL_LINKS } from "@/lib/site";
-import styles from "./page.module.css";
+import { SOCIAL_LINKS } from "@/shared/lib/site";
+import styles from "../page.module.css";
 
 export const NAME_WORDS = ["Vladyslav", "Tsyvinda"];
 
