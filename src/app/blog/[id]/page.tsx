@@ -1,0 +1,166 @@
+import { cache } from "react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ApiError } from "@/api";
+import { getPostById, type Post } from "@/api/posts";
+import { ROUTES } from "@/shared/const";
+import { ArticleNav } from "./components/ArticleNav";
+import {
+  buildArticleBreadcrumb,
+  buildArticleMetadata,
+  buildArticleSchema,
+} from "./const/seo";
+import styles from "./page.module.css";
+
+type ArticlePageProps = {
+  params: Promise<{ id: string }>;
+};
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
+
+const loadPost = cache(async (id: string): Promise<Post | null> => {
+  try {
+    return await getPostById(id);
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 404) return null;
+    throw e;
+  }
+});
+
+function getAuthorInitials(firstName: string, lastName: string): string {
+  const first = firstName.trim().charAt(0).toUpperCase();
+  const last = lastName.trim().charAt(0).toUpperCase();
+  return `${first}${last}` || "•";
+}
+
+function formatDate(value: string): string {
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? "" : dateFormatter.format(parsed);
+}
+
+export async function generateMetadata(
+  { params }: ArticlePageProps
+): Promise<Metadata> {
+  const { id } = await params;
+  const post = await loadPost(id);
+  if (!post) {
+    return {
+      title: "Article not found",
+      robots: { index: false, follow: false },
+    };
+  }
+  return buildArticleMetadata(post);
+}
+
+export default async function ArticlePage({ params }: ArticlePageProps) {
+  const { id } = await params;
+  const post = await loadPost(id);
+  if (!post) notFound();
+
+  const authorName = `${post.author.firstName} ${post.author.lastName}`.trim();
+  const createdLabel = formatDate(post.createdAt);
+  const updatedLabel = formatDate(post.updatedAt);
+  const showUpdated = updatedLabel && updatedLabel !== createdLabel;
+
+  return (
+    <div className={styles.page}>
+      <div className={styles.noise} aria-hidden="true" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleSchema(post)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleBreadcrumb(post)) }}
+      />
+
+      <ArticleNav />
+
+      <main className={styles.main}>
+        <header className={styles.header}>
+          <span className={styles.eyebrow}>
+            <span className={styles.dot} aria-hidden="true" />
+            Article
+          </span>
+          <h1 className={styles.title}>{post.title}</h1>
+          {post.description && <p className={styles.description}>{post.description}</p>}
+
+          <div className={styles.meta}>
+            <div className={styles.authorAvatar}>
+              {post.author.profileImageUrl ? (
+                <Image
+                  src={post.author.profileImageUrl}
+                  alt={authorName || "Author"}
+                  width={40}
+                  height={40}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : (
+                <div className={styles.authorAvatarFallback}>
+                  {getAuthorInitials(post.author.firstName, post.author.lastName)}
+                </div>
+              )}
+            </div>
+            <div className={styles.authorBlock}>
+              {authorName && <span className={styles.authorName}>{authorName}</span>}
+              <div className={styles.metaDates}>
+                {createdLabel && (
+                  <time dateTime={post.createdAt}>{createdLabel}</time>
+                )}
+                {showUpdated && (
+                  <>
+                    <span className={styles.metaSep}>·</span>
+                    <span>
+                      Updated{" "}
+                      <time dateTime={post.updatedAt}>{updatedLabel}</time>
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {post.imageUrl && (
+          <div className={styles.heroImage}>
+            <Image
+              src={post.imageUrl}
+              alt={post.title}
+              fill
+              sizes="(max-width: 820px) 100vw, 820px"
+              priority
+            />
+          </div>
+        )}
+
+        <article
+          className={styles.article}
+          dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+        />
+
+        <div className={styles.footer}>
+          <Link href={ROUTES.BLOG} className={styles.footerLink}>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+            <span>Back to all posts</span>
+          </Link>
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -115,12 +115,30 @@ export default function Home() {
         </motion.div>
 
         <motion.div
+          className={styles.secondaryLinks}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE, delay: 0.85 }}
         >
           <Link href={ROUTES.ABOUT} className={styles.aboutLink} aria-label="Read about Vladyslav Tsyvinda">
             <span>More about me</span>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14" />
+              <path d="M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+          <Link href={ROUTES.BLOG} className={styles.blogLink} aria-label="Read the blog">
+            <span>Read the blog</span>
             <svg
               width="14"
               height="14"

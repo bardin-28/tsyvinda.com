@@ -2,6 +2,9 @@ import { AUTH_COOKIES, hasCookie } from '@/shared/lib/cookies';
 
 export const API_URL = '/api';
 
+const isServer = typeof window === 'undefined';
+const SERVER_API_ORIGIN = (process.env.API_URL ?? 'http://localhost:4000').replace(/\/$/, '');
+
 type RequestOptions = Omit<RequestInit, 'body'> & {
   body?: unknown;
   params?: Record<string, string | number | boolean | undefined | null>;
@@ -19,12 +22,14 @@ const buildUrl = (path: string, params?: RequestOptions['params']) => {
     }
   }
 
+  const base = isServer ? SERVER_API_ORIGIN : API_URL;
   const query = search.toString();
-  return query ? `${API_URL}${path}?${query}` : `${API_URL}${path}`;
+  return query ? `${base}${path}?${query}` : `${base}${path}`;
 };
 
 const refreshTokens = async () => {
-  const response = await fetch(`${API_URL}/auth/refresh`, {
+  const base = isServer ? SERVER_API_ORIGIN : API_URL;
+  const response = await fetch(`${base}/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
   });

@@ -100,6 +100,14 @@ export const siteNavigationSchema = {
       url: `${SITE_URL}/about`,
       isPartOf: { "@id": `${SITE_URL}/#website` },
     },
+    {
+      "@type": "SiteNavigationElement",
+      "@id": `${SITE_URL}/#nav-blog`,
+      name: "Blog",
+      description: "Articles on frontend engineering, React, Next.js, and product delivery.",
+      url: `${SITE_URL}/blog`,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+    },
   ],
 };
 

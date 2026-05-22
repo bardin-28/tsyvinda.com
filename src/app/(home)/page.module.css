@@ -197,7 +197,15 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.aboutLink {
+.secondaryLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.aboutLink,
+.blogLink {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -209,6 +217,7 @@
   color: rgba(255, 255, 255, 0.78);
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  text-decoration: none;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
@@ -221,11 +230,20 @@
   background: rgba(253, 126, 20, 0.08);
 }
 
-.aboutLink svg {
+.blogLink:hover {
+  transform: translateY(-2px);
+  color: #ec4899;
+  border-color: rgba(236, 72, 153, 0.4);
+  background: rgba(236, 72, 153, 0.08);
+}
+
+.aboutLink svg,
+.blogLink svg {
   transition: transform 0.25s ease;
 }
 
-.aboutLink:hover svg {
+.aboutLink:hover svg,
+.blogLink:hover svg {
   transform: translateX(3px);
 }
 

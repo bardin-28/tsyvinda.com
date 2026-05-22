@@ -38,8 +38,7 @@ export function UserProvider({ children, initialUser = null }: UserProviderProps
     setError(null);
 
     try {
-      const data = await API.get<User>('/auth/me');
-      console.info(data, 'data');
+      const data = await API.get<User>('/profile');
       setUser(data);
 
     } catch (e) {

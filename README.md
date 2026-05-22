@@ -37,7 +37,7 @@ Lightweight `fetch` wrapper at `src/api/index.ts`. Cookie-based auth (`credentia
 import { API, ApiError } from '@/api';
 
 // GET
-const user = await API.get<User>('/users/me');
+const user = await API.get<User>('/profile');
 
 // GET with query params
 const list = await API.get<User[]>('/users', {
