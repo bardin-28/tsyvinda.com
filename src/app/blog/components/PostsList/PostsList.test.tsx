@@ -31,6 +31,7 @@ class MockIntersectionObserver {
 
 const makePost = (id: string, title: string): Post => ({
   id,
+  slug: id,
   title,
   description: `${title} description`,
   htmlContent: "<p>x</p>",

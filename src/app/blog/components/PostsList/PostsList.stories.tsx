@@ -4,6 +4,7 @@ import { PostsList } from "./PostsList";
 
 const makePost = (id: string, title: string): Post => ({
   id,
+  slug: id,
   title,
   description:
     "Short description of the article. Two or three sentences to demonstrate the card layout.",
