@@ -4,7 +4,7 @@ export const ROUTES = {
   BLOG: "/blog",
   BLOG_COVER: "/blog/cover",
   LOGIN: "/login",
-  blogPost: (id: string) => `/blog/${id}`,
+  blogPost: (slug: string) => `/blog/${slug}`,
 } as const;
 
 export type Route =

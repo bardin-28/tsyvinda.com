@@ -9,6 +9,7 @@ export type PostAuthor = {
 
 export type Post = {
   id: string;
+  slug: string;
   title: string;
   description: string;
   htmlContent: string;
@@ -38,6 +39,6 @@ export function getPosts(params: GetPostsParams = {}): Promise<PostsPage> {
   });
 }
 
-export function getPostById(id: string): Promise<Post> {
-  return API.get<Post>(`/posts/${id}`);
+export function getPostBySlug(slug: string): Promise<Post> {
+  return API.get<Post>(`/posts/${slug}`);
 }

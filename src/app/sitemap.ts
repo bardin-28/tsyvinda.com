@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
 
+import { getPosts } from "@/api/posts";
 import { ROUTES } from "@/shared/const";
 import { SITE_URL } from "@/shared/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
-  return [
+  const staticEntries: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified,
@@ -26,4 +29,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
   ];
+
+  let postEntries: MetadataRoute.Sitemap = [];
+  try {
+    const { items } = await getPosts({ limit: 50 });
+    postEntries = items.map((post) => ({
+      url: `${SITE_URL}${ROUTES.blogPost(post.slug)}`,
+      lastModified: post.updatedAt ? new Date(post.updatedAt) : lastModified,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    }));
+  } catch {
+    // Backend unavailable — ship static sitemap rather than failing the route.
+  }
+
+  return [...staticEntries, ...postEntries];
 }

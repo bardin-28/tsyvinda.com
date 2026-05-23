@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/api";
-import { getPostById, type Post } from "@/api/posts";
+import { getPostBySlug, type Post } from "@/api/posts";
 import { ROUTES } from "@/shared/const";
 import { ArticleNav } from "./components/ArticleNav";
 import {
@@ -15,14 +15,14 @@ import {
 import styles from "./page.module.css";
 
 type ArticlePageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
 
-const loadPost = cache(async (id: string): Promise<Post | null> => {
+const loadPost = cache(async (slug: string): Promise<Post | null> => {
   try {
-    return await getPostById(id);
+    return await getPostBySlug(slug);
   } catch (e) {
     if (e instanceof ApiError && e.status === 404) return null;
     throw e;
@@ -40,11 +40,22 @@ function formatDate(value: string): string {
   return Number.isNaN(parsed.getTime()) ? "" : dateFormatter.format(parsed);
 }
 
+function sanitizeHtmlContent(raw: string): string {
+  return raw
+    .replace(/\\r\\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\\r/g, "\n")
+    .replace(/\\t/g, "\t")
+    .replace(/\\"/g, '"')
+    .replace(/\\'/g, "'")
+    .replace(/\\\\/g, "\\");
+}
+
 export async function generateMetadata(
   { params }: ArticlePageProps
 ): Promise<Metadata> {
-  const { id } = await params;
-  const post = await loadPost(id);
+  const { slug } = await params;
+  const post = await loadPost(slug);
   if (!post) {
     return {
       title: "Article not found",
@@ -55,8 +66,8 @@ export async function generateMetadata(
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const { id } = await params;
-  const post = await loadPost(id);
+  const { slug } = await params;
+  const post = await loadPost(slug);
   if (!post) notFound();
 
   const authorName = `${post.author.firstName} ${post.author.lastName}`.trim();
@@ -138,7 +149,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         <article
           className={styles.article}
-          dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(post.htmlContent) }}
         />
 
         <div className={styles.footer}>

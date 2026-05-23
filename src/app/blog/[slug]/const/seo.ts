@@ -3,19 +3,19 @@ import type { Post } from "@/api/posts";
 import { AVATAR, NAME, SITE_URL } from "@/shared/lib/site";
 import { BLOG_URL } from "../../const/seo";
 
-export function buildArticleUrl(id: string): string {
-  return `${BLOG_URL}/${id}`;
+export function buildArticleUrl(slug: string): string {
+  return `${BLOG_URL}/${slug}`;
 }
 
 export function buildArticleMetadata(post: Post): Metadata {
-  const url = buildArticleUrl(post.id);
+  const url = buildArticleUrl(post.slug);
   const authorName = `${post.author.firstName} ${post.author.lastName}`.trim();
   const image = post.imageUrl || `${SITE_URL}${AVATAR.url}`;
 
   return {
     title: post.title,
     description: post.description,
-    alternates: { canonical: `/blog/${post.id}` },
+    alternates: { canonical: `/blog/${post.slug}` },
     authors: authorName ? [{ name: authorName }] : undefined,
     openGraph: {
       type: "article",
@@ -55,7 +55,7 @@ export function buildArticleMetadata(post: Post): Metadata {
 }
 
 export function buildArticleSchema(post: Post) {
-  const url = buildArticleUrl(post.id);
+  const url = buildArticleUrl(post.slug);
   const authorName = `${post.author.firstName} ${post.author.lastName}`.trim();
 
   return {
@@ -83,7 +83,7 @@ export function buildArticleSchema(post: Post) {
 }
 
 export function buildArticleBreadcrumb(post: Post) {
-  const url = buildArticleUrl(post.id);
+  const url = buildArticleUrl(post.slug);
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

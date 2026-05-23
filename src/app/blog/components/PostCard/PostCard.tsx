@@ -19,7 +19,7 @@ function getAuthorInitials(firstName: string, lastName: string): string {
 }
 
 export function PostCard({ post }: PostCardProps) {
-  const { id, title, description, imageUrl, author, createdAt } = post;
+  const { slug, title, description, imageUrl, author, createdAt } = post;
   const authorName = `${author.firstName} ${author.lastName}`.trim();
   const formattedDate = (() => {
     const parsed = new Date(createdAt);
@@ -28,7 +28,7 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <Link
-      href={ROUTES.blogPost(id)}
+      href={ROUTES.blogPost(slug)}
       className={styles.card}
       aria-label={`Read article: ${title}`}
     >
