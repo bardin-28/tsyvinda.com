@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { AVATAR, NAME } from "@/shared/lib/site";
 import { ROUTES } from "@/shared/const";
-import { AuthButton } from "@/shared/components";
 import styles from "./page.module.css";
 import {
   EASE,
@@ -34,15 +33,6 @@ export default function Home() {
       </div>
 
       <div className={styles.noise} aria-hidden="true" />
-
-      <motion.nav
-        className={styles.topNav}
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: EASE, delay: 0.2 }}
-      >
-        <AuthButton />
-      </motion.nav>
 
       <main className={styles.main}>
         <motion.div
