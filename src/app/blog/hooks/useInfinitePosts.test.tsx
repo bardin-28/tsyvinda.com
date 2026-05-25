@@ -12,6 +12,7 @@ const getPostsMock = getPosts as jest.MockedFunction<typeof getPosts>;
 
 const makePost = (id: string): Post => ({
   id,
+  slug: id,
   title: `Post ${id}`,
   description: "",
   htmlContent: "",
