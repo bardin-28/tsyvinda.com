@@ -9,12 +9,10 @@ import { ROUTES } from "@/shared/const";
 import styles from "./page.module.css";
 import {
   EASE,
-  LINKS,
   NAME_WORDS,
   ROLE_PRIMARY,
   ROLE_SECONDARY,
   containerVariants,
-  linkVariants,
   roleVariants,
   wordVariants,
 } from "./const";
@@ -81,57 +79,20 @@ export default function Home() {
         </motion.p>
 
         <motion.div
-          className={styles.links}
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-        >
-          {LINKS.map((link) => (
-            <motion.a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles.link} ${link.className}`}
-              variants={linkVariants}
-              whileHover={{ scale: 1.06, y: -4 }}
-              whileTap={{ scale: 0.96 }}
-              transition={{ type: "spring", stiffness: 350, damping: 22 }}
-            >
-              {link.icon}
-              <span>{link.label}</span>
-            </motion.a>
-          ))}
-        </motion.div>
-
-        <motion.div
-          className={styles.secondaryLinks}
-          initial={{ opacity: 0, y: 12 }}
+          className={styles.cta}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE, delay: 0.85 }}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.6 }}
         >
-          <Link href={ROUTES.ABOUT} className={styles.aboutLink} aria-label="Read about Vladyslav Tsyvinda">
-            <span>More about me</span>
+          <Link
+            href={ROUTES.CONTACTS}
+            className={styles.ctaButton}
+            aria-label="Get in touch with Vladyslav Tsyvinda"
+          >
+            <span>Get in touch</span>
             <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M5 12h14" />
-              <path d="M12 5l7 7-7 7" />
-            </svg>
-          </Link>
-          <Link href={ROUTES.BLOG} className={styles.blogLink} aria-label="Read the blog">
-            <span>Read the blog</span>
-            <svg
-              width="14"
-              height="14"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

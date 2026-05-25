@@ -14,6 +14,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Home", href: ROUTES.HOME },
   { label: "About", href: ROUTES.ABOUT },
   { label: "Blog", href: ROUTES.BLOG },
+  { label: "Contacts", href: ROUTES.CONTACTS },
 ];
 
 /**

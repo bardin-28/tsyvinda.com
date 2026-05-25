@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: "/",
   ABOUT: "/about",
+  CONTACTS: "/contacts",
   BLOG: "/blog",
   BLOG_COVER: "/blog/cover",
   LOGIN: "/login",
@@ -10,6 +11,7 @@ export const ROUTES = {
 export type Route =
   | "/"
   | "/about"
+  | "/contacts"
   | "/blog"
   | "/blog/cover"
   | "/login"
