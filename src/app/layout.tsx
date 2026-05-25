@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import Script from "next/script";
-import { AVATAR, DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/shared/lib/site";
+import { DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/shared/lib/site";
 import {
   homeBreadcrumbSchema,
   homePageSchema,
@@ -11,6 +11,7 @@ import {
 } from "@/shared/lib/schemas";
 import { UserProvider } from "@/shared/contexts/UserContext";
 import { AntdProvider } from "@/shared/providers/AntdProvider";
+import { SiteHeader, SiteFooter } from "@/shared/components";
 import "./(home)/globals.css";
 
 const roboto = Roboto({
@@ -57,21 +58,12 @@ export const metadata: Metadata = {
     title: NAME,
     description: DESCRIPTION,
     locale: "en_US",
-    images: [
-      {
-        url: AVATAR.url,
-        width: AVATAR.width,
-        height: AVATAR.height,
-        alt: NAME,
-        type: "image/jpeg",
-      },
-    ],
+    // og:image is supplied site-wide by app/opengraph-image.tsx (branded card).
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: NAME,
     description: DESCRIPTION,
-    images: [AVATAR.url],
   },
   robots: {
     index: true,
@@ -120,7 +112,11 @@ export default function RootLayout({
       </head>
       <body>
         <AntdProvider>
-          <UserProvider>{children}</UserProvider>
+          <UserProvider>
+            <SiteHeader />
+            {children}
+            <SiteFooter />
+          </UserProvider>
         </AntdProvider>
         {GA_ID && (
           <>

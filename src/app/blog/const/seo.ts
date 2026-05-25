@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AVATAR, NAME, SITE_URL } from "@/shared/lib/site";
+import { NAME, SITE_URL } from "@/shared/lib/site";
 
 export const BLOG_PATH = "/blog";
 export const BLOG_URL = `${SITE_URL}${BLOG_PATH}`;
@@ -32,21 +32,12 @@ export const blogMetadata: Metadata = {
     title: BLOG_TITLE,
     description: BLOG_DESCRIPTION,
     locale: "en_US",
-    images: [
-      {
-        url: AVATAR.url,
-        width: AVATAR.width,
-        height: AVATAR.height,
-        alt: NAME,
-        type: "image/jpeg",
-      },
-    ],
+    // og:image inherited from app/opengraph-image.tsx (branded card).
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: BLOG_TITLE,
     description: BLOG_DESCRIPTION,
-    images: [AVATAR.url],
   },
   robots: {
     index: true,

@@ -4,6 +4,7 @@ import { PostCard } from "./PostCard";
 
 const basePost: Post = {
   id: "abc-123",
+  slug: "abc-123",
   title: "Building production-grade Next.js apps",
   description: "Lessons from shipping React 19 + App Router to real users.",
   htmlContent: "<p>body</p>",

@@ -5,6 +5,11 @@ import { getPosts, type Post } from "@/api/posts";
 
 export const POSTS_PAGE_SIZE = 10;
 
+export type InitialPostsData = {
+  items: Post[];
+  nextCursor: string | null;
+};
+
 export type UseInfinitePostsState = {
   items: Post[];
   isLoading: boolean;
@@ -15,16 +20,26 @@ export type UseInfinitePostsState = {
   retry: () => void;
 };
 
-export function useInfinitePosts(pageSize: number = POSTS_PAGE_SIZE): UseInfinitePostsState {
-  const [items, setItems] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export function useInfinitePosts(
+  pageSize: number = POSTS_PAGE_SIZE,
+  initialData?: InitialPostsData
+): UseInfinitePostsState {
+  const isSeeded = initialData !== undefined;
+
+  const [items, setItems] = useState<Post[]>(initialData?.items ?? []);
+  const [isLoading, setIsLoading] = useState<boolean>(!isSeeded);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(
+    isSeeded ? Boolean(initialData?.nextCursor) : true
+  );
   const [error, setError] = useState<Error | null>(null);
 
   const isFetchingRef = useRef<boolean>(false);
-  const cursorRef = useRef<string | null>(null);
-  const hasMoreRef = useRef<boolean>(true);
+  const cursorRef = useRef<string | null>(initialData?.nextCursor ?? null);
+  const hasMoreRef = useRef<boolean>(
+    isSeeded ? Boolean(initialData?.nextCursor) : true
+  );
+  const didInitialFetchRef = useRef<boolean>(isSeeded);
 
   const fetchPage = useCallback(
     async (nextCursor: string | null, isInitial: boolean) => {
@@ -43,7 +58,6 @@ export function useInfinitePosts(pageSize: number = POSTS_PAGE_SIZE): UseInfinit
           limit: pageSize,
         });
 
-        console.info(page, 'poosttts')
         setItems((prev) => (isInitial ? page.items : [...prev, ...page.items]));
         cursorRef.current = page.nextCursor;
         const more = Boolean(page.nextCursor);
@@ -64,6 +78,8 @@ export function useInfinitePosts(pageSize: number = POSTS_PAGE_SIZE): UseInfinit
   );
 
   useEffect(() => {
+    if (didInitialFetchRef.current) return;
+    didInitialFetchRef.current = true;
     void fetchPage(null, true);
   }, [fetchPage]);
 

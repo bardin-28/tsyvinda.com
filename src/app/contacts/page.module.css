@@ -1,0 +1,232 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #080810;
+  color: #ffffff;
+}
+
+/* Ambient background — matches the home/about treatment */
+.blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.blob1,
+.blob2,
+.blob3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0;
+  animation: blobFadeIn 1.2s forwards;
+}
+
+.blob1 {
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  top: -22%;
+  left: -12%;
+  animation-delay: 0s;
+}
+
+.blob2 {
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  bottom: -18%;
+  right: -10%;
+  animation-delay: 0.2s;
+}
+
+.blob3 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, #fd7e14 0%, transparent 70%);
+  top: 45%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  animation-delay: 0.4s;
+}
+
+@keyframes blobFadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.22; }
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+.main {
+  position: relative;
+  z-index: 20;
+  max-width: 760px;
+  margin: 0 auto;
+  /* Top padding clears the fixed shared header. */
+  padding: 128px 24px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fd7e14;
+  box-shadow: 0 0 12px rgba(253, 126, 20, 0.7);
+}
+
+.title {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.titleAccent {
+  color: #fd7e14;
+}
+
+.lead {
+  max-width: 540px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Channels */
+.channels {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  list-style: none;
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.channel:hover {
+  transform: translateY(-3px);
+  background: rgba(253, 126, 20, 0.08);
+  border-color: rgba(253, 126, 20, 0.45);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.channel:focus-visible {
+  outline: 2px solid #fd7e14;
+  outline-offset: 2px;
+}
+
+.channelIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  color: #fd7e14;
+  background: rgba(253, 126, 20, 0.12);
+  border: 1px solid rgba(253, 126, 20, 0.25);
+}
+
+.channelText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.channelLabel {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.channelHandle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.channelArrow {
+  display: inline-flex;
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+}
+
+.channel:hover .channelArrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: #fd7e14;
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: 104px 16px 72px;
+  }
+
+  .channels {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob1,
+  .blob2,
+  .blob3 {
+    animation: none;
+    opacity: 0.18;
+  }
+
+  .channel,
+  .channelArrow {
+    transition: none;
+  }
+}

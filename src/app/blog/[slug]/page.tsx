@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import { ApiError } from "@/api";
 import { getPostBySlug, type Post } from "@/api/posts";
 import { ROUTES } from "@/shared/const";
-import { ArticleNav } from "./components/ArticleNav";
 import {
   buildArticleBreadcrumb,
   buildArticleMetadata,
@@ -17,6 +16,12 @@ import styles from "./page.module.css";
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
 };
+
+// ISR on demand: each article renders full SSR HTML on first request, then is
+// cached for an hour. Crawlers get complete markup without coupling the build
+// to backend availability (no generateStaticParams, so the build never fetches
+// per-slug — avoids prerender failures when the API is unreachable at build).
+export const revalidate = 3600;
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
 
@@ -87,8 +92,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildArticleBreadcrumb(post)) }}
       />
-
-      <ArticleNav />
 
       <main className={styles.main}>
         <header className={styles.header}>
