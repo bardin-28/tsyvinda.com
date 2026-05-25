@@ -35,21 +35,12 @@ export const aboutMetadata: Metadata = {
     title: ABOUT_TITLE,
     description: ABOUT_DESCRIPTION,
     locale: "en_US",
-    images: [
-      {
-        url: AVATAR.url,
-        width: AVATAR.width,
-        height: AVATAR.height,
-        alt: "Vladyslav Tsyvinda",
-        type: "image/jpeg",
-      },
-    ],
+    // og:image inherited from app/opengraph-image.tsx (branded card).
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: ABOUT_TITLE,
     description: ABOUT_DESCRIPTION,
-    images: [AVATAR.url],
   },
   robots: {
     index: true,

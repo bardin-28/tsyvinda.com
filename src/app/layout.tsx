@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import Script from "next/script";
-import { AVATAR, DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/shared/lib/site";
+import { DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/shared/lib/site";
 import {
   homeBreadcrumbSchema,
   homePageSchema,
@@ -58,21 +58,12 @@ export const metadata: Metadata = {
     title: NAME,
     description: DESCRIPTION,
     locale: "en_US",
-    images: [
-      {
-        url: AVATAR.url,
-        width: AVATAR.width,
-        height: AVATAR.height,
-        alt: NAME,
-        type: "image/jpeg",
-      },
-    ],
+    // og:image is supplied site-wide by app/opengraph-image.tsx (branded card).
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: NAME,
     description: DESCRIPTION,
-    images: [AVATAR.url],
   },
   robots: {
     index: true,
