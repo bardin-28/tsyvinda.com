@@ -17,10 +17,14 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          # Abort (and fail the job) on the first failing command, so a broken
+          # build does not fall through to `up -d` and redeploy a stale image.
+          script_stop: true
           script: |
+            set -e
             cd app
-            git pull  
+            git pull
 
-            # Docker
+            # Docker — build first; only deploy if the build succeeds.
             docker compose build --no-cache
             docker compose up -d --remove-orphans
