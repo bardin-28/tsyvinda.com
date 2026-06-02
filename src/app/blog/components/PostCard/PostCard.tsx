@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/shared/const";
 import type { Post } from "@/api/posts";
+import { toProxiedUrl } from "@/shared/lib/uploads";
 import styles from "./PostCard.module.css";
 
 type PostCardProps = {
@@ -19,7 +20,9 @@ function getAuthorInitials(firstName: string, lastName: string): string {
 }
 
 export function PostCard({ post }: PostCardProps) {
-  const { slug, title, description, imageUrl, author, createdAt } = post;
+  const { slug, title, description, author, createdAt } = post;
+  const imageUrl = toProxiedUrl(post.imageUrl);
+  const authorImageUrl = toProxiedUrl(author.profileImageUrl);
   const authorName = `${author.firstName} ${author.lastName}`.trim();
   const formattedDate = (() => {
     const parsed = new Date(createdAt);
@@ -52,9 +55,9 @@ export function PostCard({ post }: PostCardProps) {
 
         <div className={styles.meta}>
           <div className={styles.authorAvatar}>
-            {author.profileImageUrl ? (
+            {authorImageUrl ? (
               <Image
-                src={author.profileImageUrl}
+                src={authorImageUrl}
                 alt={authorName || "Author"}
                 width={28}
                 height={28}
