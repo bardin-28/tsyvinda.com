@@ -138,18 +138,16 @@
   gap: 16px;
   padding: 18px 20px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
 
 .channel:hover {
   transform: translateY(-3px);
-  background: rgba(253, 126, 20, 0.08);
-  border-color: rgba(253, 126, 20, 0.45);
+  background: var(--accent-bg-1);
+  border-color: var(--accent-soft-45);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 

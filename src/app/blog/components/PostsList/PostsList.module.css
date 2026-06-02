@@ -27,8 +27,8 @@
   flex-direction: column;
   border-radius: 20px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
 }
 
 .skeletonImage {
@@ -104,8 +104,8 @@
   padding: 64px 24px;
   text-align: center;
   color: rgba(255, 255, 255, 0.65);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
+  background: var(--surface-1);
+  border: 1px dashed var(--border);
   border-radius: 20px;
 }
 
@@ -130,8 +130,8 @@
   gap: 14px;
   padding: 40px 24px;
   text-align: center;
-  background: rgba(244, 67, 54, 0.06);
-  border: 1px solid rgba(244, 67, 54, 0.2);
+  background: var(--error-bg);
+  border: 1px solid #3d1214;
   border-radius: 20px;
   color: rgba(255, 255, 255, 0.78);
 }

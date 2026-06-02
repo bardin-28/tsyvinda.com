@@ -44,8 +44,8 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.78);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   align-self: flex-start;
 }
 
@@ -90,8 +90,8 @@
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
   flex-shrink: 0;
 }
 
@@ -104,7 +104,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.85);
-  background: linear-gradient(135deg, rgba(253, 126, 20, 0.5), rgba(236, 72, 153, 0.5));
+  background: linear-gradient(135deg, #c2410c, #9d174d);
 }
 
 .authorBlock {
@@ -137,8 +137,8 @@
   aspect-ratio: 16 / 9;
   border-radius: 24px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
 }
 
 .heroImage img {
@@ -220,7 +220,7 @@
   margin: 1.5em 0;
   padding: 14px 20px;
   border-left: 3px solid #fd7e14;
-  background: rgba(253, 126, 20, 0.06);
+  background: var(--accent-bg-1);
   color: rgba(255, 255, 255, 0.85);
   border-radius: 0 12px 12px 0;
   font-style: italic;
@@ -231,15 +231,15 @@
   font-size: 0.92em;
   padding: 2px 6px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--surface-3);
   color: #fd7e14;
 }
 
 .article pre {
   margin: 1.5em 0;
   padding: 18px 20px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--code-bg);
+  border: 1px solid var(--border);
   border-radius: 14px;
   overflow-x: auto;
   font-size: 0.9rem;
@@ -257,7 +257,7 @@
   max-width: 100%;
   height: auto;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
 }
 
 .article hr {
@@ -276,12 +276,12 @@
 .article th,
 .article td {
   padding: 10px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
   text-align: left;
 }
 
 .article th {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-1);
   color: #ffffff;
   font-weight: 600;
 }
@@ -301,8 +301,8 @@
   font-size: 0.88rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   text-decoration: none;
   transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
@@ -310,8 +310,8 @@
 .footerLink:hover {
   transform: translateY(-2px);
   color: #fd7e14;
-  border-color: rgba(253, 126, 20, 0.4);
-  background: rgba(253, 126, 20, 0.08);
+  border-color: var(--accent-soft-40);
+  background: var(--accent-bg-1);
 }
 
 @media (max-width: 767px) {

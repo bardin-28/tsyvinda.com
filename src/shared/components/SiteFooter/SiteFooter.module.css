@@ -2,10 +2,8 @@
   position: relative;
   /* Above the fixed full-screen scenes (home/about/blog use z-index up to 2). */
   z-index: 5;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(8, 8, 16, 0.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  background: var(--bg-chrome);
 }
 
 .inner {

@@ -67,8 +67,8 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.75);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
 }
 
 .previewMetaDot {
@@ -98,11 +98,9 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   text-decoration: none;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
@@ -110,7 +108,7 @@
   transform: translateY(-2px);
   color: #fd7e14;
   border-color: rgba(253, 126, 20, 0.4);
-  background: rgba(253, 126, 20, 0.08);
+  background: var(--accent-bg-1);
 }
 
 @media (max-width: 1024px) {

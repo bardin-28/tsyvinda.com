@@ -211,8 +211,8 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.78);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   border-radius: 100px;
 }
 
@@ -223,10 +223,8 @@
   margin-top: 16px;
   padding: 24px;
   border-radius: 18px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
 }
 
 .stat {
@@ -358,10 +356,8 @@
   position: relative;
   padding: 24px;
   border-radius: 18px;
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.015) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   transition: transform 0.4s ease, border-color 0.4s ease, background 0.4s ease;
   overflow: hidden;
 }
@@ -378,8 +374,8 @@
 
 .stackCard:hover {
   transform: translateY(-4px);
-  border-color: rgba(253, 126, 20, 0.3);
-  background: linear-gradient(140deg, rgba(253, 126, 20, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: var(--accent-soft-30);
+  background: var(--accent-bg-1);
 }
 
 .stackCard:hover::before {
@@ -466,10 +462,8 @@
 .timelineCard {
   padding: 24px 26px;
   border-radius: 18px;
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.015) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   transition: transform 0.4s ease, border-color 0.4s ease;
 }
 
@@ -557,10 +551,8 @@
   position: relative;
   padding: 28px;
   border-radius: 18px;
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.015) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   transition: transform 0.4s ease, border-color 0.4s ease;
   display: flex;
   flex-direction: column;
@@ -599,15 +591,17 @@
   margin-top: 24px;
   padding: 56px 48px;
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(253, 126, 20, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%);
-  border: 1px solid rgba(253, 126, 20, 0.18);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+  }
 }
 
 .ctaTitle {
