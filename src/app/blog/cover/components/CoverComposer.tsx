@@ -127,7 +127,7 @@ function createScene(width: number, height: number): SceneContext {
     depthWrite: false,
   });
   const shell = new THREE.Mesh(shellGeom, shellMat);
-  group.add(shell);
+  knot.add(shell);
 
   const haloGeom = new THREE.TorusGeometry(2.6, 0.008, 6, 256);
   const haloMat = new THREE.MeshBasicMaterial({
@@ -177,7 +177,7 @@ function createScene(width: number, height: number): SceneContext {
     depthWrite: false,
   });
   const particles = new THREE.Points(pGeom, pMat);
-  scene.add(particles);
+  group.add(particles);
 
   scene.add(new THREE.AmbientLight(0x1a0a00, 4));
   const orbitLights = [
@@ -218,11 +218,9 @@ function tickScene(ctx: SceneContext) {
   ctx.group.rotation.x = Math.sin(t * 0.15) * 0.08;
   ctx.knot.rotation.x = t * 0.32;
   ctx.knot.rotation.y = t * 0.4;
-  ctx.shell.rotation.x = -t * 0.18;
-  ctx.shell.rotation.y = -t * 0.22;
   ctx.halo1.rotation.z = t * 0.2;
   ctx.halo2.rotation.z = -t * 0.16;
-  ctx.particles.rotation.y = t * 0.05;
+  ctx.particles.rotation.y = t * 0.025;
 
   ctx.orbitLights.forEach(({ light, r, speed, ySpeed, phase }) => {
     light.position.x = Math.cos(t * speed + phase) * r;

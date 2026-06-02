@@ -57,7 +57,7 @@ export default function BlogScene() {
       depthWrite: false,
     });
     const shell = new THREE.Mesh(shellGeom, shellMat);
-    group.add(shell);
+    knot.add(shell);
 
     // Outer halo torus
     const haloGeom = new THREE.TorusGeometry(2.6, 0.008, 6, 256);
@@ -109,7 +109,7 @@ export default function BlogScene() {
       depthWrite: false,
     });
     const particles = new THREE.Points(pGeom, pMat);
-    scene.add(particles);
+    group.add(particles);
 
     // Lighting
     scene.add(new THREE.AmbientLight(0x1a0a00, 4));
@@ -173,13 +173,10 @@ export default function BlogScene() {
 
       knot.rotation.x = t * 0.32;
       knot.rotation.y = t * 0.4;
-      shell.rotation.x = -t * 0.18;
-      shell.rotation.y = -t * 0.22;
       halo1.rotation.z = t * 0.2;
       halo2.rotation.z = -t * 0.16;
 
-      particles.rotation.y = t * 0.05 + smoothX * 0.08;
-      particles.rotation.x = smoothY * -0.06;
+      particles.rotation.y = t * 0.025;
 
       orbitLights.forEach(({ light, r, speed, ySpeed, phase }) => {
         light.position.x = Math.cos(t * speed + phase) * r;
