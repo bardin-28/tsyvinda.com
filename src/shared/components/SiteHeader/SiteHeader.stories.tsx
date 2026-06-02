@@ -5,7 +5,11 @@ import { SiteHeader } from "./SiteHeader";
 const demoUser: User = {
   id: "1",
   email: "bardindeveloper@gmail.com",
-  name: "Vladyslav Tsyvinda",
+  firstName: "Vladyslav",
+  lastName: "Tsyvinda",
+  profileImageUrl: null,
+  emailVerified: true,
+  createdAt: "2026-05-20T21:32:36.216Z",
 };
 
 const meta: Meta<typeof SiteHeader> = {

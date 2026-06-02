@@ -101,6 +101,28 @@ describe("SiteHeader", () => {
     expect(logoutMock).toHaveBeenCalledTimes(1);
   });
 
+  it("shows a Profile link in the menu when logged in", async () => {
+    mockUser({ firstName: "Vladyslav" });
+    const user = userEvent.setup();
+    render(<SiteHeader />);
+
+    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+
+    expect(screen.getByRole("menuitem", { name: "Profile" })).toHaveAttribute(
+      "href",
+      "/profile",
+    );
+  });
+
+  it("hides the Profile link when logged out", async () => {
+    const user = userEvent.setup();
+    render(<SiteHeader />);
+
+    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+
+    expect(screen.queryByRole("menuitem", { name: "Profile" })).not.toBeInTheDocument();
+  });
+
   it("closes on Escape", async () => {
     const user = userEvent.setup();
     render(<SiteHeader />);

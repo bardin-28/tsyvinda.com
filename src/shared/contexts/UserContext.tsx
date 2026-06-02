@@ -3,13 +3,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from 'react';
 
 import { API, ApiError } from '@/api';
+import { getProfile } from '@/api/profile';
 import { AUTH_COOKIES, deleteCookie, hasCookie } from '@/shared/lib/cookies';
 
 export type User = {
   id: string;
   email: string;
-  name?: string;
-  avatar?: string;
+  firstName: string;
+  lastName: string;
+  profileImageUrl: string | null;
+  emailVerified: boolean;
+  createdAt: string;
 };
 
 type UserContextValue = {
@@ -38,7 +42,7 @@ export function UserProvider({ children, initialUser = null }: UserProviderProps
     setError(null);
 
     try {
-      const data = await API.get<User>('/profile');
+      const data = await getProfile();
       setUser(data);
 
     } catch (e) {
