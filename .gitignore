@@ -23,6 +23,9 @@
 # production
 /build
 
+# seo audit output
+/seo-audit-output
+
 # misc
 .DS_Store
 *.pem

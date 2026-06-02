@@ -56,6 +56,23 @@ function sanitizeHtmlContent(raw: string): string {
     .replace(/\\\\/g, "\\");
 }
 
+// The page header already renders the canonical <h1> (post.title), but the
+// stored body markup often opens with its own <h1>, producing two H1s per
+// article. Shift every body heading down one level (h1→h2 … h5→h6) so the
+// page keeps a single H1 while preserving the body's relative hierarchy.
+// Process from h5 downward to avoid re-shifting headings on later passes.
+function demoteHeadings(html: string): string {
+  let result = html;
+  for (let level = 5; level >= 1; level -= 1) {
+    const open = new RegExp(`<h${level}(\\s|>|/)`, "gi");
+    const close = new RegExp(`</h${level}>`, "gi");
+    result = result
+      .replace(open, `<h${level + 1}$1`)
+      .replace(close, `</h${level + 1}>`);
+  }
+  return result;
+}
+
 export async function generateMetadata(
   { params }: ArticlePageProps
 ): Promise<Metadata> {
@@ -152,7 +169,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         <article
           className={styles.article}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtmlContent(post.htmlContent) }}
+          dangerouslySetInnerHTML={{ __html: demoteHeadings(sanitizeHtmlContent(post.htmlContent)) }}
         />
 
         <div className={styles.footer}>
