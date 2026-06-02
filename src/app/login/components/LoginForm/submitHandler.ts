@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { FormikHelpers } from "formik";
 
 import { ApiError } from "@/api";
@@ -13,19 +13,24 @@ type UseLoginSubmitOptions = {
   redirectTo?: string;
 };
 
-export function useLoginSubmit({ redirectTo = ROUTES.HOME }: UseLoginSubmitOptions = {}) {
+export function useLoginSubmit({ redirectTo }: UseLoginSubmitOptions = {}) {
   const router = useRouter();
-  const { setUser } = useUser();
+  const searchParams = useSearchParams();
+  const { refetch } = useUser();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const onSubmit = useCallback(
     async (values: LoginValues, helpers: FormikHelpers<LoginValues>) => {
       setSubmitError(null);
       try {
-        const user = await login(values);
+        await login(values);
 
-        setUser(user);
-        router.push(redirectTo);
+        // The login response is not the full profile shape; load the
+        // canonical user from GET /profile before navigating.
+        await refetch();
+
+        const target = redirectTo ?? searchParams.get("from") ?? ROUTES.PROFILE;
+        router.push(target);
       } catch (err) {
         if (err instanceof ApiError) {
           const data = err.data as { message?: string } | null;
@@ -37,7 +42,7 @@ export function useLoginSubmit({ redirectTo = ROUTES.HOME }: UseLoginSubmitOptio
         helpers.setSubmitting(false);
       }
     },
-    [redirectTo, router, setUser],
+    [redirectTo, router, searchParams, refetch],
   );
 
   return { onSubmit, submitError };

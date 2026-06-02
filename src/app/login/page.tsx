@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -64,7 +65,9 @@ export default function LoginPage() {
           </motion.p>
 
           <motion.div className={styles.card} variants={itemVariants}>
-            <LoginForm />
+            <Suspense fallback={null}>
+              <LoginForm />
+            </Suspense>
           </motion.div>
         </motion.section>
       </main>
