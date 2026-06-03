@@ -1,8 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { SOCIAL_NAV } from "@/shared/const";
 import styles from "./page.module.css";
+
+const LocationMap = dynamic(
+  () => import("./components/LocationMap/LocationMap"),
+  {
+    ssr: false,
+    loading: () => <div className={styles.mapPlaceholder} aria-hidden="true" />,
+  },
+);
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -47,9 +56,12 @@ export default function ContactsPage() {
             Let&rsquo;s <span className={styles.titleAccent}>work together</span>
           </h1>
           <p className={styles.lead}>
-            Open to new projects and collaboration. Reach me on any channel below
-            — I usually reply within a day.
+            Based in <span className={styles.titleAccent}>Kyiv, Ukraine</span>,
+            and work with teams across time zones. <br/>
+            Open to new projects and collaboration — reach me on any channel below
+            and I&rsquo;ll usually reply within a day.
           </p>
+          <LocationMap />
         </motion.section>
 
         <motion.ul

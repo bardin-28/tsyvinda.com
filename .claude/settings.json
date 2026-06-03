@@ -42,7 +42,8 @@
   "enabledPlugins": {
     "claude-code-setup@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "aws-agents@claude-plugins-official": false
+    "aws-agents@claude-plugins-official": false,
+    "claude-seo@agricidaniel-claude-seo": true
   },
   "sandbox": {
     "enabled": true
