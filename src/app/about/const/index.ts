@@ -12,6 +12,13 @@ export type StackGroup = {
   items: string[];
 };
 
+export type Recommendation = {
+  name: string;
+  role: string;
+  relation: string;
+  quote: string[];
+};
+
 export type Education = {
   school: string;
   degree: string;
@@ -93,6 +100,38 @@ export const EXPERIENCE: Role[] = [
       "Website integration to CMS WordPress.",
       "Website deployment to hosting.",
       "Supporting projects.",
+    ],
+  },
+];
+
+export const RECOMMENDATIONS: Recommendation[] = [
+  {
+    name: "Kateryna Shcherbak",
+    role: "Senior Project Manager · Tallium Inc.",
+    relation: "Managed Vladyslav directly · Jun 2026",
+    quote: [
+      "Working with Vladyslav over a 5-month project was a genuinely great experience. He's a highly skilled front-end developer who also led our team with confidence — proactively improving the product, committing to team success, and setting a strong example throughout.",
+      "What sets him apart is the balance he brings: he's ambitious and eager to learn, yet always grounded and analytical when it matters. He embraces new challenges without losing sight of what the project actually needs.",
+      "Strong technically, excellent soft skills, and a real team player. I'd recommend Vladyslav without hesitation.",
+    ],
+  },
+  {
+    name: "Artem Kazka",
+    role: "Senior Project Manager / Scrum Master · Tallium Inc.",
+    relation: "Managed Vladyslav directly · Feb 2026",
+    quote: [
+      "I had the pleasure of working with Vladyslav on a complex FinTech project, where he demonstrated strong professionalism and technical expertise as a Front-End Developer.",
+      "Vladyslav consistently proved himself to be a reliable and forward-thinking engineer. He approaches challenges thoughtfully and is always able to propose multiple solutions to a problem, carefully considering trade-offs and best outcomes. His ability to think ahead and anticipate potential issues significantly contributed to the stability of our product.",
+      "He is also highly adaptable and open to innovation. Whenever there was a need to adopt new technologies, Vladyslav proactively took the initiative and implemented them following industry best practices.",
+      "I would confidently recommend Vladyslav as a skilled, versatile, and growth-oriented Front-End Developer.",
+    ],
+  },
+  {
+    name: "Viktoriia Nekrasova",
+    role: "React Developer · Tallium Inc.",
+    relation: "Worked on the same team · Oct 2023",
+    quote: [
+      "I worked with Vladyslav on the project for six months and was impressed with his level of knowledge and skills. He quickly navigates through other people's code and helps you find things you didn't notice. He explains his decisions well and helps to solve problems. Best partner!",
     ],
   },
 ];
