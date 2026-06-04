@@ -28,6 +28,7 @@ const baseUser: User = {
   lastName: "Tsyvinda",
   profileImageUrl: null,
   emailVerified: true,
+  approvedByAdmin: true,
   createdAt: "2026-05-20T21:32:36.216Z",
 };
 
