@@ -11,7 +11,7 @@ import {
 } from "@/shared/lib/schemas";
 import { UserProvider } from "@/shared/contexts/UserContext";
 import { AntdProvider } from "@/shared/providers/AntdProvider";
-import { SiteHeader, SiteFooter } from "@/shared/components";
+import { SiteHeader, SiteFooter, ApprovalBanner } from "@/shared/components";
 import "./(home)/globals.css";
 
 const roboto = Roboto({
@@ -116,6 +116,7 @@ export default function RootLayout({
             <SiteHeader />
             {children}
             <SiteFooter />
+            <ApprovalBanner />
           </UserProvider>
         </AntdProvider>
         {GA_ID && (

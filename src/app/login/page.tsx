@@ -1,8 +1,11 @@
 "use client";
 
 import { Suspense } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
+
+import { ROUTES } from "@/shared/const";
 
 import { LoginForm } from "./components/LoginForm";
 import styles from "./page.module.css";
@@ -51,11 +54,6 @@ export default function LoginPage() {
           initial="hidden"
           animate="show"
         >
-          <motion.div className={styles.eyebrow} variants={itemVariants}>
-            <span className={styles.dot} aria-hidden="true" />
-            Welcome back
-          </motion.div>
-
           <motion.h1 className={styles.headline} variants={itemVariants}>
             Sign in
           </motion.h1>
@@ -68,6 +66,12 @@ export default function LoginPage() {
             <Suspense fallback={null}>
               <LoginForm />
             </Suspense>
+
+            <p className={styles.forgotRow}>
+              <Link href={ROUTES.RESET_PASSWORD} className={styles.forgotLink}>
+                Forgot your password?
+              </Link>
+            </p>
           </motion.div>
         </motion.section>
       </main>

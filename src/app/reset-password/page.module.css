@@ -179,23 +179,6 @@
   text-align: left;
 }
 
-.forgotRow {
-  margin: 16px 0 0;
-  text-align: center;
-  font-size: 0.85rem;
-}
-
-.forgotLink {
-  font-weight: 600;
-  color: #fd7e14;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-
-.forgotLink:hover {
-  opacity: 0.8;
-}
-
 @media (max-width: 640px) {
   .main {
     padding: 24px 20px 80px;

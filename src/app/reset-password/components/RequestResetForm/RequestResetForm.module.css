@@ -1,0 +1,90 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.fieldError {
+  font-size: 0.8rem;
+  color: #ff6b6b;
+}
+
+.submitError {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.25);
+}
+
+.submitBtn {
+  margin-top: 6px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.footer {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footerLink {
+  font-weight: 600;
+  color: #fd7e14;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footerLink:hover {
+  opacity: 0.8;
+}
+
+.successPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: center;
+}
+
+.successIcon {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: #fd7e14;
+  background: rgba(253, 126, 20, 0.12);
+  border: 1px solid rgba(253, 126, 20, 0.3);
+}
+
+.successTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.muted {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}

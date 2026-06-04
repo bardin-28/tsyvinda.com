@@ -13,6 +13,7 @@ export type User = {
   lastName: string;
   profileImageUrl: string | null;
   emailVerified: boolean;
+  approvedByAdmin: boolean;
   createdAt: string;
 };
 
