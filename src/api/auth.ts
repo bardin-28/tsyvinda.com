@@ -18,6 +18,33 @@ export type PasswordResetMessage = {
   message: string;
 };
 
+export type RegisterPayload = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+/**
+ * Register a new account. On success the backend emails a verification link and
+ * responds with 201 + a generic message — it does NOT establish a session, so
+ * the caller must not treat this as a login. Returns 409 when the email is
+ * already registered.
+ */
+export function register(payload: RegisterPayload): Promise<PasswordResetMessage> {
+  return API.post<PasswordResetMessage>('/auth/register', payload);
+}
+
+/**
+ * Confirm a newly registered email using the opaque token from the verification
+ * link (`/registration?token=…`). The backend validates the token and returns
+ * 400 when it is invalid, already used, or expired.
+ */
+export function confirmEmail(token: string): Promise<PasswordResetMessage> {
+  return API.post<PasswordResetMessage>('/auth/confirm-email', { token });
+}
+
 export type ResetPasswordPayload = {
   token: string;
   password: string;

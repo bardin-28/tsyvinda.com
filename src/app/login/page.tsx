@@ -72,6 +72,13 @@ export default function LoginPage() {
                 Forgot your password?
               </Link>
             </p>
+
+            <p className={styles.signupRow}>
+              Don&apos;t have an account?{" "}
+              <Link href={ROUTES.REGISTER} className={styles.forgotLink}>
+                Create one
+              </Link>
+            </p>
           </motion.div>
         </motion.section>
       </main>
