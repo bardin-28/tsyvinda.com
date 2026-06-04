@@ -1,0 +1,35 @@
+.banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  /* Above the fixed full-screen scenes and the footer (z-index up to 5). */
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: var(--accent-bg-2);
+  border-top: 1px solid var(--accent-soft-35);
+  box-shadow: 0 -8px 24px rgba(253, 126, 20, 0.18);
+}
+
+.text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .banner {
+    padding: 10px 14px;
+  }
+
+  .text {
+    font-size: 0.78rem;
+  }
+}

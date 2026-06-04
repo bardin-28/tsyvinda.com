@@ -5,6 +5,7 @@ export const ROUTES = {
   BLOG: "/blog",
   BLOG_COVER: "/blog/cover",
   LOGIN: "/login",
+  RESET_PASSWORD: "/reset-password",
   PROFILE: "/profile",
   blogPost: (slug: string) => `/blog/${slug}`,
 } as const;
@@ -16,5 +17,6 @@ export type Route =
   | "/blog"
   | "/blog/cover"
   | "/login"
+  | "/reset-password"
   | "/profile"
   | `/blog/${string}`;

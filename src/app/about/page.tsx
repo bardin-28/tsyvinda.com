@@ -12,6 +12,7 @@ import {
   EXPERIENCE,
   HEADLINE_WORDS,
   INDUSTRIES,
+  RECOMMENDATIONS,
   STACK,
   STATS,
 } from "./const";
@@ -214,6 +215,39 @@ export default function About() {
         >
           <motion.div className={styles.sectionHead} variants={itemVariants}>
             <span className={styles.sectionTag}>03</span>
+            <h2 className={styles.sectionTitle}>Recommendations</h2>
+            <p className={styles.sectionLede}>
+              What teammates and managers say about working with me.
+            </p>
+          </motion.div>
+
+          <motion.div className={styles.recGrid} variants={containerVariants}>
+            {RECOMMENDATIONS.map((rec) => (
+              <motion.figure key={rec.name} className={styles.recCard} variants={itemVariants}>
+                <blockquote className={styles.recQuote}>
+                  {rec.quote.map((para) => (
+                    <p key={para} className={styles.recPara}>{para}</p>
+                  ))}
+                </blockquote>
+                <figcaption className={styles.recFooter}>
+                  <span className={styles.recName}>{rec.name}</span>
+                  <span className={styles.recRole}>{rec.role}</span>
+                  <span className={styles.recRelation}>{rec.relation}</span>
+                </figcaption>
+              </motion.figure>
+            ))}
+          </motion.div>
+        </motion.section>
+
+        <motion.section
+          className={styles.section}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-15% 0px" }}
+          variants={containerVariants}
+        >
+          <motion.div className={styles.sectionHead} variants={itemVariants}>
+            <span className={styles.sectionTag}>04</span>
             <h2 className={styles.sectionTitle}>Education</h2>
             <p className={styles.sectionLede}>
               Formal background and active credentials.
