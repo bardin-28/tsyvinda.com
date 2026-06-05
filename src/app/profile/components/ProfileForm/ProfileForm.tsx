@@ -5,6 +5,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import { Input, Button, Spin, Upload, type InputRef } from "antd";
 
 import { useUser } from "@/shared/contexts/UserContext";
+import { useTurnstile } from "@/shared/turnstile";
 
 import styles from "./ProfileForm.module.css";
 import { initialValuesFromUser } from "./helpers";
@@ -36,12 +37,14 @@ export function ProfileForm() {
 
   const firstNameRef = useRef<InputRef>(null);
 
+  const { containerRef, execute } = useTurnstile();
   const { submitProfile, submitError, setSubmitError } = useProfileSubmit({
     onSuccess: () => {
       resetImageState();
       setIsEditing(false);
       setShowSuccess(true);
     },
+    verifyTurnstile: execute,
   });
 
   // Object URL preview for a freshly selected file; revoked on change/unmount.
@@ -291,6 +294,9 @@ export function ProfileForm() {
               Profile updated.
             </div>
           )}
+
+          {/* Invisible Cloudflare Turnstile widget; runs on save. */}
+          <div ref={containerRef} className={styles.turnstile} />
 
           <div className={styles.actions}>
             {isEditing ? (

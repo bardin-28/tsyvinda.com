@@ -3,6 +3,8 @@
 import { Formik, Form, Field, FieldProps } from "formik";
 import { Input, Button } from "antd";
 
+import { useTurnstile } from "@/shared/turnstile";
+
 import styles from "./LoginForm.module.css";
 import { initialValues, validate } from "./validation";
 import { useLoginSubmit } from "./submitHandler";
@@ -12,7 +14,11 @@ type LoginFormProps = {
 };
 
 export function LoginForm({ redirectTo }: LoginFormProps = {}) {
-  const { onSubmit, submitError } = useLoginSubmit({ redirectTo });
+  const { containerRef, execute } = useTurnstile();
+  const { onSubmit, submitError } = useLoginSubmit({
+    redirectTo,
+    verifyTurnstile: execute,
+  });
 
   return (
     <Formik
@@ -72,6 +78,9 @@ export function LoginForm({ redirectTo }: LoginFormProps = {}) {
               {submitError}
             </div>
           )}
+
+          {/* Invisible Cloudflare Turnstile widget; runs on submit. */}
+          <div ref={containerRef} className={styles.turnstile} />
 
           <Button
             type="primary"

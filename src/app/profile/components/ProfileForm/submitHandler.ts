@@ -16,9 +16,11 @@ export type ImageAction =
 
 type UseProfileSubmitOptions = {
   onSuccess: () => void;
+  // Runs the Turnstile challenge and resolves the verification token.
+  verifyTurnstile: () => Promise<string>;
 };
 
-export function useProfileSubmit({ onSuccess }: UseProfileSubmitOptions) {
+export function useProfileSubmit({ onSuccess, verifyTurnstile }: UseProfileSubmitOptions) {
   const { setUser } = useUser();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -29,6 +31,15 @@ export function useProfileSubmit({ onSuccess }: UseProfileSubmitOptions) {
       helpers: FormikHelpers<ProfileValues>,
     ) => {
       setSubmitError(null);
+
+      let turnstileToken: string;
+      try {
+        turnstileToken = await verifyTurnstile();
+      } catch {
+        setSubmitError("Verification failed. Please try again.");
+        helpers.setSubmitting(false);
+        return;
+      }
 
       try {
         const form = new FormData();
@@ -41,7 +52,7 @@ export function useProfileSubmit({ onSuccess }: UseProfileSubmitOptions) {
           form.append("removeImage", "true");
         }
 
-        const updated = await updateProfile(form);
+        const updated = await updateProfile(form, turnstileToken);
         setUser(updated);
         onSuccess();
       } catch (err) {
@@ -55,7 +66,7 @@ export function useProfileSubmit({ onSuccess }: UseProfileSubmitOptions) {
         helpers.setSubmitting(false);
       }
     },
-    [onSuccess, setUser],
+    [onSuccess, setUser, verifyTurnstile],
   );
 
   return { submitProfile, submitError, setSubmitError };

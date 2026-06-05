@@ -15,6 +15,17 @@ jest.mock("@/api/profile", () => ({
   updateProfile: jest.fn(),
 }));
 
+// Stub Turnstile so saving submits with an empty token and never loads the real
+// Cloudflare script.
+jest.mock("@/shared/turnstile", () => ({
+  useTurnstile: () => ({
+    containerRef: { current: null },
+    execute: () => Promise.resolve(""),
+    reset: () => {},
+    isEnabled: false,
+  }),
+}));
+
 const useUserMock = useUser as jest.MockedFunction<typeof useUser>;
 const updateProfileMock = updateProfile as jest.MockedFunction<typeof updateProfile>;
 

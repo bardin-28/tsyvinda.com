@@ -88,3 +88,13 @@
   color: rgba(255, 255, 255, 0.7);
   margin: 0;
 }
+
+/* Invisible Turnstile container: kept in the DOM but out of layout flow so it
+   adds no spacing. Cloudflare renders any interactive challenge as its own
+   overlay. */
+.turnstile {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}

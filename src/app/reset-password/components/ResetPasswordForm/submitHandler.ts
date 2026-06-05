@@ -23,9 +23,14 @@ export const REDIRECT_DELAY_MS = 2000;
 
 type UseResetPasswordSubmitOptions = {
   token: string;
+  // Runs the Turnstile challenge and resolves the verification token.
+  verifyTurnstile: () => Promise<string>;
 };
 
-export function useResetPasswordSubmit({ token }: UseResetPasswordSubmitOptions) {
+export function useResetPasswordSubmit({
+  token,
+  verifyTurnstile,
+}: UseResetPasswordSubmitOptions) {
   const router = useRouter();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,12 +49,25 @@ export function useResetPasswordSubmit({ token }: UseResetPasswordSubmitOptions)
       helpers: FormikHelpers<ResetPasswordValues>,
     ) => {
       setSubmitError(null);
+
+      let turnstileToken: string;
       try {
-        await resetPassword({
-          token,
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-        });
+        turnstileToken = await verifyTurnstile();
+      } catch {
+        setSubmitError("Verification failed. Please try again.");
+        helpers.setSubmitting(false);
+        return;
+      }
+
+      try {
+        await resetPassword(
+          {
+            token,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+          },
+          turnstileToken,
+        );
         setIsSubmitted(true);
       } catch (err) {
         if (err instanceof ApiError) {
@@ -64,7 +82,7 @@ export function useResetPasswordSubmit({ token }: UseResetPasswordSubmitOptions)
         helpers.setSubmitting(false);
       }
     },
-    [token],
+    [token, verifyTurnstile],
   );
 
   return { onSubmit, submitError, isSubmitted };

@@ -10,6 +10,17 @@ jest.mock("@/api/auth", () => ({
   requestPasswordReset: jest.fn(),
 }));
 
+// Stub Turnstile so the form submits with an empty token and never loads the
+// real Cloudflare script.
+jest.mock("@/shared/turnstile", () => ({
+  useTurnstile: () => ({
+    containerRef: { current: null },
+    execute: () => Promise.resolve(""),
+    reset: () => {},
+    isEnabled: false,
+  }),
+}));
+
 const requestPasswordResetMock = requestPasswordReset as jest.MockedFunction<
   typeof requestPasswordReset
 >;
@@ -39,7 +50,7 @@ describe("RequestResetForm", () => {
     await user.click(screen.getByRole("button", { name: /send reset link/i }));
 
     await waitFor(() =>
-      expect(requestPasswordResetMock).toHaveBeenCalledWith("user@example.com"),
+      expect(requestPasswordResetMock).toHaveBeenCalledWith("user@example.com", ""),
     );
     expect(await screen.findByText(/check your inbox/i)).toBeInTheDocument();
     expect(
