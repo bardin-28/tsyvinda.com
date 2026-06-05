@@ -20,6 +20,18 @@ _Provide list of planned decisions with short description_
 
 - **{Short decision name}** — {Brief description of the decision}
 
+---
+
+## API Endpoints
+
+_Table of planned API endpoints with short description. Skip this section if no API endpoints was planned_
+
+| Method   | Endpoint          | Description            |
+|----------|-------------------|------------------------|
+| {Method} | `{endpoint path}` | {Endpoint description} |
+
+---
+
 ## Implementation Checklist
 
 ### {Checkbox mark for phase status} Phase {Phase number} — {Brief description of the phase}

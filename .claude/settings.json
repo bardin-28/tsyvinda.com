@@ -9,6 +9,7 @@
       "Bash(npm test *)",
       "Bash(git status)",
       "Bash(git diff *)",
+      "Bash(rtk git diff *)",
       "Bash(git add *)",
       "Bash(rtk ls *)",
       "Bash(rtk read *)",
