@@ -5,6 +5,7 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import { Input, Button } from "antd";
 
 import { ROUTES } from "@/shared/const";
+import { useTurnstile } from "@/shared/turnstile";
 
 import styles from "./ResetPasswordForm.module.css";
 import { initialValues, validate } from "./validation";
@@ -15,8 +16,10 @@ type ResetPasswordFormProps = {
 };
 
 export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
+  const { containerRef, execute } = useTurnstile();
   const { onSubmit, submitError, isSubmitted } = useResetPasswordSubmit({
     token,
+    verifyTurnstile: execute,
   });
 
   // Guard malformed/empty tokens before showing the form. The backend still
@@ -152,6 +155,9 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
               {submitError}
             </div>
           )}
+
+          {/* Invisible Cloudflare Turnstile widget; runs on submit. */}
+          <div ref={containerRef} className={styles.turnstile} />
 
           <Button
             type="primary"

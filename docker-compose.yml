@@ -60,6 +60,7 @@ services:
       context: .
       args:
         - API_URL=${API_URL}
+        - NEXT_PUBLIC_TURNSTILE_SITE_KEY=${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
     hostname: ${COMPOSE_PROJECT_NAME}-fe-app
     environment:
       - VIRTUAL_HOST=${FRONTEND_HOST}

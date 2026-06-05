@@ -11,9 +11,11 @@ import type { LoginValues } from "./validation";
 
 type UseLoginSubmitOptions = {
   redirectTo?: string;
+  // Runs the Turnstile challenge and resolves the verification token.
+  verifyTurnstile: () => Promise<string>;
 };
 
-export function useLoginSubmit({ redirectTo }: UseLoginSubmitOptions = {}) {
+export function useLoginSubmit({ redirectTo, verifyTurnstile }: UseLoginSubmitOptions) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { refetch } = useUser();
@@ -22,8 +24,18 @@ export function useLoginSubmit({ redirectTo }: UseLoginSubmitOptions = {}) {
   const onSubmit = useCallback(
     async (values: LoginValues, helpers: FormikHelpers<LoginValues>) => {
       setSubmitError(null);
+
+      let turnstileToken: string;
       try {
-        await login(values);
+        turnstileToken = await verifyTurnstile();
+      } catch {
+        setSubmitError("Verification failed. Please try again.");
+        helpers.setSubmitting(false);
+        return;
+      }
+
+      try {
+        await login(values, turnstileToken);
 
         // The login response is not the full profile shape; load the
         // canonical user from GET /profile before navigating.
@@ -42,7 +54,7 @@ export function useLoginSubmit({ redirectTo }: UseLoginSubmitOptions = {}) {
         helpers.setSubmitting(false);
       }
     },
-    [redirectTo, router, searchParams, refetch],
+    [redirectTo, router, searchParams, refetch, verifyTurnstile],
   );
 
   return { onSubmit, submitError };

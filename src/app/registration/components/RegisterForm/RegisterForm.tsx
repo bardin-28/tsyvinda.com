@@ -5,13 +5,17 @@ import { Formik, Form, Field, FieldProps } from "formik";
 import { Input, Button } from "antd";
 
 import { ROUTES } from "@/shared/const";
+import { useTurnstile } from "@/shared/turnstile";
 
 import styles from "./RegisterForm.module.css";
 import { initialValues, validate } from "./validation";
 import { useRegisterSubmit } from "./submitHandler";
 
 export function RegisterForm() {
-  const { onSubmit, submitError, isSubmitted } = useRegisterSubmit();
+  const { containerRef, execute } = useTurnstile();
+  const { onSubmit, submitError, isSubmitted } = useRegisterSubmit({
+    verifyTurnstile: execute,
+  });
 
   if (isSubmitted) {
     return (
@@ -180,6 +184,9 @@ export function RegisterForm() {
               {submitError}
             </div>
           )}
+
+          {/* Invisible Cloudflare Turnstile widget; runs on submit. */}
+          <div ref={containerRef} className={styles.turnstile} />
 
           <Button
             type="primary"

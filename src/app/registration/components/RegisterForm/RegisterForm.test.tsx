@@ -10,6 +10,17 @@ jest.mock("@/api/auth", () => ({
   register: jest.fn(),
 }));
 
+// Stub Turnstile so the form submits with an empty token and never loads the
+// real Cloudflare script.
+jest.mock("@/shared/turnstile", () => ({
+  useTurnstile: () => ({
+    containerRef: { current: null },
+    execute: () => Promise.resolve(""),
+    reset: () => {},
+    isEnabled: false,
+  }),
+}));
+
 const registerMock = register as jest.MockedFunction<typeof register>;
 
 async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
@@ -70,13 +81,16 @@ describe("RegisterForm", () => {
     await user.click(screen.getByRole("button", { name: /create account/i }));
 
     await waitFor(() =>
-      expect(registerMock).toHaveBeenCalledWith({
-        firstName: "Ada",
-        lastName: "Lovelace",
-        email: "ada@example.com",
-        password: "Sup3rSecret",
-        confirmPassword: "Sup3rSecret",
-      }),
+      expect(registerMock).toHaveBeenCalledWith(
+        {
+          firstName: "Ada",
+          lastName: "Lovelace",
+          email: "ada@example.com",
+          password: "Sup3rSecret",
+          confirmPassword: "Sup3rSecret",
+        },
+        "",
+      ),
     );
     expect(await screen.findByText(/check your inbox/i)).toBeInTheDocument();
   });
