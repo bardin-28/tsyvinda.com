@@ -3,8 +3,6 @@ import { Roboto } from "next/font/google";
 import Script from "next/script";
 import { DESCRIPTION, KEYWORDS, NAME, SITE_URL } from "@/shared/lib/site";
 import {
-  homeBreadcrumbSchema,
-  homePageSchema,
   personSchema,
   siteNavigationSchema,
   websiteSchema,
@@ -100,14 +98,6 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(homeBreadcrumbSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageSchema) }}
         />
       </head>
       <body>
