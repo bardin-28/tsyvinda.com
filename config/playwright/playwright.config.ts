@@ -28,9 +28,12 @@ const KEYED_BASE_URL = `http://localhost:${KEYED_PORT}`;
 const KEYED_DIST_DIR = ".next-e2e";
 const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
 
-// In CI the workflow runs `npm run build` as its own step, so the server only
-// needs `npm run start` (build reused). Locally, build on demand before serving.
-const webServerCommand = IS_CI ? "npm run start" : "npm run build && npm run start";
+// Always build here (not just `next start`) so the build runs with the mock
+// backend already up and API_URL pointed at it. The /blog list is statically
+// prerendered at build time, so reusing a build made without the mock would
+// bake an empty list. The workflow's separate `npm run build` stays as a build
+// sanity check; this is the build the e2e run actually serves.
+const webServerCommand = "npm run build && npm run start";
 
 export default defineConfig({
   testDir: "../../e2e",

@@ -43,9 +43,9 @@ jobs:
       - name: Unit tests
         run: npm test
 
-      # Keyless production build reused by the default e2e server (the Playwright
-      # config runs `npm run start` in CI instead of rebuilding). The Turnstile
-      # project builds its own keyed output (.next-e2e) during the e2e step.
+      # Build sanity check (keyless). The e2e step rebuilds against the mock
+      # backend itself, since the statically prerendered /blog list must be
+      # built with API_URL pointed at the mock.
       - name: Build
         run: npm run build
         env:
