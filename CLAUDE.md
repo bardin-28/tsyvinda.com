@@ -16,7 +16,7 @@ npm run dev:https        # next dev on https://local.tsyvinda.com:443 (needs ./c
 npm run build            # next build (incremental: tsconfig.tsbuildinfo)
 npm run start            # serve the production build
 npm run lint             # eslint (flat config, next/core-web-vitals + next/typescript)
-npm test                 # jest --config config/jest.config.ts
+npm test                 # jest --config config/jest/jest.config.ts
 npm run test:watch
 npm run test:ci          # writes /coverage
 npm run storybook        # storybook dev on :6006, config dir config/storybook
@@ -29,7 +29,7 @@ File-name conventions are enforced by config, **not** convention alone:
 - Tests: `src/**/*.test.{ts,tsx}` — anything else is invisible to Jest.
 - Stories: `src/**/*.stories.@(ts|tsx|mdx)` — anything else is invisible to Storybook.
 
-Tooling configuration lives under `config/`, not the repo root. `npm test` passes `--config config/jest.config.ts`; bare `jest` will not find it. Storybook reads `config/storybook/{main,preview}.ts` via the `-c config/storybook` flag in the npm scripts — there is **no** `.storybook/` directory; do not run `npx storybook init` without `--config-dir config/storybook` or it will create one.
+Tooling configuration lives under `config/`, each tool in its own subfolder: `config/jest/{jest.config.ts,jest.setup.ts}`, `config/playwright/{playwright.config.ts,tsconfig.e2e.json}`, `config/storybook/{main,preview}.ts`. `npm test` passes `--config config/jest/jest.config.ts`; bare `jest` will not find it. `npm run test:e2e` passes `-c config/playwright/playwright.config.ts`. Storybook reads `config/storybook` via the `-c config/storybook` flag in the npm scripts — there is **no** `.storybook/` directory; do not run `npx storybook init` without `--config-dir config/storybook` or it will create one.
 
 Path alias: `@/*` → `./src/*` (set in `tsconfig.json`; mirrored in Jest `moduleNameMapper`).
 
@@ -93,7 +93,7 @@ Page-local data/copy lives in `const/`; route-only components in `components/`. 
 
 ## Deployment
 
-Containerised via root `Dockerfile` (`node:lts`, `npm install`, `next build`, `npm start` on port 3000). `docker-compose.yml` runs the app behind `nginxproxy/nginx-proxy` + `acme-companion` for Let's Encrypt TLS; auxiliary nginx config lives under `docker/nginx-proxy/`. Compose env vars are documented in `.env.example`.
+Containerised via root `Dockerfile` (`node:lts`, `npm install`, `next build`, `npm start` on port 3000). `compose.yaml` runs the app behind `nginxproxy/nginx-proxy` + `acme-companion` for Let's Encrypt TLS; auxiliary nginx config lives under `docker/nginx-proxy/`. Compose env vars are documented in `.env.example`.
 
 ## Important Notes
 
