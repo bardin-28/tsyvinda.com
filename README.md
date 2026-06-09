@@ -1,35 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# tsyvinda.com
 
-## Getting Started
+Personal website for Vladyslav Tsyvinda — [tsyvinda.com](https://tsyvinda.com).
 
-First, run the development server:
+Public routes: `/` (intro hero), `/about` (bio/stack/experience), `/contacts`,
+`/blog` (+ `/blog/[slug]` articles). Authenticated area: `/login`, `/registration`,
+`/reset-password`, `/profile`. Auth talks to a separate backend through a Next
+rewrite proxy.
+
+## Stack
+
+- **Next.js 16** (App Router) + **React 19** + **TypeScript**
+- Styling: per-route **CSS Modules** + one `globals.css` (no Tailwind)
+- Animations: `framer-motion` · 3D: raw `three` (`THREE.WebGLRenderer`)
+- Forms: `formik` + `zod` · UI primitives: `antd ^6` (dark theme)
+- Bot protection: Cloudflare **Turnstile** (invisible) on auth forms
+- Unit tests: **Jest 30** + Testing Library (jsdom) · E2E: **Playwright**
+- Component workshop: **Storybook 10**
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For end-to-end auth testing (HttpOnly `Secure` cookies need HTTPS):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev:https    # https://local.tsyvinda.com:443
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Needs `./certs/local.tsyvinda.com{,-key}.pem`.
 
-## Learn More
+## Commands
 
-To learn more about Next.js, take a look at the following resources:
+| Command | What |
+| --- | --- |
+| `npm run dev` | Dev server on :3000 |
+| `npm run dev:https` | Dev server on https://local.tsyvinda.com:443 |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint (flat config) |
+| `npm test` | Jest unit tests (`config/jest/jest.config.ts`) |
+| `npm run test:watch` | Jest watch mode |
+| `npm run test:ci` | Jest with coverage → `/coverage` |
+| `npm run test:e2e` | Playwright e2e (`config/playwright/playwright.config.ts`) |
+| `npm run test:e2e:ui` | Playwright UI mode |
+| `npm run test:e2e:report` | Open the last Playwright HTML report |
+| `npm run storybook` | Storybook on :6006 |
+| `npm run build-storybook` | Static Storybook → `/storybook-static` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project layout
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  app/             App Router routes (route groups, per-route components/ + const/)
+  shared/          api client, contexts, providers, const, cross-page components
+  api/             typed backend calls (posts, auth, profile)
+  proxy.ts         middleware gating /profile and /blog/cover on a session cookie
+config/
+  jest/            jest.config.ts  jest.setup.ts
+  playwright/      playwright.config.ts  tsconfig.e2e.json
+  storybook/       main.ts  preview.tsx
+e2e/               Playwright specs, fixtures, mock backend (see e2e/README.md)
+docs/              plans/ and reports/
+```
 
-## API Client
+Path alias: `@/*` → `./src/*`.
+
+## Testing
+
+- **Unit** — `src/**/*.test.{ts,tsx}`, run with `npm test`.
+- **E2E** — Playwright suite under `e2e/`, run with `npm run test:e2e`. Runs
+  against a production build with a mocked backend (no live API). Covers public
+  nav + content, blog rendering, login flow, and the Turnstile-protected submit
+  path. Details in [`e2e/README.md`](./e2e/README.md).
+
+## API client
 
 Lightweight `fetch` wrapper at `src/api/index.ts`. Cookie-based auth (`credentials: 'include'`). Auto JSON serialize/parse, query params, `ApiError` on non-2xx, single 401 retry via `/auth/refresh`.
 
@@ -87,11 +134,32 @@ Behavior:
 - `X-Timezone` header auto-set from `Intl.DateTimeFormat`.
 - JSON body auto-serialized; `Content-Type: application/json` set unless body is `FormData` / `Blob` / `string`.
 - Response auto-parsed: JSON when `Content-Type` includes `application/json`, otherwise text.
-- 401 → calls `GET /auth/refresh` once, retries original request. Second 401 throws.
+- 401 → calls `GET /auth/refresh` once (only when `has_session` is present), retries original request. Second 401 throws.
 - Non-2xx throws `ApiError { status, data }`.
 
-## Deploy on Vercel
+## Auth & API proxy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`next.config.ts` rewrites `/api/:path*` → `${API_URL}/:path*` (default
+`http://localhost:4000`); frontend code always calls relative `/api/…`. Auth is
+cookie-based: the backend sets `access` + `refresh` (HttpOnly) and `has_session`
+(JS-readable). Only `has_session` is observable client-side.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Environment
+
+| Var | Purpose |
+| --- | --- |
+| `API_URL` | Backend origin for the `/api` proxy (default `http://localhost:4000`) |
+| `GA_ID` | Google Analytics measurement ID (GA skipped if unset) |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (forms run keyless if empty) |
+
+`.env.example` is committed; `.env.local` / `.env.production` are gitignored.
+
+## Deployment
+
+Containerised via the root `Dockerfile` (`node:lts`, `npm install`, `next build`,
+`npm start` on port 3000). `compose.yaml` runs the app behind
+`nginxproxy/nginx-proxy` + `acme-companion` for Let's Encrypt TLS.
+
+CI (`.github/workflows/deploy.yml`): a `test` job runs lint → unit → build → e2e
+on every PR and on push to `main`; the `deploy` job (`needs: test`) runs the SSH
+deploy only after the gate passes on a push to `main`.
