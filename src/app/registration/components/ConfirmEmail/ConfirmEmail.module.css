@@ -11,7 +11,7 @@
   height: 40px;
   border-radius: 50%;
   border: 3px solid rgba(253, 126, 20, 0.2);
-  border-top-color: #fd7e14;
+  border-top-color: var(--accent);
   animation: spin 0.8s linear infinite;
 }
 
@@ -27,7 +27,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  color: #fd7e14;
+  color: var(--accent);
   background: rgba(253, 126, 20, 0.12);
   border: 1px solid rgba(253, 126, 20, 0.3);
 }
@@ -40,7 +40,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  color: #ff6b6b;
+  color: var(--error-text);
   background: rgba(255, 107, 107, 0.1);
   border: 1px solid rgba(255, 107, 107, 0.3);
 }
@@ -49,7 +49,7 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .muted {
@@ -68,7 +68,7 @@
 
 .footerLink {
   font-weight: 600;
-  color: #fd7e14;
+  color: var(--accent);
   text-decoration: none;
   transition: opacity 0.2s ease;
 }

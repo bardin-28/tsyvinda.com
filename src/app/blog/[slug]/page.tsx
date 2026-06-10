@@ -112,10 +112,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       <main className={styles.main}>
         <header className={styles.header}>
-          <span className={styles.eyebrow}>
-            <span className={styles.dot} aria-hidden="true" />
-            Article
-          </span>
           <h1 className={styles.title}>{post.title}</h1>
           {post.description && <p className={styles.description}>{post.description}</p>}
 

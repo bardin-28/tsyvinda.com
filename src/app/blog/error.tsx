@@ -23,10 +23,6 @@ export default function BlogError({ error, reset }: BlogErrorProps) {
 
       <main className={styles.main}>
         <section className={styles.hero}>
-          <span className={styles.eyebrow}>
-            <span className={styles.dot} aria-hidden="true" />
-            Blog
-          </span>
           <h1 className={styles.title}>
             Couldn&apos;t load <span className={styles.titleAccent}>the blog</span>
           </h1>

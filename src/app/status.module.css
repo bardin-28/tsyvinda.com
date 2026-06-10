@@ -1,3 +1,4 @@
+/* Shared layout for the root not-found (404) and error boundaries. */
 .page {
   position: relative;
   min-height: 100vh;
@@ -29,6 +30,7 @@
   background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
   top: -20%;
   left: -18%;
+  animation-delay: 0s;
   animation-name: blobFadeIn, drift1;
   animation-duration: 1.4s, 14s;
   animation-fill-mode: forwards, none;
@@ -101,63 +103,115 @@
 .main {
   position: relative;
   z-index: 20;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 32px 32px 120px;
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
-}
-
-.heroWrap {
-  flex: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 560px;
-  width: 100%;
-  margin: 0 auto;
+  text-align: center;
   gap: 18px;
-  padding: 32px 0;
 }
 
-.headline {
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+.code {
   margin: 0;
-  text-align: center;
+  font-size: clamp(5rem, 18vw, 9rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
   color: var(--accent);
 }
 
-.lead {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.7);
+.headline {
   margin: 0;
-  max-width: 420px;
-  text-align: center;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
 }
 
-.card {
-  width: 100%;
-  margin-top: 12px;
-  padding: 32px;
+.lead {
+  margin: 0;
+  max-width: 420px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 100px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--on-accent);
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 8px 30px var(--accent-soft-40);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+  background: var(--accent-strong);
+  box-shadow: 0 12px 38px var(--accent-soft-55);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--on-accent);
+  outline-offset: 3px;
+}
+
+.buttonGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 100px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-strong);
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.buttonGhost:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-soft-30);
+  background: var(--accent-bg-1);
+}
+
+.buttonGhost:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.digest {
+  margin: 8px 0 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.75rem;
+  color: var(--text-faint);
 }
 
 @media (max-width: 640px) {
   .main {
-    padding: 24px 20px 80px;
-  }
-
-  .card {
-    padding: 24px;
+    padding: 24px 20px;
   }
 }

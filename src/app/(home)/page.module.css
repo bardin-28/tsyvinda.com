@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #080810;
+  background: var(--bg-base);
 }
 
 .blobs {
@@ -27,7 +27,7 @@
 .blob1 {
   width: 700px;
   height: 700px;
-  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
   top: -20%;
   left: -15%;
   animation-delay: 0s;
@@ -42,7 +42,7 @@
 .blob2 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
   bottom: -15%;
   right: -10%;
   animation-delay: 0.2s;
@@ -57,7 +57,7 @@
 .blob3 {
   width: 450px;
   height: 450px;
-  background: radial-gradient(circle, #fd7e14 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
   top: 50%;
   left: 55%;
   transform: translate(-50%, -50%);
@@ -129,7 +129,7 @@
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1.05;
-  color: #ffffff;
+  color: var(--text-strong);
   font-family: var(--font-roboto), system-ui, sans-serif;
 }
 
@@ -148,25 +148,8 @@
   border-radius: 100px;
 }
 
-.roleDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #fd7e14;
-  box-shadow: 0 0 10px #fd7e14;
-  animation: rolePulse 2s ease-in-out infinite;
-}
-
-@keyframes rolePulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0.6; }
-}
-
 .roleText {
-  background: linear-gradient(135deg, #fd7e14 0%, #ec4899 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent);
   font-weight: 700;
 }
 
@@ -192,8 +175,8 @@
   font-size: 0.98rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: #ffffff;
-  background: #fd7e14;
+  color: var(--on-accent);
+  background: var(--accent);
   text-decoration: none;
   box-shadow: 0 8px 30px rgba(253, 126, 20, 0.4);
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -201,12 +184,12 @@
 
 .ctaButton:hover {
   transform: translateY(-3px);
-  background: #ff8c2b;
+  background: var(--accent-strong);
   box-shadow: 0 12px 38px rgba(253, 126, 20, 0.55);
 }
 
 .ctaButton:focus-visible {
-  outline: 2px solid #ffffff;
+  outline: 2px solid var(--on-accent);
   outline-offset: 3px;
 }
 

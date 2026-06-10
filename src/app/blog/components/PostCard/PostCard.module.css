@@ -18,7 +18,7 @@
 }
 
 .card:focus-visible {
-  outline: 2px solid #fd7e14;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--accent-bg-2), #1b1b2e);
+  background: linear-gradient(135deg, var(--accent-bg-2), var(--surface-cool));
   color: rgba(255, 255, 255, 0.4);
   font-size: 0.85rem;
   letter-spacing: 0.04em;
@@ -65,7 +65,7 @@
   font-size: 1.15rem;
   line-height: 1.35;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-strong);
   letter-spacing: -0.01em;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -113,7 +113,7 @@
   font-size: 0.7rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
-  background: linear-gradient(135deg, #c2410c, #9d174d);
+  background: linear-gradient(135deg, var(--accent-deep), var(--accent-pink-deep));
 }
 
 .authorName {

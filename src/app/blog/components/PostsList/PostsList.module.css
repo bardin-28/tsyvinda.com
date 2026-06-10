@@ -88,7 +88,7 @@
   height: 18px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.15);
-  border-top-color: #fd7e14;
+  border-top-color: var(--accent);
   animation: spin 0.85s linear infinite;
 }
 
@@ -113,7 +113,7 @@
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .emptyText {
@@ -131,7 +131,7 @@
   padding: 40px 24px;
   text-align: center;
   background: var(--error-bg);
-  border: 1px solid #3d1214;
+  border: 1px solid var(--error-border);
   border-radius: 20px;
   color: rgba(255, 255, 255, 0.78);
 }
@@ -142,8 +142,8 @@
   gap: 8px;
   padding: 10px 20px;
   border-radius: 100px;
-  background: #fd7e14;
-  color: #ffffff;
+  background: var(--accent);
+  color: var(--on-accent);
   font-size: 0.88rem;
   font-weight: 600;
   border: none;

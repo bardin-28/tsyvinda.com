@@ -38,7 +38,7 @@
 }
 
 .brand:hover {
-  color: #ffffff;
+  color: var(--text-strong);
   border-color: rgba(253, 126, 20, 0.5);
   transform: translateY(-1px);
 }
@@ -46,7 +46,7 @@
 .brandLogo {
   height: 18px;
   width: auto;
-  color: #fd7e14;
+  color: var(--accent);
   filter: drop-shadow(0 0 8px rgba(253, 126, 20, 0.45));
   flex-shrink: 0;
 }
@@ -83,7 +83,7 @@
 }
 
 .trigger:focus-visible {
-  outline: 2px solid #fd7e14;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -175,18 +175,18 @@
 
 .item:hover,
 .authAction:hover {
-  color: #ffffff;
+  color: var(--text-strong);
   background: rgba(255, 255, 255, 0.06);
 }
 
 .item:focus-visible,
 .authAction:focus-visible {
-  outline: 2px solid #fd7e14;
+  outline: 2px solid var(--accent);
   outline-offset: -2px;
 }
 
 .itemActive {
-  color: #ffffff;
+  color: var(--text-strong);
   background: rgba(253, 126, 20, 0.14);
   border-color: rgba(253, 126, 20, 0.35);
 }
@@ -196,7 +196,7 @@
   opacity: 0;
   transform: translateX(-6px);
   transition: opacity 0.2s ease, transform 0.2s ease;
-  color: #fd7e14;
+  color: var(--accent);
 }
 
 .item:hover .itemArrow,
@@ -224,7 +224,7 @@
 }
 
 .authAction svg {
-  color: #fd7e14;
+  color: var(--accent);
 }
 
 @media (max-width: 640px) {

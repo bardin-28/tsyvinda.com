@@ -72,7 +72,6 @@ export default function Home() {
           initial="hidden"
           animate="show"
         >
-          <span className={styles.roleDot} aria-hidden="true" />
           <span className={styles.roleText}>{ROLE_PRIMARY}</span>
           <span className={styles.roleDivider} aria-hidden="true">·</span>
           <span className={styles.roleSub}>{ROLE_SECONDARY}</span>

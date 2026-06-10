@@ -19,14 +19,14 @@
 
 .fieldError {
   font-size: 0.8rem;
-  color: #ff6b6b;
+  color: var(--error-text);
 }
 
 .submitError {
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 0.85rem;
-  color: #ff6b6b;
+  color: var(--error-text);
   background: rgba(255, 107, 107, 0.08);
   border: 1px solid rgba(255, 107, 107, 0.25);
 }
@@ -46,7 +46,7 @@
 
 .footerLink {
   font-weight: 600;
-  color: #fd7e14;
+  color: var(--accent);
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
@@ -70,7 +70,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  color: #fd7e14;
+  color: var(--accent);
   background: rgba(253, 126, 20, 0.12);
   border: 1px solid rgba(253, 126, 20, 0.3);
 }
@@ -79,7 +79,7 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .muted {

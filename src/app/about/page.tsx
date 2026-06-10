@@ -14,7 +14,6 @@ import {
   INDUSTRIES,
   RECOMMENDATIONS,
   STACK,
-  STATS,
 } from "./const";
 
 const AboutScene = dynamic(() => import("@/app/about/components/AboutScene/AboutScene"), { ssr: false });
@@ -71,11 +70,6 @@ export default function About() {
             initial="hidden"
             animate="show"
           >
-            <motion.div className={styles.eyebrow} variants={itemVariants}>
-              <span className={styles.dot} aria-hidden="true" />
-              About me
-            </motion.div>
-
             <motion.h1 className={styles.headline} variants={containerVariants}>
               {HEADLINE_WORDS.map((word) => (
                 <motion.span key={word} className={styles.headlineWord} variants={wordVariants}>
@@ -96,15 +90,6 @@ export default function About() {
                 <motion.span key={industry} className={styles.industry} variants={itemVariants}>
                   {industry}
                 </motion.span>
-              ))}
-            </motion.div>
-
-            <motion.div className={styles.stats} variants={containerVariants}>
-              {STATS.map((stat) => (
-                <motion.div key={stat.label} className={styles.stat} variants={itemVariants}>
-                  <span className={styles.statNumber}>{stat.number}</span>
-                  <span className={styles.statLabel}>{stat.label}</span>
-                </motion.div>
               ))}
             </motion.div>
           </motion.div>

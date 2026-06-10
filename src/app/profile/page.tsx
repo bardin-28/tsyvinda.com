@@ -50,11 +50,6 @@ export default function ProfilePage() {
           initial="hidden"
           animate="show"
         >
-          <motion.div className={styles.eyebrow} variants={itemVariants}>
-            <span className={styles.dot} aria-hidden="true" />
-            Your account
-          </motion.div>
-
           <motion.h1 className={styles.headline} variants={itemVariants}>
             Profile
           </motion.h1>
