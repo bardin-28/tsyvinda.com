@@ -10,7 +10,7 @@
 
 /* Leaflet paints its own light surfaces; keep them inside the rounded frame. */
 .map :global(.leaflet-container) {
-  background: #080810;
+  background: var(--bg-base);
   font-family: inherit;
 }
 
@@ -25,7 +25,7 @@
 
 .map :global(.leaflet-bar a) {
   background: rgba(8, 8, 16, 0.85);
-  color: #ffffff;
+  color: var(--text-strong);
   border-bottom-color: var(--border);
 }
 

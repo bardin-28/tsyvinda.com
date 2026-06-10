@@ -2,8 +2,8 @@
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #080810;
-  color: #ffffff;
+  background: var(--bg-base);
+  color: var(--text-strong);
 }
 
 .blobs {
@@ -26,7 +26,7 @@
 .blob1 {
   width: 720px;
   height: 720px;
-  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
   top: -20%;
   left: -18%;
   animation-name: blobFadeIn, drift1;
@@ -40,7 +40,7 @@
 .blob2 {
   width: 640px;
   height: 640px;
-  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
   top: 40%;
   right: -12%;
   animation-delay: 0.15s;
@@ -55,7 +55,7 @@
 .blob3 {
   width: 520px;
   height: 520px;
-  background: radial-gradient(circle, #fd7e14 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
   bottom: -10%;
   left: 30%;
   animation-delay: 0.3s;
@@ -122,29 +122,6 @@
   padding: 32px 0;
 }
 
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  background: rgba(253, 126, 20, 0.1);
-  border: 1px solid rgba(253, 126, 20, 0.25);
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #fd7e14;
-  box-shadow: 0 0 12px rgba(253, 126, 20, 0.8);
-}
-
 .headline {
   font-size: clamp(2.2rem, 5vw, 3.2rem);
   font-weight: 800;
@@ -152,10 +129,7 @@
   line-height: 1.05;
   margin: 0;
   text-align: center;
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent);
 }
 
 .lead {

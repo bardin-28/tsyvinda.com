@@ -36,14 +36,14 @@ export const INDUSTRIES = [
 ];
 
 export const STACK: StackGroup[] = [
-  { group: "Markup", items: ["HTML5", "Pug", "CSS3", "SCSS"] },
+  { group: "Markup", items: ["HTML5", "Pug", "CSS3", "CSS Modules", "SCSS"] },
   { group: "Languages", items: ["JavaScript", "TypeScript", "PHP"] },
   {
     group: "Frameworks",
-    items: ["React", "Next.js", "Redux-Saga", "Redux-Toolkit", "Node.js", "Express"],
+    items: ["React", "Next.js", "Redux-Saga", "Redux-Toolkit", "Node.js", "Express", "NestJS"],
   },
   { group: "Data", items: ["GraphQL", "Apollo Client", "Apollo Server", "MongoDB"] },
-  { group: "Testing", items: ["Jest", "React Testing Library", "Storybook"] },
+  { group: "Testing", items: ["Jest", "Playwright", "Storybook"] },
   { group: "Tooling", items: ["Git", "GitHub", "GitLab", "Webpack", "Gulp", "Docker", "Claude Code"] },
   { group: "Design", items: ["Figma", "Photoshop"] },
   { group: "Infra", items: ["Digital Ocean", "GoDaddy"] },
@@ -149,12 +149,6 @@ export const EDUCATION: Education[] = [
     period: "2016 — 2021",
     skills: [],
   },
-];
-
-export const STATS = [
-  { number: "6+", label: "Years building products" },
-  { number: "5", label: "Industries shipped to" },
-  { number: "10+", label: "Production platforms" },
 ];
 
 export const HEADLINE_WORDS = ["Software", "Engineer"];

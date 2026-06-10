@@ -4,7 +4,7 @@
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #050509;
+  background: var(--bg-deep);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
 }
 

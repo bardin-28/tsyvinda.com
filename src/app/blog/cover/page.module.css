@@ -1,7 +1,7 @@
 .page {
   position: relative;
   min-height: 100vh;
-  background: #080810;
+  background: var(--bg-base);
   overflow-x: hidden;
 }
 
@@ -75,8 +75,8 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #fd7e14;
-  box-shadow: 0 0 10px #fd7e14;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
 }
 
 .topNav {
@@ -106,7 +106,7 @@
 
 .backLink:hover {
   transform: translateY(-2px);
-  color: #fd7e14;
+  color: var(--accent);
   border-color: rgba(253, 126, 20, 0.4);
   background: var(--accent-bg-1);
 }

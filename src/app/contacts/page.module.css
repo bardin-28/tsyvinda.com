@@ -2,8 +2,8 @@
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background: #080810;
-  color: #ffffff;
+  background: var(--bg-base);
+  color: var(--text-strong);
 }
 
 /* Ambient background — matches the home/about treatment */
@@ -26,7 +26,7 @@
 .blob1 {
   width: 640px;
   height: 640px;
-  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
   top: -22%;
   left: -12%;
   animation-delay: 0s;
@@ -35,7 +35,7 @@
 .blob2 {
   width: 560px;
   height: 560px;
-  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
   bottom: -18%;
   right: -10%;
   animation-delay: 0.2s;
@@ -44,7 +44,7 @@
 .blob3 {
   width: 420px;
   height: 420px;
-  background: radial-gradient(circle, #fd7e14 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
   top: 45%;
   left: 60%;
   transform: translate(-50%, -50%);
@@ -87,25 +87,6 @@
   gap: 18px;
 }
 
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #fd7e14;
-  box-shadow: 0 0 12px rgba(253, 126, 20, 0.7);
-}
-
 .title {
   font-size: clamp(2.2rem, 6vw, 3.6rem);
   font-weight: 700;
@@ -114,7 +95,7 @@
 }
 
 .titleAccent {
-  color: #fd7e14;
+  color: var(--accent);
 }
 
 .lead {
@@ -152,7 +133,7 @@
 }
 
 .channel:focus-visible {
-  outline: 2px solid #fd7e14;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -164,7 +145,7 @@
   height: 44px;
   flex-shrink: 0;
   border-radius: 12px;
-  color: #fd7e14;
+  color: var(--accent);
   background: rgba(253, 126, 20, 0.12);
   border: 1px solid rgba(253, 126, 20, 0.25);
 }
@@ -179,7 +160,7 @@
 .channelLabel {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .channelHandle {
@@ -202,7 +183,7 @@
 .channel:hover .channelArrow {
   opacity: 1;
   transform: translateX(0);
-  color: #fd7e14;
+  color: var(--accent);
 }
 
 /* Reserve map height while the dynamic chunk loads (no layout shift). */

@@ -30,10 +30,6 @@ export function BlogView({ initialData }: BlogViewProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE }}
         >
-          <span className={styles.eyebrow}>
-            <span className={styles.dot} aria-hidden="true" />
-            Blog
-          </span>
           <h1 className={styles.title}>
             Notes on <span className={styles.titleAccent}>building software</span>
           </h1>

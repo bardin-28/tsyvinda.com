@@ -5,6 +5,13 @@
   --accent-pink: #ec4899;
   --accent-indigo: #6366f1;
   --accent-text: #fd7e14;
+  --on-accent: #ffffff;
+  --accent-deep: #c2410c;
+  --accent-pink-deep: #9d174d;
+  --accent-tint: #ffd8b3;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #ff7875;
   --accent-soft-06: rgba(253, 126, 20, 0.06);
   --accent-soft-08: rgba(253, 126, 20, 0.08);
   --accent-soft-12: rgba(253, 126, 20, 0.12);
@@ -22,6 +29,7 @@
   /* Dark theme defaults */
   color-scheme: dark;
   --bg-base: #080810;
+  --bg-deep: #050509;
   --bg-elevated: #15151d;
   --bg-chrome: #0c0c14;
   --text-strong: #ffffff;
@@ -35,7 +43,9 @@
   --accent-bg-2: #2a1811;
   --accent-bg-3: #392011;
   --error-bg: #1f1113;
+  --error-border: #3d1214;
   --error-text: #ff6b6b;
+  --surface-cool: #1b1b2e;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
   --shadow-elevated: 0 24px 60px rgba(0, 0, 0, 0.55);

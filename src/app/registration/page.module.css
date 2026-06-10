@@ -2,8 +2,8 @@
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #080810;
-  color: #ffffff;
+  background: var(--bg-base);
+  color: var(--text-strong);
 }
 
 .blobs {
@@ -26,7 +26,7 @@
 .blob1 {
   width: 720px;
   height: 720px;
-  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-indigo) 0%, transparent 70%);
   top: -20%;
   left: -18%;
   animation-delay: 0s;
@@ -41,7 +41,7 @@
 .blob2 {
   width: 640px;
   height: 640px;
-  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-pink) 0%, transparent 70%);
   top: 40%;
   right: -12%;
   animation-delay: 0.15s;
@@ -56,7 +56,7 @@
 .blob3 {
   width: 520px;
   height: 520px;
-  background: radial-gradient(circle, #fd7e14 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
   bottom: -10%;
   left: 30%;
   animation-delay: 0.3s;
@@ -131,10 +131,7 @@
   letter-spacing: -0.02em;
   line-height: 1.05;
   margin: 0;
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent);
 }
 
 .lead {
