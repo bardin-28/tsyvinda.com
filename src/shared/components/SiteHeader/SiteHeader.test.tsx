@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { usePathname } from "next/navigation";
@@ -131,7 +131,7 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("menu")).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
-    await waitForElementToBeRemoved(() => screen.queryByRole("menu"));
+    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
   });
 
   it("renders nothing on chrome-hidden routes", () => {
