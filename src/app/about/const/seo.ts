@@ -73,7 +73,7 @@ export const profilePageSchema = {
   mainEntity: { "@id": `${SITE_URL}/#person` },
   breadcrumb: { "@id": `${ABOUT_URL}#breadcrumb` },
   about: { "@id": `${SITE_URL}/#person` },
-  significantLink: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram, SOCIAL_LINKS.instagram],
+  significantLink: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram],
 };
 
 export const breadcrumbSchema = {

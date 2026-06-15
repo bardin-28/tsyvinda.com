@@ -66,7 +66,7 @@ export const personSchema = {
   },
   knowsAbout: KNOWS_ABOUT,
   knowsLanguage: ["English", "Ukrainian"],
-  sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram, SOCIAL_LINKS.instagram],
+  sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram],
 };
 
 export const websiteSchema = {
@@ -112,7 +112,7 @@ export const siteNavigationSchema = {
       "@type": "SiteNavigationElement",
       "@id": `${SITE_URL}/#nav-contacts`,
       name: "Contacts",
-      description: "Get in touch — LinkedIn, Telegram, Instagram, and email.",
+      description: "Get in touch — LinkedIn, Telegram, and email.",
       url: `${SITE_URL}/contacts`,
       isPartOf: { "@id": `${SITE_URL}/#website` },
     },
