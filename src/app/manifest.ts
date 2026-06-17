@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Vladyslav Tsyvinda",
     short_name: "Tsyvinda",
     description:
-      "Personal website of Vladyslav Tsyvinda — get in touch via LinkedIn, Telegram, or Instagram.",
+      "Personal website of Vladyslav Tsyvinda — get in touch via LinkedIn or Telegram.",
     start_url: "/",
     display: "standalone",
     background_color: "#080810",

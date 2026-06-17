@@ -27,7 +27,6 @@ describe("SiteFooter", () => {
     render(<SiteFooter />);
     expect(screen.getByRole("link", { name: "LinkedIn" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Telegram" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Instagram" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Email" })).toBeInTheDocument();
   });
 
