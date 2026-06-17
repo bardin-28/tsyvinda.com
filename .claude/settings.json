@@ -50,6 +50,6 @@
     "enabled": true
   },
   "additionalDirectories": [
-    "../test-be"
+    "../be"
   ]
 }

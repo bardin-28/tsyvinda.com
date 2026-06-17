@@ -152,8 +152,9 @@ jest.mock("three", () => {
       public distance: number,
     ) {}
   }
-  class Clock {
-    getElapsedTime = jest.fn().mockReturnValue(0);
+  class Timer {
+    update = jest.fn();
+    getElapsed = jest.fn().mockReturnValue(0);
   }
 
   return {
@@ -174,7 +175,7 @@ jest.mock("three", () => {
     Group,
     AmbientLight,
     PointLight,
-    Clock,
+    Timer,
     ACESFilmicToneMapping: 1,
     SRGBColorSpace: "srgb",
     DoubleSide: 2,

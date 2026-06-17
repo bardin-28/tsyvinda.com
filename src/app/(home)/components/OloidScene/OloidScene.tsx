@@ -173,11 +173,12 @@ export default function OloidScene() {
     scene.add(group);
 
     let raf = 0;
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
 
     const animate = () => {
       raf = requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
+      timer.update();
+      const t = timer.getElapsed();
 
       smoothX += (mouseX - smoothX) * 0.04;
       smoothY += (mouseY - smoothY) * 0.04;

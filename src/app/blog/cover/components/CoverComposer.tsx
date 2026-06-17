@@ -68,7 +68,7 @@ type SceneContext = {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
-  clock: THREE.Clock;
+  timer: THREE.Timer;
   group: THREE.Group;
   knot: THREE.Mesh;
   shell: THREE.Mesh;
@@ -195,7 +195,7 @@ function createScene(width: number, height: number): SceneContext {
     renderer,
     scene,
     camera,
-    clock: new THREE.Clock(),
+    timer: new THREE.Timer(),
     group,
     knot,
     shell,
@@ -213,7 +213,8 @@ function disposeScene(ctx: SceneContext) {
 }
 
 function tickScene(ctx: SceneContext) {
-  const t = ctx.clock.getElapsedTime();
+  ctx.timer.update();
+  const t = ctx.timer.getElapsed();
   ctx.group.rotation.y = t * 0.18;
   ctx.group.rotation.x = Math.sin(t * 0.15) * 0.08;
   ctx.knot.rotation.x = t * 0.32;

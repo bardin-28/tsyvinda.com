@@ -163,11 +163,12 @@ export default function AboutScene() {
     window.addEventListener("resize", onResize);
 
     let raf: number;
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
 
     const animate = () => {
       raf = requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
+      timer.update();
+      const t = timer.getElapsed();
 
       smoothX += (mouseX - smoothX) * 0.04;
       smoothY += (mouseY - smoothY) * 0.04;
