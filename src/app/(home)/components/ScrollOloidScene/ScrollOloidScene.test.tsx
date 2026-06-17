@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import OloidScene from "./OloidScene";
+import ScrollOloidScene from "./ScrollOloidScene";
 
 type DisposableMock = { dispose: jest.Mock };
 type RendererMock = {
@@ -22,19 +22,17 @@ type Registry = {
   cameras: CameraMock[];
 };
 
-// Shared registry on globalThis so both the `three` mock and the
-// `ConvexGeometry` mock (separate factories) push into the same store.
 const getRegistry = (): Registry => {
-  const g = globalThis as unknown as { __oloidRegistry?: Registry };
-  g.__oloidRegistry ??= { disposables: [], renderers: [], cameras: [] };
-  return g.__oloidRegistry;
+  const g = globalThis as unknown as { __scrollOloidRegistry?: Registry };
+  g.__scrollOloidRegistry ??= { disposables: [], renderers: [], cameras: [] };
+  return g.__scrollOloidRegistry;
 };
 
 jest.mock("three", () => {
   const reg = (() => {
-    const g = globalThis as unknown as { __oloidRegistry?: Registry };
-    g.__oloidRegistry ??= { disposables: [], renderers: [], cameras: [] };
-    return g.__oloidRegistry;
+    const g = globalThis as unknown as { __scrollOloidRegistry?: Registry };
+    g.__scrollOloidRegistry ??= { disposables: [], renderers: [], cameras: [] };
+    return g.__scrollOloidRegistry;
   })();
 
   const makeVec = () => ({ x: 0, y: 0, z: 0, set: jest.fn(), setScalar: jest.fn() });
@@ -102,15 +100,14 @@ jest.mock("three", () => {
   class Geometry extends Disposable {
     args: unknown[];
     computeVertexNormals = jest.fn();
+    setAttribute = jest.fn();
     constructor(...args: unknown[]) {
       super();
       this.args = args;
     }
   }
   class EdgesGeometry extends Geometry {}
-  class BufferGeometry extends Geometry {
-    setAttribute = jest.fn();
-  }
+  class BufferGeometry extends Geometry {}
   class BufferAttribute {
     constructor(public array: Float32Array, public itemSize: number) {}
   }
@@ -184,9 +181,9 @@ jest.mock("three", () => {
 
 jest.mock("three/examples/jsm/geometries/ConvexGeometry.js", () => {
   const reg = (() => {
-    const g = globalThis as unknown as { __oloidRegistry?: Registry };
-    g.__oloidRegistry ??= { disposables: [], renderers: [], cameras: [] };
-    return g.__oloidRegistry;
+    const g = globalThis as unknown as { __scrollOloidRegistry?: Registry };
+    g.__scrollOloidRegistry ??= { disposables: [], renderers: [], cameras: [] };
+    return g.__scrollOloidRegistry;
   })();
   class ConvexGeometry {
     dispose = jest.fn();
@@ -205,7 +202,7 @@ const setViewport = (width: number, height: number) => {
   Object.defineProperty(window, "innerHeight", { configurable: true, value: height });
 };
 
-describe("OloidScene", () => {
+describe("ScrollOloidScene", () => {
   let rafSpy: jest.SpyInstance;
   let cancelRafSpy: jest.SpyInstance;
 
@@ -226,7 +223,7 @@ describe("OloidScene", () => {
   });
 
   it("renders a fixed, aria-hidden mount div containing the renderer canvas", () => {
-    const { container, unmount } = render(<OloidScene />);
+    const { container, unmount } = render(<ScrollOloidScene />);
 
     const mount = container.firstElementChild as HTMLDivElement;
     expect(mount).not.toBeNull();
@@ -240,7 +237,7 @@ describe("OloidScene", () => {
 
   it("uses desktop camera and renderer size on wide viewports", () => {
     setViewport(1440, 900);
-    const { unmount } = render(<OloidScene />);
+    const { unmount } = render(<ScrollOloidScene />);
 
     expect(registry.renderers[0].setSize).toHaveBeenCalledWith(1440, 900);
     const [fov, aspect, near, far] = registry.cameras[0].args;
@@ -254,31 +251,35 @@ describe("OloidScene", () => {
 
   it("uses mobile camera on narrow viewports", () => {
     setViewport(375, 812);
-    const { unmount } = render(<OloidScene />);
+    const { unmount } = render(<ScrollOloidScene />);
 
     expect(registry.cameras[0].args[0]).toBe(52);
 
     unmount();
   });
 
-  it("registers and removes window listeners", () => {
+  it("registers and removes window listeners, including scroll", () => {
     const addSpy = jest.spyOn(window, "addEventListener");
     const removeSpy = jest.spyOn(window, "removeEventListener");
 
-    const { unmount } = render(<OloidScene />);
+    const { unmount } = render(<ScrollOloidScene />);
     const added = addSpy.mock.calls.map(([type]) => type);
-    expect(added).toEqual(expect.arrayContaining(["mousemove", "touchmove", "resize"]));
+    expect(added).toEqual(
+      expect.arrayContaining(["mousemove", "touchmove", "scroll", "resize"]),
+    );
 
     unmount();
     const removed = removeSpy.mock.calls.map(([type]) => type);
-    expect(removed).toEqual(expect.arrayContaining(["mousemove", "touchmove", "resize"]));
+    expect(removed).toEqual(
+      expect.arrayContaining(["mousemove", "touchmove", "scroll", "resize"]),
+    );
 
     addSpy.mockRestore();
     removeSpy.mockRestore();
   });
 
   it("disposes renderer, geometries, and materials on unmount", () => {
-    const { unmount } = render(<OloidScene />);
+    const { unmount } = render(<ScrollOloidScene />);
 
     const renderer = registry.renderers[0];
     const captured = [...registry.disposables];
@@ -294,7 +295,7 @@ describe("OloidScene", () => {
 
   it("updates camera aspect and renderer size on window resize", () => {
     setViewport(1440, 900);
-    const { unmount } = render(<OloidScene />);
+    const { unmount } = render(<ScrollOloidScene />);
 
     const camera = registry.cameras[0];
     const renderer = registry.renderers[0];

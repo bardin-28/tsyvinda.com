@@ -106,7 +106,7 @@
   max-width: 880px;
   margin: 0 auto;
   /* Top padding clears the fixed shared header. */
-  padding: 0 24px 140px;
+  padding: 0 24px 340px;
   display: flex;
   flex-direction: column;
   gap: 160px;
