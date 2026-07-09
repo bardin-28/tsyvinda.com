@@ -3,7 +3,7 @@ export const NAME = "Vladyslav Tsyvinda";
 export const ALTERNATE_NAME = "Bardin28";
 
 export const DESCRIPTION =
-  "Vladyslav Tsyvinda — Software engineer & Front-end Lead with 6+ years building scalable React, Next.js, and TypeScript products across MedTech, FinTech, PropTech, TravelTech, and EdTech.";
+  "Vladyslav Tsyvinda — Full-Stack Lead Developer with 6+ years building scalable React, Next.js, and TypeScript products across MedTech, FinTech, PropTech, TravelTech, and EdTech.";
 
 export const EMAIL = "bardindeveloper@gmail.com";
 
@@ -30,7 +30,7 @@ export const EMPLOYER = {
   url: "https://www.tallium.com",
 } as const;
 
-export const JOB_TITLE = "Front-end Lead Engineer";
+export const JOB_TITLE = "Full-Stack Lead Developer";
 
 export const KEYWORDS = [
   "Vladyslav Tsyvinda",

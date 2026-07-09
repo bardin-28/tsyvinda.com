@@ -4,7 +4,7 @@ import type { Recommendation, Role } from "@/app/about/const";
 export const NAME_WORDS = ["Vladyslav", "Tsyvinda"];
 
 export const ROLE_PRIMARY = "Software Engineer";
-export const ROLE_SECONDARY = "Front-end Lead at Tallium Inc.";
+export const ROLE_SECONDARY = "Full-Stack Lead Developer at Tallium Inc.";
 
 export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -14,7 +14,7 @@ export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
  * subsets and write the home-specific lead lines.
  */
 export const ABOUT_TEASER_LEAD =
-  "Six years building scalable products across MedTech, FinTech, PropTech, TravelTech and EdTech — from frontend architecture to lead delivery.";
+  "Six years building scalable products across MedTech, FinTech, PropTech, TravelTech and EdTech — from full-stack architecture to lead delivery.";
 
 /** Top three roles shown on the home timeline; full history lives on /about. */
 export const FEATURED_EXPERIENCE: Role[] = EXPERIENCE.slice(0, 3);
@@ -34,7 +34,7 @@ export type HomeSection = {
 export const SECTION_ABOUT: HomeSection = {
   tag: "01",
   title: "Who I am",
-  lede: "A frontend lead who ships production-grade React and Next.js at scale.",
+  lede: "A full-stack lead who ships production-grade React and Next.js at scale.",
 };
 
 export const SECTION_EXPERIENCE: HomeSection = {

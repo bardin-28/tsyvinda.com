@@ -8,7 +8,7 @@ export const CONTACTS_TITLE = "Contacts — Vladyslav Tsyvinda";
 export const CONTACTS_TITLE_SHORT = "Contacts";
 
 export const CONTACTS_DESCRIPTION =
-  "Get in touch with Vladyslav Tsyvinda — software engineer & front-end lead. Reach out on LinkedIn, Telegram, or by email.";
+  "Get in touch with Vladyslav Tsyvinda — Full-Stack Lead Developer. Reach out on LinkedIn, Telegram, or by email.";
 
 export const CONTACTS_KEYWORDS = [
   "Vladyslav Tsyvinda contact",

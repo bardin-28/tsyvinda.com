@@ -8,7 +8,7 @@ export const ABOUT_TITLE = "About — Vladyslav Tsyvinda";
 export const ABOUT_TITLE_SHORT = "About";
 
 export const ABOUT_DESCRIPTION =
-  "Software engineer & front-end lead with 6+ years delivering scalable React, Next.js, and TypeScript products across MedTech, FinTech, PropTech, TravelTech, and EdTech industries.";
+  "Full-Stack Lead Developer with 6+ years delivering scalable React, Next.js, and TypeScript products across MedTech, FinTech, PropTech, TravelTech, and EdTech industries.";
 
 export const ABOUT_KEYWORDS = [
   "Vladyslav Tsyvinda about",

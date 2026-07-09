@@ -8,11 +8,9 @@ import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js"
 const ACCENT = 0xfd7e14;
 
 /**
- * Sample `count` evenly-spaced points around a unit circle.
- * `centerX` shifts the circle along x; `plane` picks which axes the circle
- * spans ("xy" or "xz"). The oloid is the convex hull of two such circles in
- * perpendicular planes whose centres sit one radius apart, each passing through
- * the other's centre.
+ * Sample `count` evenly-spaced points around a unit circle. `centerX` shifts the
+ * circle along x; `plane` picks which axes it spans. The oloid is the convex hull
+ * of two such circles in perpendicular planes whose centres sit one radius apart.
  */
 const circlePoints = (
   count: number,
@@ -33,7 +31,9 @@ const circlePoints = (
   return points;
 };
 
-export default function OloidScene() {
+const clamp01 = (value: number): number => Math.min(1, Math.max(0, value));
+
+export default function ScrollOloidScene() {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function OloidScene() {
       isMobile ? 52 : 42,
       window.innerWidth / window.innerHeight,
       0.1,
-      100
+      100,
     );
     camera.position.z = isMobile ? 9 : 7;
 
@@ -95,7 +95,7 @@ export default function OloidScene() {
     const tumbleGroup = new THREE.Group();
     tumbleGroup.add(oloid, edges);
 
-    // Particle halo (mirrors the previous scene's ambient dust).
+    // Faint particle halo for ambient depth.
     const PARTICLE_COUNT = isMobile ? 150 : 300;
     const pPos = new Float32Array(PARTICLE_COUNT * 3);
     const pColors = new Float32Array(PARTICLE_COUNT * 3);
@@ -107,14 +107,14 @@ export default function OloidScene() {
     ];
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const r = 2.6 + Math.random() * 2.6;
-      pPos[i * 3] = Math.cos(angle) * r;
+      const radius = 2.6 + Math.random() * 2.6;
+      pPos[i * 3] = Math.cos(angle) * radius;
       pPos[i * 3 + 1] = (Math.random() - 0.5) * 6.5;
-      pPos[i * 3 + 2] = Math.sin(angle) * r;
-      const c = palette[Math.floor(Math.random() * palette.length)];
-      pColors[i * 3] = c.r;
-      pColors[i * 3 + 1] = c.g;
-      pColors[i * 3 + 2] = c.b;
+      pPos[i * 3 + 2] = Math.sin(angle) * radius;
+      const color = palette[Math.floor(Math.random() * palette.length)];
+      pColors[i * 3] = color.r;
+      pColors[i * 3 + 1] = color.g;
+      pColors[i * 3 + 2] = color.b;
     }
     const pGeom = new THREE.BufferGeometry();
     pGeom.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
@@ -141,7 +141,11 @@ export default function OloidScene() {
       return { light, r, speed, ySpeed, phase };
     });
 
-    // Input — mouse + touch parallax.
+    const group = new THREE.Group();
+    group.add(tumbleGroup, particles);
+    scene.add(group);
+
+    // Pointer parallax (tilt), smoothed each frame.
     let mouseX = 0;
     let mouseY = 0;
     let smoothX = 0;
@@ -160,17 +164,24 @@ export default function OloidScene() {
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("touchmove", onTouchMove, { passive: true });
 
+    // Scroll progress (0..1 over the whole page), smoothed toward target.
+    let targetProgress = 0;
+    let smoothProgress = 0;
+
+    const computeProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      targetProgress = max > 0 ? clamp01(window.scrollY / max) : 0;
+    };
+    computeProgress();
+    window.addEventListener("scroll", computeProgress, { passive: true });
+
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      computeProgress();
     };
     window.addEventListener("resize", onResize);
-
-    // Scene assembly.
-    const group = new THREE.Group();
-    group.add(tumbleGroup, particles);
-    scene.add(group);
 
     let raf = 0;
     const timer = new THREE.Timer();
@@ -182,13 +193,17 @@ export default function OloidScene() {
 
       smoothX += (mouseX - smoothX) * 0.04;
       smoothY += (mouseY - smoothY) * 0.04;
-      group.rotation.z = smoothX * 0.18;
-      group.rotation.x = smoothY * -0.18;
+      smoothProgress += (targetProgress - smoothProgress) * 0.08;
+      const p = smoothProgress;
 
-      // Multi-axis tumble for the characteristic oloid wobble.
-      tumbleGroup.rotation.y = t * 0.42;
-      tumbleGroup.rotation.z = t * 0.27;
-      tumbleGroup.rotation.x = Math.sin(t * 0.2) * 0.25;
+      // Outer group tilts with the pointer.
+      group.rotation.z = smoothX * 0.12;
+      group.rotation.x = smoothY * -0.12;
+
+      // Continuous idle tumble so it always rotates, with scroll adding extra spin.
+      tumbleGroup.rotation.y = t * 0.35 + p * Math.PI * 3;
+      tumbleGroup.rotation.x = t * 0.14 + p * Math.PI * 1.2;
+      tumbleGroup.rotation.z = Math.sin(t * 0.2) * 0.18;
       particles.rotation.y = t * 0.06;
 
       orbitLights.forEach(({ light, r, speed, ySpeed, phase }) => {
@@ -205,6 +220,7 @@ export default function OloidScene() {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("scroll", computeProgress);
       window.removeEventListener("resize", onResize);
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       renderer.dispose();

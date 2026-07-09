@@ -51,7 +51,7 @@ export const STACK: StackGroup[] = [
 
 export const EXPERIENCE: Role[] = [
   {
-    title: "Front-end Lead Engineer",
+    title: "Full-Stack Lead Developer",
     org: "Tallium Inc.",
     type: "Full-time",
     period: "Sep 2025 — Present · 10 mos",

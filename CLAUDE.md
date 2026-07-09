@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal website for Vladyslav Tsyvinda. Public routes: `/` (intro hero + "Get in touch" CTA), `/about` (bio/stack/experience), `/contacts` (contact channels), `/blog` (+ `/blog/[slug]` articles), `/login` (authenticated area, `noindex`), `/blog/cover` (internal generator, auth-gated via `src/proxy.ts`, `noindex`). Auth talks to a separate backend via a Next rewrite proxy. Deployed at https://tsyvinda.com.
 
-Stack: Next.js 16 (App Router) + React 19 + TypeScript. Tailwind is **not** used — styling is per-route CSS Modules (`page.module.css`) plus a single `globals.css`. Animations via `framer-motion`. 3D scenes via `three` (raw `THREE.WebGLRenderer`, no `@react-three/fiber`). Forms via `formik` + `zod`. UI primitives from `antd ^6` (dark theme via `AntdProvider`). Unit tests: Jest 30 + `next/jest` + Testing Library, jsdom env. Component workshop: Storybook 10 with `@storybook/nextjs`.
+Stack: Next.js 16 (App Router) + React 19 + TypeScript. Tailwind is **not** used — styling is per-route CSS Modules (`page.module.css`) plus a single `globals.css`. Animations via `framer-motion`. Smooth momentum scrolling via `lenis` (the home page is wrapped in `SmoothScroll`). 3D scenes via `three` (raw `THREE.WebGLRenderer`, no `@react-three/fiber`). Forms via `formik` + `zod`. UI primitives from `antd ^6` (dark theme via `AntdProvider`). Unit tests: Jest 30 + `next/jest` + Testing Library, jsdom env. Component workshop: Storybook 10 with `@storybook/nextjs`.
 
 ## Commands
 
@@ -38,8 +38,8 @@ Path alias: `@/*` → `./src/*` (set in `tsconfig.json`; mirrored in Jest `modul
 All app code lives under `src/app/` (App Router). Key files:
 
 - `src/app/layout.tsx` — root layout. Owns Metadata API (`metadataBase: https://tsyvinda.com`), JSON-LD `Person` + `WebSite` schemas (from `@/shared/lib/schemas`), GA bootstrap (`next/script` `afterInteractive`, gated on `process.env.GA_ID`), and wraps children in `<AntdProvider><UserProvider>`. Loads Roboto via `next/font/google` as `--font-roboto`. Imports `./(home)/globals.css` — the only global stylesheet.
-- `src/app/(home)/page.tsx` — home, route group keeps URL `/`. Client component. `CylinderScene` loaded via `next/dynamic` with `ssr: false` — do **not** import statically; SSR will break on `window`/WebGL.
-- `src/app/(home)/components/CylinderScene/CylinderScene.tsx` — full-screen fixed three.js scene. Cleanup disposes every geometry/material/renderer and removes all listeners. **If you add a new geometry/material/texture, add it to the disposal arrays — otherwise you leak GPU memory on route changes.**
+- `src/app/(home)/page.tsx` — home, route group keeps URL `/`. Client component. Wrapped in `SmoothScroll` (`./components/SmoothScroll`, a `lenis` provider, reduced-motion-aware). `ScrollOloidScene` loaded via `next/dynamic` with `ssr: false` — do **not** import statically; SSR will break on `window`/WebGL.
+- `src/app/(home)/components/ScrollOloidScene/ScrollOloidScene.tsx` — full-screen fixed three.js scene: a metallic oloid that tumbles, its rotation coupled to page-scroll progress (read from `window.scrollY`, smoothed). Cleanup disposes every geometry/material/renderer and removes all listeners (incl. `scroll`). **If you add a new geometry/material/texture, add it to the disposal arrays — otherwise you leak GPU memory on route changes.**
 - `src/app/about/page.tsx` — client. Metadata in `src/app/about/layout.tsx`. `AboutScene` (`src/app/about/components/AboutScene/AboutScene.tsx`) follows the same disposal rule.
 - `src/app/login/page.tsx` — login route. `LoginForm` (`./components/LoginForm`) uses Formik + Zod + antd `Input`/`Button`. `layout.tsx` sets `robots: noindex`.
 - `src/app/sitemap.ts`, `src/app/robots.ts`, `src/app/manifest.ts` — file-based metadata routes. Sitemap lists `/` and `/about` only (login is excluded). Manifest theme color is brand orange `#fd7e14`.
@@ -61,7 +61,7 @@ All app code lives under `src/app/` (App Router). Key files:
 ### Per-route folder convention
 
 Each route uses `components/` and `const/` subfolders:
-- `(home)/components/CylinderScene/…`, `(home)/const/index.tsx`
+- `(home)/components/ScrollOloidScene/…`, `(home)/components/SmoothScroll/…`, `(home)/const/index.tsx`
 - `about/components/AboutScene/…`, `about/const/{index.ts,seo.ts}`
 - `login/components/LoginForm/…`
 
