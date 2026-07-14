@@ -9,7 +9,7 @@ export const EMAIL = "bardindeveloper@gmail.com";
 
 export const SOCIAL_LINKS = {
   linkedin: "https://linkedin.com/in/bardin28",
-  telegram: "https://t.me/Bardin28",
+  telegram: "https://telegram.me/Bardin28",
   email: `mailto:${EMAIL}`,
 } as const;
 
