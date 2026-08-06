@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - main
+  # Manual re-trigger (e.g. a push that never produced a run). Deploys only
+  # when dispatched from main — see the `deploy` job condition below.
+  workflow_dispatch:
 
 # Cancel superseded runs on the same ref (e.g. rapid pushes to a PR).
 concurrency:
@@ -71,8 +74,11 @@ jobs:
   deploy:
     name: Build, push ECR, bump infra tag
     needs: test
-    # Only deploy on a push to main; PRs run `test` only.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Only deploy on a push to main or a manual dispatch from main; PRs run
+    # `test` only.
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+      && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       id-token: write # assume the AWS deploy role via OIDC
