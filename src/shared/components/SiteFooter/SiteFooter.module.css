@@ -71,6 +71,24 @@
   outline-offset: 2px;
 }
 
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 18px;
+}
+
+.legalLink {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.2s ease;
+}
+
+.legalLink:hover {
+  color: var(--accent);
+}
+
 .copyright {
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.45);
@@ -84,6 +102,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .navLink,
+  .legalLink,
   .socialLink {
     transition: none;
   }
