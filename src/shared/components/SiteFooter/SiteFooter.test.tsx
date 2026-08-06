@@ -30,11 +30,19 @@ describe("SiteFooter", () => {
     expect(screen.getByRole("link", { name: "Email" })).toBeInTheDocument();
   });
 
+  it("renders the privacy policy link", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("link", { name: "Privacy Policy" })).toHaveAttribute(
+      "href",
+      "/privacy-policy",
+    );
+  });
+
   it("renders the copyright with the current year and name", () => {
     render(<SiteFooter />);
     const year = new Date().getFullYear();
     expect(
-      screen.getByText(`© ${year} Vladyslav Tsyvinda`),
+      screen.getByText(`© 2023 - ${year} Vladyslav Tsyvinda. All rights reserved.`),
     ).toBeInTheDocument();
   });
 

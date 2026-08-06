@@ -1,0 +1,62 @@
+.page {
+  position: relative;
+  /* Above the fixed full-screen scenes rendered by neighbouring routes. */
+  z-index: 5;
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text);
+}
+
+.main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 96px 28px 120px;
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.updated {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.article strong {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.link {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--accent-strong);
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding: 72px 16px 96px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

@@ -18,6 +18,14 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 /**
+ * Legal links shown in the footer only — kept out of NAV_LINKS so the header
+ * menu stays limited to the primary pages.
+ */
+export const LEGAL_LINKS: NavLink[] = [
+  { label: "Privacy Policy", href: ROUTES.PRIVACY_POLICY },
+];
+
+/**
  * Routes where the shared chrome (SiteHeader / SiteFooter) is suppressed.
  * Matched by exact path or as a nested prefix.
  */

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { NAV_LINKS, SOCIAL_NAV, isChromeHidden } from "@/shared/const";
+import { LEGAL_LINKS, NAV_LINKS, SOCIAL_NAV, isChromeHidden } from "@/shared/const";
 import { NAME } from "@/shared/lib/site";
 
 import styles from "./SiteFooter.module.css";
@@ -42,8 +42,16 @@ export function SiteFooter() {
           ))}
         </ul>
 
+        <nav className={styles.legal} aria-label="Legal">
+          {LEGAL_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} className={styles.legalLink}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
         <p className={styles.copyright}>
-          © {year} {NAME}
+          © 2023 - {year} {NAME}. All rights reserved.
         </p>
       </div>
     </footer>

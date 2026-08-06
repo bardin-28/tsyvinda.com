@@ -8,6 +8,7 @@ export const ROUTES = {
   REGISTER: "/registration",
   RESET_PASSWORD: "/reset-password",
   PROFILE: "/profile",
+  PRIVACY_POLICY: "/privacy-policy",
   blogPost: (slug: string) => `/blog/${slug}`,
 } as const;
 
@@ -21,4 +22,5 @@ export type Route =
   | "/registration"
   | "/reset-password"
   | "/profile"
+  | "/privacy-policy"
   | `/blog/${string}`;
