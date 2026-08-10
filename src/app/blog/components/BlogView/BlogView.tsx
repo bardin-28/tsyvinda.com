@@ -13,9 +13,11 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 type BlogViewProps = {
   initialData?: InitialPostsData;
+  /** Static, server-rendered content appended below the feed. */
+  children?: React.ReactNode;
 };
 
-export function BlogView({ initialData }: BlogViewProps) {
+export function BlogView({ initialData, children }: BlogViewProps) {
   const { items, isLoading, isLoadingMore, hasMore, error, loadMore, retry } =
     useInfinitePosts(POSTS_PAGE_SIZE, initialData);
 
@@ -54,6 +56,8 @@ export function BlogView({ initialData }: BlogViewProps) {
             onRetry={retry}
           />
         </motion.section>
+
+        {children}
       </main>
     </div>
   );

@@ -1,5 +1,7 @@
 import { getPosts } from "@/api/posts";
+import { BlogTopics } from "./components/BlogTopics/BlogTopics";
 import { BlogView } from "./components/BlogView/BlogView";
+import { buildBlogItemListSchema } from "./const/seo";
 import {
   POSTS_PAGE_SIZE,
   type InitialPostsData,
@@ -22,5 +24,22 @@ export default async function BlogPage() {
     initialData = undefined;
   }
 
-  return <BlogView initialData={initialData} />;
+  const posts = initialData?.items ?? [];
+
+  return (
+    <>
+      {posts.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildBlogItemListSchema(posts)),
+          }}
+        />
+      )}
+
+      <BlogView initialData={initialData}>
+        <BlogTopics />
+      </BlogView>
+    </>
+  );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Post } from "@/api/posts";
 import { NAME, SITE_URL } from "@/shared/lib/site";
 
 export const BLOG_PATH = "/blog";
@@ -64,6 +65,43 @@ export const blogSchema = {
   author: { "@id": `${SITE_URL}/#person` },
   publisher: { "@id": `${SITE_URL}/#person` },
 };
+
+/**
+ * `ItemList` of the posts rendered on the index, emitted alongside the `Blog`
+ * schema. Gives crawlers an explicit, ordered list of the articles this page
+ * links to instead of leaving them to infer it from the markup.
+ */
+export function buildBlogItemListSchema(posts: Post[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${BLOG_URL}#posts`,
+    name: BLOG_TITLE,
+    description: BLOG_DESCRIPTION,
+    numberOfItems: posts.length,
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    itemListElement: posts.map((post, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${BLOG_URL}/${post.slug}`,
+      item: {
+        "@type": "BlogPosting",
+        "@id": `${BLOG_URL}/${post.slug}#article`,
+        url: `${BLOG_URL}/${post.slug}`,
+        mainEntityOfPage: `${BLOG_URL}/${post.slug}`,
+        headline: post.title,
+        description: post.description,
+        image: post.imageUrl ? [post.imageUrl] : undefined,
+        datePublished: post.createdAt,
+        dateModified: post.updatedAt,
+        inLanguage: "en",
+        isPartOf: { "@id": `${BLOG_URL}#blog` },
+        author: { "@id": `${SITE_URL}/#person` },
+        publisher: { "@id": `${SITE_URL}/#person` },
+      },
+    })),
+  };
+}
 
 export const blogBreadcrumbSchema = {
   "@context": "https://schema.org",
