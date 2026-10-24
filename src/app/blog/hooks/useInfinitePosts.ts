@@ -2,8 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getPosts, type Post } from "@/api/posts";
-
-export const POSTS_PAGE_SIZE = 10;
+import { POSTS_PAGE_SIZE } from "../const/posts";
 
 export type InitialPostsData = {
   items: Post[];

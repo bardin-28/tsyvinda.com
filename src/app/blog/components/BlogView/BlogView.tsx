@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { PostsList } from "../PostsList/PostsList";
+import { POSTS_PAGE_SIZE } from "../../const/posts";
 import {
   useInfinitePosts,
-  POSTS_PAGE_SIZE,
   type InitialPostsData,
 } from "../../hooks/useInfinitePosts";
 import styles from "../../page.module.css";

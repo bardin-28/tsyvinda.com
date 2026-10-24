@@ -1,11 +1,9 @@
 import { getPosts } from "@/api/posts";
 import { BlogTopics } from "./components/BlogTopics/BlogTopics";
 import { BlogView } from "./components/BlogView/BlogView";
+import { POSTS_PAGE_SIZE } from "./const/posts";
 import { buildBlogItemListSchema } from "./const/seo";
-import {
-  POSTS_PAGE_SIZE,
-  type InitialPostsData,
-} from "./hooks/useInfinitePosts";
+import type { InitialPostsData } from "./hooks/useInfinitePosts";
 
 // ISR: prerender the list as static HTML (so crawlers see real posts/links),
 // refreshed periodically.
