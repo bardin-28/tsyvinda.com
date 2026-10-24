@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev",
     "dev:https": "NODE_OPTIONS='--max-old-space-size=4096' next dev --experimental-https --experimental-https-key ./certs/local.tsyvinda.com-key.pem --experimental-https-cert ./certs/local.tsyvinda.com.pem -H local.tsyvinda.com -p 443",
+    "dev:local": "NEXT_DIST_DIR=.next-local API_URL=https://api.tsyvinda.local NODE_EXTRA_CA_CERTS=\"$(mkcert -CAROOT)/rootCA.pem\" NODE_OPTIONS='--max-old-space-size=4096' next dev -p 3000",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "next start",
     "lint": "eslint",
