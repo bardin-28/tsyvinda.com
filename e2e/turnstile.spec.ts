@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 
+import { AUTH_UI_ENABLED } from "../src/shared/const/features";
 import { mockLoginSuccess } from "./helpers/auth";
 import { installTurnstileStub, STUB_TURNSTILE_TOKEN } from "./helpers/turnstileStub";
 
@@ -11,6 +12,9 @@ import { installTurnstileStub, STUB_TURNSTILE_TOKEN } from "./helpers/turnstileS
 // Shared contract field name (src/shared/turnstile/constants.ts) that the
 // frontend sends and Cloudflare siteverify expects.
 const TURNSTILE_TOKEN_FIELD = "cf-turnstile-response";
+
+// Drives the login form, which 404s while the website auth UI is switched off.
+test.skip(!AUTH_UI_ENABLED, "website auth UI is disabled");
 
 const VALID_EMAIL = "user@example.com";
 const VALID_PASSWORD = "password123";

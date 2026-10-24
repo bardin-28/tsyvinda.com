@@ -1,6 +1,11 @@
 import { test, expect } from "@playwright/test";
 
+import { AUTH_UI_ENABLED } from "../src/shared/const/features";
 import { mockLoginSuccess, mockLoginFailure } from "./helpers/auth";
+
+// The website auth UI is switched off (/login 404s); auth-disabled.spec.ts
+// covers that state. Kept for when AUTH_UI_ENABLED is flipped back on.
+test.skip(!AUTH_UI_ENABLED, "website auth UI is disabled");
 
 // /login: noindex metadata, Zod client validation, and the submit flow with the
 // auth backend mocked via page.route (login + profile are client-side fetches).
