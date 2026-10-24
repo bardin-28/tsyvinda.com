@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ROUTES } from "@/shared/const";
+import { AUTH_UI_ENABLED, ROUTES } from "@/shared/const";
 import { AuthButton } from "@/shared/components";
 import { DEFAULT_COVER, getSizePreset, type CoverState } from "./const";
 import { CoverControls } from "./components/CoverControls";
@@ -79,7 +79,7 @@ export default function CoverGeneratorPage() {
           </svg>
           <span>Back to blog</span>
         </Link>
-        <AuthButton />
+        {AUTH_UI_ENABLED && <AuthButton />}
       </nav>
 
       <main className={styles.main}>

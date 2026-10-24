@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
+import { AUTH_UI_ENABLED } from "@/shared/const";
 import { NAME } from "@/shared/lib/site";
 
 export const metadata: Metadata = {
@@ -27,5 +29,8 @@ export default function RegisterLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Auth UI is disabled for now (see AUTH_UI_ENABLED): the route 404s.
+  if (!AUTH_UI_ENABLED) notFound();
+
   return children;
 }

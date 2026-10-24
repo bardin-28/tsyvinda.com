@@ -41,8 +41,10 @@ export default function LocationMap() {
       attributionControl
       aria-label="Map of Kyiv, Ukraine showing the city border"
     >
+      {/* Keyless OSM tiles (CARTO basemaps now require an API key); darkened via CSS. */}
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        maxZoom={19}
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />
       <GeoJSON data={KYIV_BORDER} style={BORDER_STYLE} />

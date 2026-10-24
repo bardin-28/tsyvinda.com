@@ -7,6 +7,7 @@ import {
   siteNavigationSchema,
   websiteSchema,
 } from "@/shared/lib/schemas";
+import { AUTH_UI_ENABLED } from "@/shared/const";
 import { UserProvider } from "@/shared/contexts/UserContext";
 import { AntdProvider } from "@/shared/providers/AntdProvider";
 import { SiteHeader, SiteFooter, ApprovalBanner } from "@/shared/components";
@@ -106,7 +107,7 @@ export default function RootLayout({
             <SiteHeader />
             {children}
             <SiteFooter />
-            <ApprovalBanner />
+            {AUTH_UI_ENABLED && <ApprovalBanner />}
           </UserProvider>
         </AntdProvider>
         {GA_ID && (

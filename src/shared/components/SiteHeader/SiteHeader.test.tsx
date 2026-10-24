@@ -14,6 +14,15 @@ jest.mock("@/shared/contexts/UserContext", () => ({
   useUser: jest.fn(),
 }));
 
+// The auth UI ships disabled; most tests flip it on to keep covering it.
+let mockAuthUiEnabled = true;
+jest.mock("@/shared/const", () => ({
+  ...jest.requireActual("@/shared/const"),
+  get AUTH_UI_ENABLED() {
+    return mockAuthUiEnabled;
+  },
+}));
+
 const usePathnameMock = usePathname as jest.MockedFunction<typeof usePathname>;
 const useUserMock = useUser as jest.MockedFunction<typeof useUser>;
 
@@ -32,6 +41,7 @@ function mockUser(user: { firstName: string } | null) {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  mockAuthUiEnabled = true;
   usePathnameMock.mockReturnValue("/");
   mockUser(null);
 });
@@ -120,6 +130,20 @@ describe("SiteHeader", () => {
 
     await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
 
+    expect(screen.queryByRole("menuitem", { name: "Profile" })).not.toBeInTheDocument();
+  });
+
+  it("hides Sign in, Log out and Profile while the auth UI is disabled", async () => {
+    mockAuthUiEnabled = false;
+    mockUser({ firstName: "Vladyslav" });
+    const user = userEvent.setup();
+    render(<SiteHeader />);
+
+    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+
+    expect(screen.getByRole("menuitem", { name: "Home" })).toBeInTheDocument();
+    expect(screen.queryByRole("menuitem", { name: /sign in/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("menuitem", { name: /log out/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("menuitem", { name: "Profile" })).not.toBeInTheDocument();
   });
 
