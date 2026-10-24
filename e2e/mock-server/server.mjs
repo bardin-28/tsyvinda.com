@@ -33,6 +33,13 @@ const server = createServer((req, res) => {
 
   // Blog list — GET /posts
   if (req.method === "GET" && pathname === "/posts") {
+    // Mirror the real API's validation: a non-numeric limit is a 400, so a
+    // broken server-side fetch shows up as a missing SSR list, not a silent pass.
+    const limit = url.searchParams.get("limit");
+    if (limit !== null && !/^\d+$/.test(limit)) {
+      sendJson(res, 400, { error: { code: "VALIDATION_FAILED", message: "limit must be an integer" } });
+      return;
+    }
     sendJson(res, 200, buildPostsPage());
     return;
   }

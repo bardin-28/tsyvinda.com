@@ -18,6 +18,15 @@ test.describe("blog list", () => {
       ).toBeVisible();
     }
   });
+
+  test("ships the post list in the server-rendered HTML", async ({ request }) => {
+    // Raw HTML, no JS: the client-side fetch can't paper over a failed server fetch.
+    const html = await (await request.get("/blog")).text();
+
+    for (const post of POSTS) {
+      expect(html).toContain(`/blog/${post.slug}`);
+    }
+  });
 });
 
 test.describe("blog article", () => {
