@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { ROUTES } from "@/shared/const";
+import { AUTH_UI_ENABLED, ROUTES } from "@/shared/const";
 import { AUTH_COOKIES } from "@/shared/lib/cookies";
 
 // Next.js 16 renamed `middleware` to `proxy` (nodejs runtime, no edge).
@@ -15,6 +15,11 @@ export function proxy(request: NextRequest) {
 
   if (hasSession) {
     return NextResponse.next();
+  }
+
+  // With the auth UI off there is no sign-in page to send the visitor to.
+  if (!AUTH_UI_ENABLED) {
+    return NextResponse.redirect(new URL(ROUTES.HOME, request.url));
   }
 
   const loginUrl = new URL(ROUTES.LOGIN, request.url);

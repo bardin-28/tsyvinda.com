@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { NAV_LINKS, ROUTES, isChromeHidden } from "@/shared/const";
+import { AUTH_UI_ENABLED, NAV_LINKS, ROUTES, isChromeHidden } from "@/shared/const";
 import { NAME } from "@/shared/lib/site";
 import { useUser } from "@/shared/contexts/UserContext";
 import { Logo } from "../Logo/Logo";
@@ -132,7 +132,8 @@ export function SiteHeader() {
                   </motion.div>
                 ))}
 
-                {user && (
+                {/* Profile + Sign in / Log out are hidden while AUTH_UI_ENABLED is off. */}
+                {AUTH_UI_ENABLED && user && (
                   <motion.div key={ROUTES.PROFILE} variants={itemVariants}>
                     <Link
                       href={ROUTES.PROFILE}
@@ -154,40 +155,42 @@ export function SiteHeader() {
                   </motion.div>
                 )}
 
-                <motion.div variants={itemVariants} className={styles.authRow}>
-                  {user ? (
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className={styles.authAction}
-                      onClick={() => {
-                        close();
-                        void logout();
-                      }}
-                    >
-                      <span>Log out</span>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                        <path d="M16 17l5-5-5-5" />
-                        <path d="M21 12H9" />
-                      </svg>
-                    </button>
-                  ) : (
-                    <Link
-                      href={ROUTES.LOGIN}
-                      role="menuitem"
-                      className={styles.authAction}
-                      onClick={close}
-                    >
-                      <span>Sign in</span>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-                        <path d="M10 17l5-5-5-5" />
-                        <path d="M15 12H3" />
-                      </svg>
-                    </Link>
-                  )}
-                </motion.div>
+                {AUTH_UI_ENABLED && (
+                  <motion.div variants={itemVariants} className={styles.authRow}>
+                    {user ? (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className={styles.authAction}
+                        onClick={() => {
+                          close();
+                          void logout();
+                        }}
+                      >
+                        <span>Log out</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                          <path d="M16 17l5-5-5-5" />
+                          <path d="M21 12H9" />
+                        </svg>
+                      </button>
+                    ) : (
+                      <Link
+                        href={ROUTES.LOGIN}
+                        role="menuitem"
+                        className={styles.authAction}
+                        onClick={close}
+                      >
+                        <span>Sign in</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                          <path d="M10 17l5-5-5-5" />
+                          <path d="M15 12H3" />
+                        </svg>
+                      </Link>
+                    )}
+                  </motion.div>
+                )}
               </motion.nav>
             )}
           </AnimatePresence>
