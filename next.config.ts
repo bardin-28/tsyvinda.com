@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   // without the two `next build` outputs clobbering each other. Defaults to the
   // standard `.next` for normal dev/build/deploy.
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  // `npm run dev:local` is reached through the backend's nginx-proxy at https://tsyvinda.local;
+  // Next dev blocks its dev resources (HMR) for hosts not listed here.
+  allowedDevOrigins: ["tsyvinda.local"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**" },

@@ -13,6 +13,7 @@ Stack: Next.js 16 (App Router) + React 19 + TypeScript. Tailwind is **not** used
 ```bash
 npm run dev              # next dev — http://localhost:3000
 npm run dev:https        # next dev on https://local.tsyvinda.com:443 (needs ./certs/local.tsyvinda.com{,-key}.pem)
+npm run dev:local        # next dev on :3000, served at https://tsyvinda.local by ../be's nginx-proxy (fe-proxy service); API_URL=https://api.tsyvinda.local, mkcert CA trusted, distDir .next-local. tsyvinda.local is in allowedDevOrigins.
 npm run build            # next build (incremental: tsconfig.tsbuildinfo)
 npm run start            # serve the production build
 npm run lint             # eslint (flat config, next/core-web-vitals + next/typescript)

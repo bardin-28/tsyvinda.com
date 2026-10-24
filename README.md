@@ -32,12 +32,25 @@ npm run dev:https    # https://local.tsyvinda.com:443
 
 Needs `./certs/local.tsyvinda.com{,-key}.pem`.
 
+Against the **local** backend (`../be`, `docker compose up`):
+
+```bash
+npm run dev:local    # next dev on :3000 → https://tsyvinda.local, /api → https://api.tsyvinda.local
+```
+
+HTTPS is terminated by the backend's nginx-proxy (its `fe-proxy` service forwards
+`tsyvinda.local` to this machine's :3000), so the backend stack must be up. Needs
+`127.0.0.1 tsyvinda.local` in `/etc/hosts`. `tsyvinda.local` matches the local backend's
+`COOKIE_DOMAIN=.tsyvinda.local`, and `https://tsyvinda.local` must be in its `FRONTEND_HOST`.
+Builds into `.next-local/`; the mkcert CA is trusted for the server-side `/api` proxy.
+
 ## Commands
 
 | Command | What |
 | --- | --- |
 | `npm run dev` | Dev server on :3000 |
 | `npm run dev:https` | Dev server on https://local.tsyvinda.com:443 |
+| `npm run dev:local` | Dev server behind https://tsyvinda.local against the local backend |
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint (flat config) |
