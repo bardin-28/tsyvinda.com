@@ -94,7 +94,7 @@ Page-local data/copy lives in `const/`; route-only components in `components/`. 
 
 ## Deployment
 
-Containerised via root `Dockerfile` (`node:lts`, `npm install`, `next build`, `npm start` on port 3000). `compose.yaml` runs the app behind `nginxproxy/nginx-proxy` + `acme-companion` for Let's Encrypt TLS; auxiliary nginx config lives under `docker/nginx-proxy/`. Compose env vars are documented in `.env.example`.
+Containerised via root `Dockerfile` (`node:lts`, `npm ci`, `next build`, `npm start` on port 3000). Prod runs on K3s: CI builds the image with `API_URL` + `NEXT_PUBLIC_TURNSTILE_SITE_KEY` as build args, pushes it to ECR and bumps the tag in the infra repo, which ArgoCD deploys. App env vars are documented in `.env.example`.
 
 ## Important Notes
 

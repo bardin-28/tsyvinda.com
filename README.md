@@ -169,10 +169,10 @@ cookie-based: the backend sets `access` + `refresh` (HttpOnly) and `has_session`
 
 ## Deployment
 
-Containerised via the root `Dockerfile` (`node:lts`, `npm install`, `next build`,
-`npm start` on port 3000). `compose.yaml` runs the app behind
-`nginxproxy/nginx-proxy` + `acme-companion` for Let's Encrypt TLS.
+Containerised via the root `Dockerfile` (`node:lts`, `npm ci`, `next build`,
+`npm start` on port 3000). Prod runs on K3s, deployed by ArgoCD from the infra repo.
 
 CI (`.github/workflows/deploy.yml`): a `test` job runs lint → unit → build → e2e
-on every PR and on push to `main`; the `deploy` job (`needs: test`) runs the SSH
-deploy only after the gate passes on a push to `main`.
+on every PR and on push to `main`; the `deploy` job (`needs: test`) builds the
+image, pushes it to ECR and bumps the image tag in the infra repo, only after the
+gate passes on a push to `main`.
