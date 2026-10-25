@@ -141,3 +141,6 @@ describe("API client (server runtime)", () => {
     });
   });
 });
+
+// No static imports (the module under test is loaded per test), so mark this file as a module.
+export {};

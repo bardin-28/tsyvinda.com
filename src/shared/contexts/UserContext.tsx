@@ -38,25 +38,32 @@ export function UserProvider({ children, initialUser = null }: UserProviderProps
   const [loading, setLoading] = useState(initialUser === null && hasCookie(AUTH_COOKIES.SESSION_FLAG));
   const [error, setError] = useState<ApiError | null>(null);
 
+  // State updates run only in promise callbacks (after the request settles), so the mount
+  // effect can call this without a synchronous setState (react-hooks/set-state-in-effect).
+  const loadProfile = useCallback(
+    (): Promise<void> =>
+      getProfile()
+        .then((data: User) => {
+          setUser(data);
+        })
+        .catch((e: unknown) => {
+          setUser(null);
+
+          if (e instanceof ApiError) {
+            setError(e);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        }),
+    [],
+  );
+
   const fetchUser = useCallback(async () => {
     setLoading(true);
     setError(null);
-
-    try {
-      const data = await getProfile();
-      setUser(data);
-
-    } catch (e) {
-      setUser(null);
-
-      if (e instanceof ApiError) {
-        setError(e);
-      }
-
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    await loadProfile();
+  }, [loadProfile]);
 
   const logout = useCallback(async () => {
     try {
@@ -69,11 +76,12 @@ export function UserProvider({ children, initialUser = null }: UserProviderProps
     }
   }, []);
 
+  // Initial state already has loading = true and error = null when this fetch is needed.
   useEffect(() => {
     if (initialUser === null && hasCookie(AUTH_COOKIES.SESSION_FLAG)) {
-      void fetchUser();
+      void loadProfile();
     }
-  }, [fetchUser, initialUser]);
+  }, [loadProfile, initialUser]);
 
   const value = useMemo<UserContextValue>(
     () => ({ user, loading, error, refetch: fetchUser, setUser, logout }),
