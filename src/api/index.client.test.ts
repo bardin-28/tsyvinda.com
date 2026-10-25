@@ -105,3 +105,6 @@ describe("API client (browser runtime)", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });
+
+// No static imports (the module under test is loaded per test), so mark this file as a module.
+export {};

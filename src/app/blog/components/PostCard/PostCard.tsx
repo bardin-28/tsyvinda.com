@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/shared/const";
 import type { Post } from "@/api/posts";
+import { PostCoverImage } from "../PostCoverImage/PostCoverImage";
 import styles from "./PostCard.module.css";
 
 type PostCardProps = {
@@ -20,7 +21,6 @@ function getAuthorInitials(firstName: string, lastName: string): string {
 
 export function PostCard({ post }: PostCardProps) {
   const { slug, title, description, author, createdAt } = post;
-  const imageUrl = post.imageUrl || undefined;
   const authorImageUrl = author.profileImageUrl || undefined;
   const authorName = `${author.firstName} ${author.lastName}`.trim();
   const formattedDate = (() => {
@@ -35,17 +35,12 @@ export function PostCard({ post }: PostCardProps) {
       aria-label={`Read article: ${title}`}
     >
       <div className={styles.imageWrap}>
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={styles.image}
-          />
-        ) : (
-          <div className={styles.imageFallback}>No image</div>
-        )}
+        <PostCoverImage
+          src={post.imageUrl}
+          alt={title}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className={styles.image}
+        />
       </div>
 
       <div className={styles.body}>

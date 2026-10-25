@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import type { Post } from "@/api/posts";
 import { PostCard } from "./PostCard";
 
@@ -56,6 +56,12 @@ describe("PostCard", () => {
   it("shows a no-image placeholder when imageUrl is empty", () => {
     const post: Post = { ...basePost, imageUrl: "" };
     render(<PostCard post={post} />);
+    expect(screen.getByText("No image")).toBeInTheDocument();
+  });
+
+  it("shows the no-image placeholder when the cover fails to load", () => {
+    render(<PostCard post={basePost} />);
+    fireEvent.error(screen.getByRole("img", { name: basePost.title }));
     expect(screen.getByText("No image")).toBeInTheDocument();
   });
 });

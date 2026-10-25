@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { ApiError } from "@/api";
 import { getPostBySlug, type Post } from "@/api/posts";
 import { ROUTES } from "@/shared/const";
+import { PostCoverImage } from "../components/PostCoverImage/PostCoverImage";
 import {
   buildArticleBreadcrumb,
   buildArticleMetadata,
@@ -151,17 +152,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
         </header>
 
-        {post.imageUrl && (
-          <div className={styles.heroImage}>
-            <Image
-              src={post.imageUrl}
-              alt={post.title}
-              fill
-              sizes="(max-width: 820px) 100vw, 820px"
-              priority
-            />
-          </div>
-        )}
+        <div className={styles.heroImage}>
+          <PostCoverImage
+            src={post.imageUrl}
+            alt={post.title}
+            sizes="(max-width: 820px) 100vw, 820px"
+            priority
+          />
+        </div>
 
         <article
           className={styles.article}

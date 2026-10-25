@@ -31,25 +31,11 @@
 }
 
 .image {
-  object-fit: cover;
   transition: transform 0.6s ease;
 }
 
 .card:hover .image {
   transform: scale(1.04);
-}
-
-.imageFallback {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--accent-bg-2), var(--surface-cool));
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .body {
