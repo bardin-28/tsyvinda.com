@@ -69,8 +69,9 @@ jobs:
   # baked in → push to ECR (keyless OIDC) → bump the image tag in the infra repo.
   # CI never touches the cluster — ArgoCD reconciles the tag commit.
   #
-  # NOTE: frontend config is BUILD-TIME. API_URL + the Turnstile site key are baked
-  # into the image here; they cannot be changed at runtime via the Helm values.
+  # NOTE: frontend config is BUILD-TIME. API_URL, the Turnstile site key and GA_ID are
+  # baked into the image here; they cannot be changed at runtime via the Helm values.
+  # Changing one in Infisical needs a re-run of this job (workflow_dispatch).
   deploy:
     name: Build, push ECR, bump infra tag
     needs: test
@@ -81,31 +82,66 @@ jobs:
       && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
-      id-token: write # assume the AWS deploy role via OIDC
+      id-token: write # Infisical + AWS deploy role via OIDC
       contents: read
 
     steps:
       - uses: actions/checkout@v4
 
+      # All config comes from Infisical (prod). Keyless: the machine identity trusts
+      # this repo's GitHub OIDC token on main.
+      #   /CI    — shared with the be repo: AWS_REGION, AWS_DEPLOY_ROLE_ARN,
+      #            INFRA_REPOSITORY, INFRA_REPO_TOKEN
+      #   /CI/FE — ECR_REPOSITORY
+      #   /FE    — image build args: API_URL, NEXT_PUBLIC_TURNSTILE_SITE_KEY, GA_ID
+      - name: Load shared CI env from Infisical
+        uses: Infisical/secrets-action@v1.0.18
+        with:
+          method: oidc
+          identity-id: ${{ vars.INFISICAL_IDENTITY_ID }}
+          domain: ${{ vars.INFISICAL_DOMAIN }}
+          project-id: e9e24553-ba29-4218-9050-8e5b0efcb707
+          env-slug: prod
+          secret-path: /CI
+
+      - name: Load frontend CI env from Infisical
+        uses: Infisical/secrets-action@v1.0.18
+        with:
+          method: oidc
+          identity-id: ${{ vars.INFISICAL_IDENTITY_ID }}
+          domain: ${{ vars.INFISICAL_DOMAIN }}
+          project-id: e9e24553-ba29-4218-9050-8e5b0efcb707
+          env-slug: prod
+          secret-path: /CI/FE
+
+      - name: Load frontend build args from Infisical
+        uses: Infisical/secrets-action@v1.0.18
+        with:
+          method: oidc
+          identity-id: ${{ vars.INFISICAL_IDENTITY_ID }}
+          domain: ${{ vars.INFISICAL_DOMAIN }}
+          project-id: e9e24553-ba29-4218-9050-8e5b0efcb707
+          env-slug: prod
+          secret-path: /FE
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - id: ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      # API_URL must be the in-cluster backend Service — server-side rewrites resolve
+      # it, the public host (api.tsyvinda.com) is NOT reachable from inside the pod.
       - name: Build and push image
         env:
-          IMAGE: ${{ steps.ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
-          # In-cluster backend Service — server-side rewrites resolve this, the
-          # public host (api.tsyvinda.com) is NOT reachable from inside the pod.
-          API_URL: ${{ vars.FRONTEND_API_URL }}
-          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+          IMAGE: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
         run: |
           docker build \
             --build-arg "API_URL=${API_URL}" \
             --build-arg "NEXT_PUBLIC_TURNSTILE_SITE_KEY=${NEXT_PUBLIC_TURNSTILE_SITE_KEY}" \
+            --build-arg "GA_ID=${GA_ID}" \
             -t "$IMAGE" .
           docker push "$IMAGE"
 
@@ -113,8 +149,8 @@ jobs:
       - name: Checkout infra repo
         uses: actions/checkout@v4
         with:
-          repository: ${{ vars.INFRA_REPOSITORY }}
-          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          repository: ${{ env.INFRA_REPOSITORY }}
+          token: ${{ env.INFRA_REPO_TOKEN }}
           path: infra
 
       - name: Bump frontend image tag
