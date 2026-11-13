@@ -1,6 +1,7 @@
+import { RouteMapProvider, pagePath, type RouteMap } from "@/shared/cms";
+import { getRouteMap } from "@/shared/cms/api";
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -20,6 +21,12 @@ import { UserProvider } from "@/shared/contexts/UserContext";
 import { AntdProvider } from "@/shared/providers/AntdProvider";
 import { SiteHeader, SiteFooter, LocalePreference } from "@/shared/components";
 import "./(home)/globals.css";
+import {
+  ConsentProvider,
+  CookieBanner,
+  CookiePreferences,
+  GoogleAnalytics,
+} from "@/shared/consent";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -45,9 +52,17 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-async function siteSchemaCopy(locale: Locale): Promise<SiteSchemaCopy> {
+async function siteSchemaCopy(
+  locale: Locale,
+  routeMap: RouteMap,
+): Promise<SiteSchemaCopy> {
   const t = await getTranslations({ locale, namespace: "common" });
   return {
+    paths: {
+      about: pagePath(routeMap, "about", locale),
+      blog: pagePath(routeMap, "blog", locale),
+      contacts: pagePath(routeMap, "contacts", locale),
+    },
     name: t("site.name"),
     jobTitle: t("site.jobTitle"),
     description: t("site.description"),
@@ -129,12 +144,13 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
   if (!hasLocale(routing.locales, locale)) notFound();
   // Lets the pages below render statically per language
   setRequestLocale(locale);
-  const schemaCopy = await siteSchemaCopy(locale);
+  // CMS addresses for menus and links (default slugs while the API is unreachable)
+  const routeMap = await getRouteMap();
+  const schemaCopy = await siteSchemaCopy(locale, routeMap);
 
   return (
     <html lang={locale} className={roboto.variable}>
       <head>
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
@@ -161,31 +177,23 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
       </head>
       <body>
         <NextIntlClientProvider>
-          <AntdProvider>
-            <UserProvider>
-              <LocalePreference />
-              <SiteHeader />
-              {children}
-              <SiteFooter />
-            </UserProvider>
-          </AntdProvider>
+          <ConsentProvider>
+            <AntdProvider>
+              <RouteMapProvider routeMap={routeMap}>
+                <UserProvider>
+                  <LocalePreference />
+                  <SiteHeader />
+                  {children}
+                  <SiteFooter />
+                </UserProvider>
+                <CookieBanner />
+                <CookiePreferences />
+              </RouteMapProvider>
+            </AntdProvider>
+            {/* Loads gtag only after the visitor allows analytics cookies */}
+            {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+          </ConsentProvider>
         </NextIntlClientProvider>
-        {GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_ID}');
-              `}
-            </Script>
-          </>
-        )}
       </body>
     </html>
   );

@@ -5,7 +5,8 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
-import { AUTH_UI_ENABLED, ROUTES } from "@/shared/const";
+import { usePagePath } from "@/shared/cms";
+import { AUTH_UI_ENABLED } from "@/shared/const";
 import { AuthButton } from "@/shared/components";
 import { DEFAULT_COVER, getSizePreset, type CoverState } from "./const";
 import { CoverControls } from "./components/CoverControls";
@@ -30,6 +31,7 @@ function slugify(input: string): string {
 }
 
 export default function CoverGeneratorPage() {
+  const blogPath = usePagePath("blog");
   const [state, setState] = useState<CoverState>(DEFAULT_COVER);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const composerRef = useRef<CoverComposerHandle | null>(null);
@@ -66,7 +68,7 @@ export default function CoverGeneratorPage() {
 
       <nav className={styles.topNav}>
         <Link
-          href={ROUTES.BLOG}
+          href={blogPath}
           className={styles.backLink}
           aria-label={t("backToBlog")}
         >

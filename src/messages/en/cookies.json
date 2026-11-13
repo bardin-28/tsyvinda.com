@@ -1,0 +1,54 @@
+{
+  "list": {
+    "title": "Cookies on this site",
+    "headers": {
+      "name": "Name",
+      "provider": "Provider",
+      "purpose": "Purpose",
+      "duration": "Duration",
+      "category": "Category"
+    },
+    "categoryNames": {
+      "necessary": "Strictly necessary",
+      "analytics": "Analytics"
+    },
+    "rows": {
+      "consent": {
+        "purpose": "Stores your cookie choice so the banner is not shown again.",
+        "duration": "6 months"
+      },
+      "locale": {
+        "purpose": "Remembers the language you picked.",
+        "duration": "Until cleared"
+      },
+      "access": {
+        "purpose": "Sign-in session (HttpOnly). Set only when you sign in.",
+        "duration": "15 minutes"
+      },
+      "refresh": {
+        "purpose": "Keeps you signed in (HttpOnly). Set only when you sign in.",
+        "duration": "30 days"
+      },
+      "hasSession": {
+        "purpose": "Tells the page that a sign-in session exists.",
+        "duration": "30 days"
+      },
+      "cloudflare": {
+        "purpose": "Bot protection and security checks by Cloudflare, which delivers this site.",
+        "duration": "30 minutes – 1 year"
+      },
+      "turnstile": {
+        "purpose": "Anti-spam check on forms, inside Cloudflare's frame.",
+        "duration": "Session"
+      },
+      "ga": {
+        "purpose": "Distinguishes visitors for anonymous statistics.",
+        "duration": "2 years"
+      },
+      "gaSession": {
+        "purpose": "Keeps the state of a visit for anonymous statistics.",
+        "duration": "2 years"
+      }
+    }
+  }
+}

@@ -1,14 +1,4 @@
 {
-  "seo": {
-    "title": "Contacts",
-    "socialTitle": "Contacts — Vladyslav Tsyvinda",
-    "description": "Get in touch with Vladyslav Tsyvinda — Full-Stack Lead Developer. Reach out on LinkedIn, Telegram, or by email.",
-    "keywords": "Vladyslav Tsyvinda contact, Bardin28 contact, hire frontend developer, contact React engineer, contact Next.js developer, Vladyslav Tsyvinda email, Vladyslav Tsyvinda LinkedIn"
-  },
-  "hero": {
-    "title": "Let’s <accent>work together</accent>",
-    "lead": "Based in <accent>Kyiv, Ukraine</accent>, and work with teams across time zones. <br></br>Open to new projects and collaboration — reach me on any channel below and I’ll usually reply within a day."
-  },
   "map": {
     "label": "Map of Kyiv, Ukraine showing the city border"
   }

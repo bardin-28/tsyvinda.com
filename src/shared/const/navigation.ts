@@ -1,12 +1,18 @@
+import type { PageKey } from "@/shared/cms/schemas";
+
 import { ROUTES } from "./routes";
 
 /** Key under `common.nav` in the message files */
 export type NavLabelKey =
-  "home" | "about" | "blog" | "contacts" | "privacyPolicy";
+  "home" | "about" | "blog" | "contacts" | "privacyPolicy" | "cookiePolicy";
 
+/**
+ * A link to a CMS page. Its address comes from the CMS route map (editable per language in the
+ * admin), so components resolve it with `usePaths().page(pageKey)`.
+ */
 export type NavLink = {
   labelKey: NavLabelKey;
-  href: string;
+  pageKey: PageKey;
 };
 
 /**
@@ -15,10 +21,10 @@ export type NavLink = {
  * as a distinct auth action inside the header menu).
  */
 export const NAV_LINKS: NavLink[] = [
-  { labelKey: "home", href: ROUTES.HOME },
-  { labelKey: "about", href: ROUTES.ABOUT },
-  { labelKey: "blog", href: ROUTES.BLOG },
-  { labelKey: "contacts", href: ROUTES.CONTACTS },
+  { labelKey: "home", pageKey: "home" },
+  { labelKey: "about", pageKey: "about" },
+  { labelKey: "blog", pageKey: "blog" },
+  { labelKey: "contacts", pageKey: "contacts" },
 ];
 
 /**
@@ -26,7 +32,8 @@ export const NAV_LINKS: NavLink[] = [
  * menu stays limited to the primary pages.
  */
 export const LEGAL_LINKS: NavLink[] = [
-  { labelKey: "privacyPolicy", href: ROUTES.PRIVACY_POLICY },
+  { labelKey: "privacyPolicy", pageKey: "privacy-policy" },
+  { labelKey: "cookiePolicy", pageKey: "cookie-policy" },
 ];
 
 /**

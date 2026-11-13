@@ -16,7 +16,8 @@
     "homeDescription": "Intro and quick links.",
     "aboutDescription": "Bio, stack, experience, education.",
     "blogDescription": "Articles on frontend engineering, React, Next.js, and product delivery.",
-    "contactsDescription": "Get in touch — LinkedIn, Telegram, and email."
+    "contactsDescription": "Get in touch — LinkedIn, Telegram, and email.",
+    "cookiePolicy": "Cookie Policy"
   },
   "header": {
     "homeLabel": "{name} — home",
@@ -55,5 +56,35 @@
     "linkedin": "LinkedIn",
     "telegram": "Telegram",
     "email": "Email"
+  },
+  "consent": {
+    "settingsLink": "Cookie settings",
+    "banner": {
+      "title": "We value your privacy",
+      "text": "This site uses cookies that are necessary for it to work, including one that remembers your language. With your permission it also uses cookies to count visits anonymously. You can change your choice at any time in Cookie settings. Read more in the <link>Cookie Policy</link>.",
+      "settings": "Cookie settings",
+      "rejectAll": "Reject all",
+      "acceptAll": "Accept all"
+    },
+    "preferences": {
+      "title": "Your cookie options",
+      "intro": "tsyvinda.com uses two types of cookies, described below. Strictly necessary cookies are always on because the site cannot work without them; analytics cookies are used only if you allow them. To learn more, read the <link>Cookie Policy</link>.",
+      "allowAll": "Allow all",
+      "manage": "Manage consent preferences",
+      "alwaysActive": "Always active",
+      "rejectAll": "Reject all",
+      "confirm": "Confirm my choices",
+      "close": "Close"
+    },
+    "categories": {
+      "necessary": {
+        "name": "Strictly necessary cookies",
+        "description": "Needed for the site to work and to keep it secure: your cookie choice, your language, sign-in sessions and Cloudflare's bot protection. They do not track you and cannot be switched off."
+      },
+      "analytics": {
+        "name": "Analytics cookies",
+        "description": "Google Analytics counts visits and shows which pages are read, anonymously and in aggregate. It helps decide what to write next. Nothing is loaded from Google unless you allow it."
+      }
+    }
   }
 }

@@ -10,3 +10,4 @@ export type { NavLink, NavLabelKey } from "./navigation";
 export { SOCIAL_NAV } from "./social";
 export type { SocialNavItem } from "./social";
 export { AUTH_UI_ENABLED } from "./features";
+export { PAGE_UPDATED_AT } from "./pageUpdatedAt";

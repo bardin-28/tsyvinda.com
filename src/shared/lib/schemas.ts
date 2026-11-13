@@ -1,9 +1,11 @@
 import { absoluteUrl } from "@/i18n/seo";
 import type { Locale } from "@/i18n/locales";
+import { PAGE_UPDATED_AT, ROUTES } from "@/shared/const";
 import {
   ALTERNATE_NAME,
   ALUMNI_OF,
   AVATAR,
+  EMAIL,
   EMPLOYER,
   KNOWS_ABOUT,
   LOCATION,
@@ -22,6 +24,8 @@ export type SiteSchemaCopy = {
     "home" | "about" | "blog" | "contacts",
     { name: string; description: string }
   >;
+  /** Unprefixed CMS addresses in this language (default slugs when omitted) */
+  paths?: Partial<Record<"about" | "blog" | "contacts", string>>;
 };
 
 export function buildPersonSchema(locale: Locale, copy: SiteSchemaCopy) {
@@ -41,6 +45,14 @@ export function buildPersonSchema(locale: Locale, copy: SiteSchemaCopy) {
     },
     jobTitle: copy.jobTitle,
     description: copy.description,
+    email: EMAIL,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "professional inquiries",
+      email: EMAIL,
+      url: absoluteUrl(copy.paths?.contacts ?? ROUTES.CONTACTS, locale),
+      availableLanguage: ["English", "Ukrainian"],
+    },
     gender: "Male",
     nationality: { "@type": "Country", name: copy.country },
     address: {
@@ -117,7 +129,10 @@ export function buildSiteNavigationSchema(
       "@id": `${SITE_URL}/#nav-${key}`,
       name: copy.nav[key].name,
       description: copy.nav[key].description,
-      url: absoluteUrl(NAV_SCHEMA_PATHS[key], locale),
+      url: absoluteUrl(
+        key === "home" ? "/" : (copy.paths?.[key] ?? NAV_SCHEMA_PATHS[key]),
+        locale,
+      ),
       isPartOf: { "@id": `${SITE_URL}/#website` },
     })),
   };
@@ -149,6 +164,7 @@ export function buildHomePageSchema(locale: Locale, copy: SiteSchemaCopy) {
     name: copy.name,
     description: copy.description,
     inLanguage: locale,
+    dateModified: PAGE_UPDATED_AT.home,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     primaryImageOfPage: {
       "@type": "ImageObject",

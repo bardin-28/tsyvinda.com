@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { Link, usePathname } from "@/i18n/navigation";
+import { usePaths } from "@/shared/cms";
 
 import {
   LEGAL_LINKS,
@@ -10,6 +11,7 @@ import {
   SOCIAL_NAV,
   isChromeHidden,
 } from "@/shared/const";
+import { CookieSettingsButton } from "@/shared/consent";
 
 import styles from "./SiteFooter.module.css";
 
@@ -17,6 +19,7 @@ export function SiteFooter() {
   const pathname = usePathname();
   const t = useTranslations("common");
 
+  const paths = usePaths();
   if (isChromeHidden(pathname)) return null;
 
   const year = new Date().getFullYear();
@@ -26,7 +29,11 @@ export function SiteFooter() {
       <div className={styles.inner}>
         <nav className={styles.nav} aria-label={t("footer.nav")}>
           {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className={styles.navLink}>
+            <Link
+              key={link.pageKey}
+              href={paths.page(link.pageKey)}
+              className={styles.navLink}
+            >
               {t(`nav.${link.labelKey}`)}
             </Link>
           ))}
@@ -50,10 +57,17 @@ export function SiteFooter() {
 
         <nav className={styles.legal} aria-label={t("footer.legal")}>
           {LEGAL_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className={styles.legalLink}>
+            <Link
+              key={link.pageKey}
+              href={paths.page(link.pageKey)}
+              className={styles.legalLink}
+            >
               {t(`nav.${link.labelKey}`)}
             </Link>
           ))}
+          <CookieSettingsButton
+            className={`${styles.legalLink} ${styles.legalButton}`}
+          />
         </nav>
 
         <p className={styles.copyright}>

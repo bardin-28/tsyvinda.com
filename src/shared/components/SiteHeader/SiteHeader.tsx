@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
+import { usePaths } from "@/shared/cms";
+
 import { Link, usePathname } from "@/i18n/navigation";
 
 import {
@@ -56,6 +58,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const t = useTranslations("common");
   const { user, logout } = useUser();
+  const paths = usePaths();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -139,38 +142,41 @@ export function SiteHeader() {
                   animate="visible"
                   exit="exit"
                 >
-                  {NAV_LINKS.map((link) => (
-                    <motion.div key={link.href} variants={itemVariants}>
-                      <Link
-                        href={link.href}
-                        role="menuitem"
-                        className={`${styles.item} ${
-                          isActive(pathname, link.href) ? styles.itemActive : ""
-                        }`}
-                        aria-current={
-                          isActive(pathname, link.href) ? "page" : undefined
-                        }
-                        onClick={close}
-                      >
-                        <span>{t(`nav.${link.labelKey}`)}</span>
-                        <span className={styles.itemArrow} aria-hidden="true">
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M5 12h14" />
-                            <path d="M12 5l7 7-7 7" />
-                          </svg>
-                        </span>
-                      </Link>
-                    </motion.div>
-                  ))}
+                  {NAV_LINKS.map((link) => {
+                    const href = paths.page(link.pageKey);
+                    return (
+                      <motion.div key={link.pageKey} variants={itemVariants}>
+                        <Link
+                          href={href}
+                          role="menuitem"
+                          className={`${styles.item} ${
+                            isActive(pathname, href) ? styles.itemActive : ""
+                          }`}
+                          aria-current={
+                            isActive(pathname, href) ? "page" : undefined
+                          }
+                          onClick={close}
+                        >
+                          <span>{t(`nav.${link.labelKey}`)}</span>
+                          <span className={styles.itemArrow} aria-hidden="true">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M5 12h14" />
+                              <path d="M12 5l7 7-7 7" />
+                            </svg>
+                          </span>
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
 
                   {/* Profile + Sign in / Log out are hidden while AUTH_UI_ENABLED is off. */}
                   {AUTH_UI_ENABLED && user && (

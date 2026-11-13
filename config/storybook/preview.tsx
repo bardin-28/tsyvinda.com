@@ -12,6 +12,12 @@ const roboto = Roboto({
   weight: ["400", "700"],
 });
 
+// Portalled UI (antd Modal, Dropdown) mounts on <body>, outside the decorator <div>, so the font
+// variables are set on <body> too.
+if (typeof document !== "undefined") {
+  document.body.classList.add(roboto.variable, roboto.className);
+}
+
 const preview: Preview = {
   decorators: [
     (Story) => (

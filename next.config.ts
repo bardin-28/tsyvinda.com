@@ -1,11 +1,15 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import { buildSecurityHeaders } from "./src/shared/lib/securityHeaders";
+
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const API_URL = process.env.API_URL ?? "http://localhost:4000";
 
 const nextConfig: NextConfig = {
+  // Don't advertise the framework (X-Powered-By: Next.js)
+  poweredByHeader: false,
   // Allow an alternate build directory so the e2e suite can run a second build
   // (with a Turnstile site key baked in) alongside the default keyless build
   // without the two `next build` outputs clobbering each other. Defaults to the
@@ -22,6 +26,16 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**" },
       { protocol: "http", hostname: "localhost" },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: buildSecurityHeaders({
+          isDev: process.env.NODE_ENV === "development",
+        }),
+      },
+    ];
   },
   async rewrites() {
     return [

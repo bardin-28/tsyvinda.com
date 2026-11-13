@@ -6,11 +6,9 @@ import type { Locale } from "./locales";
  */
 export const MESSAGE_NAMESPACES = [
   "common",
-  "home",
-  "about",
   "blog",
   "contacts",
-  "privacy",
+  "cookies",
   "auth",
   "profile",
   "cover",

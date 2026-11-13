@@ -11,7 +11,7 @@ import { ResetPasswordForm } from "./components/ResetPasswordForm";
 import styles from "./page.module.css";
 
 const AboutScene = dynamic(
-  () => import("@/app/[locale]/about/components/AboutScene/AboutScene"),
+  () => import("@/views/about/components/AboutScene/AboutScene"),
   { ssr: false },
 );
 
