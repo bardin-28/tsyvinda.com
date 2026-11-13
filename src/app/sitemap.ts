@@ -98,7 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const postEntries: MetadataRoute.Sitemap = LOCALES.flatMap((locale) =>
     (postsByLocale.get(locale) ?? []).map((post) => {
-      const paths = postPaths(routeMap, post.slug, post.locales);
+      const paths = postPaths(routeMap, post);
       return {
         url: absoluteUrl(paths[locale]!, locale),
         lastModified: new Date(post.updatedAt),

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { postDate, type Post } from "@/api/posts";
+import { postDate, postKeywords, postSlug, type Post } from "@/api/posts";
 import { OG_LOCALES, type Locale } from "@/i18n/locales";
 import { absoluteUrl, INDEXABLE_ROBOTS } from "@/i18n/seo";
 import type { LocalizedPaths } from "@/shared/cms";
@@ -55,10 +55,11 @@ export function buildArticleMetadata(
   locale: Locale,
   copy: ArticleSeoCopy,
 ): Metadata {
-  const url = buildArticleUrl(post.slug, locale, copy);
+  const url = buildArticleUrl(postSlug(post, locale), locale, copy);
   const authorName = `${post.author.firstName} ${post.author.lastName}`.trim();
   const seo = resolveArticleSeo(post);
   const categoryNames = post.categories.map((category) => category.name);
+  const keywords = postKeywords(post);
   // hreflang only for the languages this post is translated into
   const alternates = localizedPathsAlternates(copy.postPaths, locale);
 
@@ -69,7 +70,7 @@ export function buildArticleMetadata(
       ? { ...alternates, canonical: seo.canonicalOverride }
       : alternates,
     authors: authorName ? [{ name: authorName }] : undefined,
-    keywords: categoryNames.length > 0 ? categoryNames : undefined,
+    keywords: keywords.length > 0 ? keywords : undefined,
     openGraph: {
       type: "article",
       url,
@@ -126,7 +127,7 @@ export function buildArticleSchema(
   locale: Locale,
   copy: ArticleSeoCopy,
 ) {
-  const url = buildArticleUrl(post.slug, locale, copy);
+  const url = buildArticleUrl(postSlug(post, locale), locale, copy);
   const wordCount = countWords(post.htmlContent);
 
   return {
@@ -140,8 +141,7 @@ export function buildArticleSchema(
     image: [resolveArticleSeo(post).image],
     datePublished: postDate(post),
     articleSection: post.categories[0]?.name,
-    keywords:
-      post.categories.map((category) => category.name).join(", ") || undefined,
+    keywords: postKeywords(post).join(", ") || undefined,
     dateModified: post.updatedAt,
     inLanguage: locale,
     isPartOf: { "@id": `${absoluteUrl(copy.blogPath, locale)}#blog` },
@@ -157,7 +157,7 @@ export function buildArticlePageSchema(
   locale: Locale,
   copy: ArticleSeoCopy,
 ) {
-  const url = buildArticleUrl(post.slug, locale, copy);
+  const url = buildArticleUrl(postSlug(post, locale), locale, copy);
   const seo = resolveArticleSeo(post);
   return {
     "@context": "https://schema.org",
@@ -181,7 +181,7 @@ export function buildArticleBreadcrumb(
   locale: Locale,
   copy: ArticleSeoCopy,
 ) {
-  const url = buildArticleUrl(post.slug, locale, copy);
+  const url = buildArticleUrl(postSlug(post, locale), locale, copy);
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
