@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { getPosts, postDate } from "@/api/posts";
+import { getPosts, postDate, postSlug } from "@/api/posts";
 import { DEFAULT_LOCALE, isLocale, type Locale } from "@/i18n/locales";
 import { absoluteUrl } from "@/i18n/seo";
 import { postPath } from "@/shared/cms/routes";
@@ -85,7 +85,7 @@ async function listBlogPosts(args: ToolArguments): Promise<string> {
     linkList(
       items.map((post) => ({
         title: post.title,
-        url: absoluteUrl(postPath(routeMap, post.slug, locale), locale),
+        url: absoluteUrl(postPath(routeMap, postSlug(post, locale), locale), locale),
         description: [
           post.seoDescription || post.description,
           `published ${postDate(post).slice(0, 10)}`,

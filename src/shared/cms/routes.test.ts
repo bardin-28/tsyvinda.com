@@ -23,9 +23,19 @@ describe("CMS paths", () => {
 
   it("puts posts under the blog address", () => {
     expect(postPath(map, "hello", "en")).toBe("/blog/hello");
-    expect(postPaths(map, "hello", ["en", "uk"])).toEqual({
+    expect(postPaths(map, { slug: "hello", locales: ["en", "uk"] })).toEqual({
       en: "/blog/hello",
       uk: "/blog/hello",
     });
+  });
+
+  it("uses each language's own post slug when it has one", () => {
+    expect(
+      postPaths(map, {
+        slug: "hello",
+        slugs: { en: "hello", uk: "pryvit" },
+        locales: ["en", "uk"],
+      }),
+    ).toEqual({ en: "/blog/hello", uk: "/blog/pryvit" });
   });
 });

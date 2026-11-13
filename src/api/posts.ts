@@ -21,7 +21,10 @@ export type Post = {
   locale: Locale;
   /** Languages the post is translated into (for hreflang and the language switch) */
   locales: Locale[];
+  /** Shared key of the post (its English URL segment); used to fetch it */
   slug: string;
+  /** URL segment per language the post exists in (own one, else `slug`) */
+  slugs?: Partial<Record<Locale, string>>;
   title: string;
   description: string | null;
   htmlContent: string;
@@ -35,6 +38,8 @@ export type Post = {
   /** SEO overrides; null = derived from title / description / cover / own URL */
   seoTitle: string | null;
   seoDescription: string | null;
+  /** Search keywords of this language version; empty = the categories are used */
+  keywords?: string[];
   ogImageUrl: string | null;
   canonicalUrl: string | null;
   createdAt: string;
@@ -75,6 +80,17 @@ export function getPostBySlug(slug: string, locale: Locale): Promise<Post> {
 /** Categories with at least one published post in `locale`, A–Z, names in that language. */
 export function getPostCategories(locale: Locale): Promise<PostCategory[]> {
   return API.get<PostCategory[]>("/post-categories", { params: { locale } });
+}
+
+/** URL segment of the post in `locale`: that language's own one, else the shared slug. */
+export function postSlug(post: Pick<Post, "slug" | "slugs">, locale: Locale): string {
+  return post.slugs?.[locale] ?? post.slug;
+}
+
+/** Keywords of a post: its own for this language, else its category names. */
+export function postKeywords(post: Pick<Post, "keywords" | "categories">): string[] {
+  if (post.keywords && post.keywords.length > 0) return post.keywords;
+  return post.categories.map((category) => category.name);
 }
 
 /** The date a post shows as published (falls back to creation for safety). */

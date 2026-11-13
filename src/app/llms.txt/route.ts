@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { getPosts, postDate, type Post } from "@/api/posts";
+import { getPosts, postDate, postSlug, type Post } from "@/api/posts";
 import { LOCALES, type Locale } from "@/i18n/locales";
 import { absoluteUrl } from "@/i18n/seo";
 import { pagePath, postPath, type PageKey, type RouteMap } from "@/shared/cms";
@@ -39,7 +39,7 @@ function postLink(post: Post, locale: Locale, routeMap: RouteMap): LlmsLink {
   const lead = post.seoDescription || post.description;
   return {
     title: post.title,
-    url: absoluteUrl(postPath(routeMap, post.slug, locale), locale),
+    url: absoluteUrl(postPath(routeMap, postSlug(post, locale), locale), locale),
     description: lead ? `${lead} (${publishedOn})` : publishedOn,
   };
 }

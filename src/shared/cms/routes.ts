@@ -1,6 +1,8 @@
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "@/i18n/locales";
 import { ROUTES } from "@/shared/const/routes";
 
+import { postSlug, type Post } from "@/api/posts";
+
 import type { LocalizedPaths, PageKey, RouteMap } from "./schemas";
 
 /**
@@ -40,13 +42,15 @@ export function postPath(map: RouteMap, slug: string, locale: Locale): string {
   return `${pagePath(map, "blog", locale)}/${slug}`;
 }
 
-/** Paths of a post in the languages it is translated into. */
+/** Paths of a post in the languages it is translated into, each with that language's slug. */
 export function postPaths(
   map: RouteMap,
-  slug: string,
-  locales: readonly Locale[],
+  post: Pick<Post, "slug" | "slugs" | "locales">,
 ): LocalizedPaths {
   return Object.fromEntries(
-    locales.map((locale) => [locale, postPath(map, slug, locale)]),
+    post.locales.map((locale) => [
+      locale,
+      postPath(map, postSlug(post, locale), locale),
+    ]),
   );
 }

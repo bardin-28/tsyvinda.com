@@ -4,7 +4,10 @@ import type { WebsitePage } from "@/shared/cms";
 import { isIndexingEnabled } from "@/shared/lib/indexing";
 import sitemap from "./sitemap";
 
-jest.mock("@/api/posts", () => ({ getPosts: jest.fn() }));
+jest.mock("@/api/posts", () => ({
+  ...jest.requireActual("@/api/posts"),
+  getPosts: jest.fn(),
+}));
 jest.mock("@/shared/lib/indexing", () => ({ isIndexingEnabled: jest.fn() }));
 jest.mock("@/shared/cms/api", () => ({
   getRouteMap: jest.fn(),

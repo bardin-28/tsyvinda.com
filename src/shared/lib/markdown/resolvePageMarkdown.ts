@@ -1,4 +1,4 @@
-import { getPostBySlug, getPosts, postDate, type Post } from "@/api/posts";
+import { getPostBySlug, getPosts, postDate, postSlug, type Post } from "@/api/posts";
 import { ApiError } from "@/api";
 import { splitLocalePath, type Locale } from "@/i18n/locales";
 import { absoluteUrl } from "@/i18n/seo";
@@ -40,7 +40,7 @@ async function blogFeed(locale: Locale): Promise<MarkdownLink[]> {
   ]);
   return posts.map((post) => ({
     title: post.title,
-    url: absoluteUrl(postPath(routeMap, post.slug, locale), locale),
+    url: absoluteUrl(postPath(routeMap, postSlug(post, locale), locale), locale),
     description: `${post.seoDescription || post.description || ""} (${postDate(post).slice(0, 10)})`.trim(),
   }));
 }
@@ -71,7 +71,7 @@ async function postMarkdown(
       getPostBySlug(slug, locale),
       getRouteMap(),
     ]);
-    const url = absoluteUrl(postPath(routeMap, post.slug, locale), locale);
+    const url = absoluteUrl(postPath(routeMap, postSlug(post, locale), locale), locale);
     return { kind: "markdown", markdown: postToMarkdown(post, url), canonicalUrl: url };
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) return NOT_FOUND;

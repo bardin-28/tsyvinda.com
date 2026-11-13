@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
 import { usePaths } from "@/shared/cms";
-import { postDate, type Post } from "@/api/posts";
+import { postDate, postSlug, type Post } from "@/api/posts";
+import type { Locale } from "@/i18n/locales";
 import { PostCoverImage } from "../PostCoverImage/PostCoverImage";
 import styles from "./PostCard.module.css";
 
@@ -23,7 +24,8 @@ export function PostCard({ post }: PostCardProps) {
   const t = useTranslations("blog.card");
   const format = useFormatter();
   const paths = usePaths();
-  const { slug, title, description, author } = post;
+  const locale = useLocale() as Locale;
+  const { title, description, author } = post;
   const publishedAt = postDate(post);
   const authorImageUrl = author.profileImageUrl || undefined;
   const authorName = `${author.firstName} ${author.lastName}`.trim();
@@ -38,7 +40,7 @@ export function PostCard({ post }: PostCardProps) {
     // <article>: each card is a self-contained item for crawlers and screen readers
     <article className={styles.article}>
       <Link
-        href={paths.post(slug)}
+        href={paths.post(postSlug(post, locale))}
         className={styles.card}
         aria-label={t("readArticle", { title })}
       >

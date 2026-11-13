@@ -1,4 +1,4 @@
-import type { Post } from "@/api/posts";
+import { postSlug, type Post } from "@/api/posts";
 import type { Locale } from "@/i18n/locales";
 import { absoluteUrl } from "@/i18n/seo";
 import { SITE_URL } from "@/shared/lib/site";
@@ -90,7 +90,7 @@ export function buildBlogItemListSchema(
     numberOfItems: posts.length,
     itemListOrder: "https://schema.org/ItemListOrderDescending",
     itemListElement: posts.map((post, index) => {
-      const url = absoluteUrl(`${copy.path}/${post.slug}`, locale);
+      const url = absoluteUrl(`${copy.path}/${postSlug(post, locale)}`, locale);
       return {
         "@type": "ListItem",
         position: index + 1,
