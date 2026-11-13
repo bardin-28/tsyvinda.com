@@ -9,6 +9,7 @@ import {
   EMPLOYER,
   KNOWS_ABOUT,
   LOCATION,
+  LOGO,
   SITE_URL,
   SOCIAL_LINKS,
 } from "./site";
@@ -91,6 +92,46 @@ export function buildPersonSchema(locale: Locale, copy: SiteSchemaCopy) {
     },
     knowsAbout: KNOWS_ABOUT,
     knowsLanguage: ["English", "Ukrainian"],
+    sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram],
+  };
+}
+
+/**
+ * The personal brand as an Organization (founded and run by the Person), so agents that look
+ * for a business entity find name, logo, contact point, address and profiles.
+ */
+export function buildOrganizationSchema(locale: Locale, copy: SiteSchemaCopy) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: copy.name,
+    alternateName: ALTERNATE_NAME,
+    url: absoluteUrl("/", locale),
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}${LOGO.url}`,
+      width: LOGO.width,
+      height: LOGO.height,
+    },
+    image: `${SITE_URL}${AVATAR.url}`,
+    description: copy.description,
+    email: EMAIL,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: EMAIL,
+      url: absoluteUrl(copy.paths?.contacts ?? ROUTES.CONTACTS, locale),
+      availableLanguage: ["English", "Ukrainian"],
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: copy.city,
+      addressCountry: LOCATION.countryCode,
+    },
+    areaServed: "Worldwide",
+    knowsAbout: KNOWS_ABOUT,
+    founder: { "@id": `${SITE_URL}/#person` },
     sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram],
   };
 }

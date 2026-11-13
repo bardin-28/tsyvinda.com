@@ -43,7 +43,7 @@ All app code lives under `src/app/` (App Router). Key files:
 - `src/app/(home)/components/ScrollOloidScene/ScrollOloidScene.tsx` — full-screen fixed three.js scene: a metallic oloid that tumbles, its rotation coupled to page-scroll progress (read from `window.scrollY`, smoothed). Cleanup disposes every geometry/material/renderer and removes all listeners (incl. `scroll`). **If you add a new geometry/material/texture, add it to the disposal arrays — otherwise you leak GPU memory on route changes.**
 - `src/app/about/page.tsx` — client. Metadata in `src/app/about/layout.tsx`. `AboutScene` (`src/app/about/components/AboutScene/AboutScene.tsx`) follows the same disposal rule.
 - `src/app/login/page.tsx` — login route. `LoginForm` (`./components/LoginForm`) uses Formik + Zod + antd `Input`/`Button`. `layout.tsx` sets `robots: noindex`.
-- `src/app/sitemap.ts`, `src/app/robots.ts`, `src/app/manifest.ts` — file-based metadata routes. Sitemap lists `/` and `/about` only (login is excluded). Manifest theme color is brand orange `#fd7e14`.
+- `src/app/sitemap.ts`, `src/app/manifest.ts` — file-based metadata routes. `/robots.txt` is a route handler (`app/robots.txt/route.ts` + `shared/lib/robots.ts`) because it carries a `Content-Signal: search=yes, ai-input=yes, ai-train=no` line that `MetadataRoute.Robots` can't emit. Sitemap lists `/` and `/about` only (login is excluded). Manifest theme color is brand orange `#fd7e14`.
 
 ### Shared layout (`src/shared/`)
 
@@ -105,6 +105,21 @@ Plan/report: `docs/plans/cms-pages.md`, `docs/reports/cms-pages.md` (API side: `
 - `src/app/api/revalidate/route.ts` — the API's cache webhook (`Authorization: Bearer $REVALIDATE_SECRET`,
   `{ tags }` → `revalidateTag(tag, { expire: 0 })`); unset secret → 404 and edits appear within a minute.
 - Sitemap and `llms.txt` list published pages at their CMS addresses (pages with `noindex` left out).
+
+## AI agents
+
+- **Markdown pages**: `src/proxy.ts` rewrites any public page requested with `Accept: text/markdown` to
+  `app/agent-markdown/route.ts` (path passed in the `x-agent-markdown-path` request header — route handlers
+  see the original URL after a rewrite). `shared/lib/markdown/`: `htmlToMarkdown` (post bodies, rich text),
+  `pageMarkdown` (one `case` per CMS block type — **new block type ⇒ add it there**, TS enforces it),
+  `resolvePageMarkdown` (path → page/post/redirect, same resolution as the catch-all route).
+- **MCP**: `app/mcp/route.ts` — stateless Streamable HTTP JSON-RPC (`shared/lib/agent/mcpServer.ts`), read-only
+  tools in `shared/lib/agent/toolDefinitions.ts` (data, browser-safe) + `agentTools.ts` (server implementations).
+  Discovery card at `/.well-known/mcp/server-card.json` and `/.well-known/mcp.json` (`serverCard.ts`).
+- **WebMCP**: `shared/components/WebMcpTools` (mounted in `[locale]/layout.tsx`) registers the same tools with
+  `document.modelContext` / `navigator.modelContext` when present; each call goes to `/mcp`.
+- `/mcp` and `/.well-known/` are excluded from the proxy matcher. JSON-LD also has an `Organization` node
+  (personal brand, `founder` = the Person) for checkers that want a business entity.
 
 ## Languages (next-intl)
 
