@@ -57,7 +57,7 @@ All app code lives under `src/app/` (App Router). Key files:
 - `const/pageUpdatedAt.ts` — `PAGE_UPDATED_AT.home`: `dateModified` of the home JSON-LD in `(home)/layout.tsx`. CMS pages use their publish date (sitemap `lastmod`, JSON-LD); legal pages their "Last updated" date.
 - `const/navigation.ts` — `NAV_LINKS` (Home/About/Blog/Contacts) drive the shared header + footer; `CHROME_HIDDEN_ROUTES` / `isChromeHidden()` suppress chrome (e.g. `/blog/cover`).
 - `const/social.tsx` — `SOCIAL_NAV` (label/href/handle/icon) is the single source for contact channels (footer + `/contacts`).
-- `app/opengraph-image.tsx` — site-wide branded OG/Twitter card (`next/og`); per-route metadata `openGraph.images` is omitted so this card is inherited (articles override with the post image).
+- `app/opengraph-image.tsx` — site-wide branded OG/Twitter card (`next/og`); pages that set `openGraph`/`twitter` must list it explicitly via `defaultShareImageUrl(locale)` (`i18n/seo.ts`) — Next.js replaces those objects wholesale, so the inherited card is dropped otherwise (articles use the post image).
 - `components/` — cross-page UI (e.g. `AuthButton`). Barrel re-export from `src/shared/components/index.ts`.
 
 ### Per-route folder convention
@@ -89,7 +89,9 @@ Plan/report: `docs/plans/cms-pages.md`, `docs/reports/cms-pages.md` (API side: `
   `api.ts` (server only: `getWebsitePage`, `resolveRoute`, `getRouteMap` — fetch cache 60 s + tags; route map
   falls back to default slugs), `routes.ts` (`pagePath`, `postPath`, `DEFAULT_PAGE_PATHS`), `RouteMapProvider`
   + `usePagePath(key)` / `usePaths()` for client links, `Markup` (`<accent>`, `<strong>`, `<br>` only),
-  `RichText` (HTML sanitized by the API), `metadata.ts` (`cmsPageMetadata`, per-language hreflang).
+  `RichText` (HTML sanitized by the API), `metadata.ts` (`cmsPageMetadata`, per-language hreflang; `og:title`/Twitter
+  title = `shareTitle()` = "<OG title> — <site name>" (Home: the title alone), the editor's OG title is `seo.title`;
+  `seo.socialTitle` is deprecated and unused).
 - `src/app/[locale]/[...rest]/page.tsx` — **load-bearing catch-all**: resolves the path with the API → page view by
   key, blog post (`views/post/PostView`), 308/307 redirect (old or other-language slug, admin redirect), or
   the localised 404. Home keeps `(home)/page.tsx` (fixed address) and reads CMS page `home`.

@@ -41,7 +41,7 @@ export async function BlogPageView({ page, locale }: CmsViewProps) {
   const common = await getTranslations({ locale, namespace: "common" });
   const copy: BlogSeoCopy = {
     title: page.title,
-    socialTitle: page.seo.socialTitle,
+    socialTitle: page.seo.title,
     description: page.seo.description,
     homeName: common("nav.home"),
     path: page.paths[locale] ?? DEFAULT_PAGE_PATHS.blog,

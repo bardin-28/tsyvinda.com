@@ -8,7 +8,6 @@ const page: WebsitePage = {
   title: "Про мене",
   seo: {
     title: "Про мене",
-    socialTitle: "Про мене — Владислав",
     description: "Опис",
     keywords: ["React"],
     ogImageUrl: null,
@@ -36,7 +35,8 @@ describe("CMS metadata", () => {
     expect(metadata.keywords).toEqual(["React"]);
     expect(metadata.openGraph).toMatchObject({
       url: "https://tsyvinda.com/uk/pro-mene",
-      title: "Про мене — Владислав",
+      // OG title as the browser tab shows it: "<OG title> — <site name>"
+      title: "Про мене — Site",
       locale: "uk_UA",
       alternateLocale: ["en_US"],
     });
@@ -53,6 +53,8 @@ describe("CMS metadata", () => {
     );
     expect(metadata.robots).toEqual({ index: false, follow: false });
     expect(metadata.title).toEqual({ absolute: "Про мене" });
+    expect(metadata.openGraph?.title).toBe("Про мене");
+    expect(metadata.twitter?.title).toBe("Про мене");
     expect(metadata.openGraph?.images).toEqual([
       { url: "https://cdn.x/og.png" },
     ]);

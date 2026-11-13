@@ -19,7 +19,7 @@ export function cmsPageUrl(page: WebsitePage): string {
 }
 
 /**
- * JSON-LD of a CMS page: its schema.org type, name/description from the editor's SEO texts and
+ * JSON-LD of a CMS page: its schema.org type, name/description from the editor's OG texts and
  * the publish date as `dateModified`. `extra` adds type-specific properties.
  */
 export function buildCmsPageSchema(
@@ -32,7 +32,7 @@ export function buildCmsPageSchema(
     "@type": SCHEMA_TYPES[page.key],
     "@id": `${url}#webpage`,
     url,
-    name: page.seo.socialTitle,
+    name: page.seo.title,
     description: page.seo.description,
     inLanguage: page.locale,
     dateModified: page.publishedAt,
