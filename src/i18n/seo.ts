@@ -17,6 +17,15 @@ export function absoluteUrl(path: string, locale: Locale): string {
 }
 
 /**
+ * Absolute URL of the generated share card (app/[locale]/opengraph-image.tsx, id "card").
+ * Pages that set their own `openGraph`/`twitter` objects must list it explicitly: Next.js
+ * replaces those objects wholesale, so the card inherited from the layout segment is dropped.
+ */
+export function defaultShareImageUrl(locale: Locale): string {
+  return `${SITE_URL}/${locale}/opengraph-image/card`;
+}
+
+/**
  * Canonical + hreflang links for a page that exists in `available` languages. `x-default`
  * points to English (or the first available language when there is no English version).
  */
@@ -67,11 +76,12 @@ export type PageMetadataInput = {
 
 /**
  * Metadata of an indexable page in one language: title/description, canonical + hreflang,
- * OpenGraph (with og:locale and its alternates) and the Twitter card. The OG image is inherited
- * from app/[locale]/opengraph-image.tsx (one per language).
+ * OpenGraph (with og:locale and its alternates) and the Twitter card, both using the generated
+ * card from app/[locale]/opengraph-image.tsx (one per language).
  */
 export function pageMetadata(input: PageMetadataInput): Metadata {
   const available = input.availableLocales ?? LOCALES;
+  const image = defaultShareImageUrl(input.locale);
   return {
     title: input.title,
     description: input.description,
@@ -87,11 +97,13 @@ export function pageMetadata(input: PageMetadataInput): Metadata {
       alternateLocale: available
         .filter((language) => language !== input.locale)
         .map((language) => OG_LOCALES[language]),
+      images: [{ url: image, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: input.socialTitle,
       description: input.description,
+      images: [image],
     },
     robots: INDEXABLE_ROBOTS,
   };

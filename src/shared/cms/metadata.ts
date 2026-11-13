@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 
 import { LOCALES, OG_LOCALES, localizePath, type Locale } from "@/i18n/locales";
-import { INDEXABLE_ROBOTS, absoluteUrl } from "@/i18n/seo";
+import {
+  INDEXABLE_ROBOTS,
+  absoluteUrl,
+  defaultShareImageUrl,
+} from "@/i18n/seo";
 
 import type { LocalizedPaths, WebsitePage } from "./schemas";
 
@@ -37,7 +41,20 @@ export type CmsMetadataOptions = {
 };
 
 /**
- * Metadata of a CMS page in one language: SEO title/description/keywords from the editor, the
+ * Share-card title (`og:title`, Twitter): the editor's OG title as the browser tab shows it —
+ * "<OG title> — <site name>", or the title alone where it is the whole `<title>` (Home).
+ */
+export function shareTitle(
+  page: WebsitePage,
+  options: Pick<CmsMetadataOptions, "siteName" | "absoluteTitle">,
+): string {
+  return options.absoluteTitle
+    ? page.seo.title
+    : `${page.seo.title} — ${options.siteName}`;
+}
+
+/**
+ * Metadata of a CMS page in one language: OG title/description/keywords from the editor, the
  * page's own address per language (canonical + hreflang), OpenGraph/Twitter (share image when the
  * editor set one, else the generated card) and `noindex` when the editor hid the page.
  */
@@ -47,7 +64,11 @@ export function cmsPageMetadata(
 ): Metadata {
   const { seo, locale } = page;
   const ownPath = page.paths[locale] ?? "/";
-  const images = seo.ogImageUrl ? [{ url: seo.ogImageUrl }] : undefined;
+  // Explicit fallback: Next.js drops the layout's generated card once `openGraph` is set here
+  const images = seo.ogImageUrl
+    ? [{ url: seo.ogImageUrl }]
+    : [{ url: defaultShareImageUrl(locale), width: 1200, height: 630 }];
+  const ogTitle = shareTitle(page, options);
   return {
     title: options.absoluteTitle ? { absolute: seo.title } : seo.title,
     description: seo.description,
@@ -57,7 +78,7 @@ export function cmsPageMetadata(
       type: options.openGraphType ?? "website",
       url: absoluteUrl(ownPath, locale),
       siteName: options.siteName,
-      title: seo.socialTitle,
+      title: ogTitle,
       description: seo.description,
       locale: OG_LOCALES[locale],
       alternateLocale: page.locales
@@ -67,9 +88,9 @@ export function cmsPageMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title: seo.socialTitle,
+      title: ogTitle,
       description: seo.description,
-      images: images?.map((image) => image.url),
+      images: images.map((image) => image.url),
     },
     robots: seo.noindex ? NOINDEX : INDEXABLE_ROBOTS,
   };

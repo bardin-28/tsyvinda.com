@@ -6,6 +6,10 @@ import { routing } from "@/i18n/routing";
 import { AUTH_UI_ENABLED, ROUTES } from "@/shared/const";
 import { AUTH_COOKIES } from "@/shared/lib/cookies";
 import { isIndexingEnabled } from "@/shared/lib/indexing";
+import {
+  MARKDOWN_PATH_HEADER,
+  MARKDOWN_ROUTE,
+} from "@/shared/lib/markdown/markdownRoute";
 
 /** Authenticated-only routes: the blog cover generator and the profile page. */
 const PROTECTED_PREFIXES = ["/blog/cover", "/profile"];
@@ -43,15 +47,36 @@ function authRedirect(request: NextRequest): NextResponse | null {
   return NextResponse.redirect(loginUrl);
 }
 
+/**
+ * AI agents ask for Markdown with `Accept: text/markdown` (browsers never send it). Explicitly
+ * refusing it with `q=0` keeps HTML.
+ */
+function wantsMarkdown(request: NextRequest): boolean {
+  const accept = request.headers.get("accept") ?? "";
+  return accept
+    .split(",")
+    .map((part) => part.trim().toLowerCase())
+    .some(
+      (part) =>
+        part.startsWith("text/markdown") && !/;\s*q=0(\.0+)?\s*(;|$)/.test(part),
+    );
+}
+
 // Next.js 16 renamed `middleware` to `proxy` (nodejs runtime, no edge).
 // Runs on every page: picks the language from the URL, gates the protected routes and, while
 // indexing is off, tells search engines not to index or follow the page (robots.txt stays open
-// so they can see this header).
+// so they can see this header). Agents asking for Markdown get the page's Markdown version.
 export async function proxy(request: NextRequest) {
   const { path } = splitLocalePath(request.nextUrl.pathname);
   if (isProtected(path)) {
     const redirect = authRedirect(request);
     if (redirect) return redirect;
+  } else if (wantsMarkdown(request)) {
+    const headers = new Headers(request.headers);
+    headers.set(MARKDOWN_PATH_HEADER, request.nextUrl.pathname);
+    return NextResponse.rewrite(new URL(MARKDOWN_ROUTE, request.url), {
+      request: { headers },
+    });
   }
 
   const response = handleLanguageRouting(request);
@@ -62,9 +87,10 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Pages only: skip API proxying, Next assets, static files (sitemap/robots/images) and the
-  // generated OG cards (they live under app/[locale] and are requested with their prefix).
+  // Pages only: skip API proxying, the MCP endpoint and its discovery files, Next assets, static
+  // files (sitemap/robots/images) and the generated OG cards (they live under app/[locale] and
+  // are requested with their prefix).
   matcher: [
-    "/((?!api/|_next/static|_next/image|favicon|.*opengraph-image|.*\\.(?:png|jpe?g|gif|svg|webp|ico|txt|xml|webmanifest)$).*)",
+    "/((?!api/|mcp$|\\.well-known/|_next/static|_next/image|favicon|.*opengraph-image|.*\\.(?:png|jpe?g|gif|svg|webp|ico|txt|xml|json|webmanifest)$).*)",
   ],
 };

@@ -11,6 +11,7 @@ import { OG_LOCALES, type Locale } from "@/i18n/locales";
 import { absoluteUrl, localizedAlternates } from "@/i18n/seo";
 import { KEYWORDS, NAME, SITE_URL } from "@/shared/lib/site";
 import {
+  buildOrganizationSchema,
   buildPersonSchema,
   buildSiteNavigationSchema,
   buildWebsiteSchema,
@@ -19,7 +20,12 @@ import {
 } from "@/shared/lib/schemas";
 import { UserProvider } from "@/shared/contexts/UserContext";
 import { AntdProvider } from "@/shared/providers/AntdProvider";
-import { SiteHeader, SiteFooter, LocalePreference } from "@/shared/components";
+import {
+  SiteHeader,
+  SiteFooter,
+  LocalePreference,
+  WebMcpTools,
+} from "@/shared/components";
 import "./(home)/globals.css";
 import {
   ConsentProvider,
@@ -171,6 +177,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
+            __html: jsonLd(buildOrganizationSchema(locale, schemaCopy)),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
             __html: jsonLd(buildSiteNavigationSchema(locale, schemaCopy)),
           }}
         />
@@ -182,6 +194,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
               <RouteMapProvider routeMap={routeMap}>
                 <UserProvider>
                   <LocalePreference />
+                  {/* Read-only tools for in-browser AI agents (no-op elsewhere) */}
+                  <WebMcpTools />
                   <SiteHeader />
                   {children}
                   <SiteFooter />

@@ -190,7 +190,8 @@ export const websitePageSchema = z.object({
   title: z.string(),
   seo: z.object({
     title: z.string(),
-    socialTitle: z.string(),
+    /** @deprecated Same as `title` now (OG title); the API still sends it for older websites */
+    socialTitle: z.string().optional(),
     description: z.string(),
     keywords: z.array(z.string()),
     ogImageUrl: z.string().nullable(),

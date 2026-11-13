@@ -16,6 +16,13 @@ export const AVATAR = {
   height: 260,
 } as const;
 
+/** Brand mark for the Organization schema (square PNG, the apple-touch icon). */
+export const LOGO = {
+  url: "/favicon/favicon.png",
+  width: 180,
+  height: 180,
+} as const;
+
 export const LOCATION = {
   city: "Kyiv",
   countryCode: "UA",
