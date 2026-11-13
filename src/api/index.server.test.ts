@@ -11,7 +11,10 @@ type MockResponse = {
   text: () => Promise<string>;
 };
 
-type FetchMock = jest.Mock<Promise<MockResponse>, [RequestInfo | URL, RequestInit?]>;
+type FetchMock = jest.Mock<
+  Promise<MockResponse>,
+  [RequestInfo | URL, RequestInit?]
+>;
 
 const jsonResponse = (
   body: unknown,
@@ -56,7 +59,9 @@ describe("API client (server runtime)", () => {
   const originalFetch = globalThis.fetch;
 
   beforeEach(() => {
-    fetchMock = jest.fn().mockResolvedValue(jsonResponse({ ok: true })) as FetchMock;
+    fetchMock = jest
+      .fn()
+      .mockResolvedValue(jsonResponse({ ok: true })) as FetchMock;
     globalThis.fetch = fetchMock as unknown as typeof fetch;
   });
 
@@ -117,9 +122,7 @@ describe("API client (server runtime)", () => {
   });
 
   it("does not retry a 401 on the server when has_session cookie is absent", async () => {
-    fetchMock.mockResolvedValueOnce(
-      emptyResponse(401),
-    );
+    fetchMock.mockResolvedValueOnce(emptyResponse(401));
     const { API, ApiError } = await loadApi("https://api.example.com");
 
     await expect(API.get("/posts")).rejects.toBeInstanceOf(ApiError);
@@ -128,7 +131,10 @@ describe("API client (server runtime)", () => {
 
   it("throws ApiError with status + parsed JSON body on non-2xx", async () => {
     fetchMock.mockResolvedValueOnce(
-      jsonResponse({ message: "boom" }, { status: 500, statusText: "Server Error" }),
+      jsonResponse(
+        { message: "boom" },
+        { status: 500, statusText: "Server Error" },
+      ),
     );
     const { API, ApiError } = await loadApi("https://api.example.com");
 

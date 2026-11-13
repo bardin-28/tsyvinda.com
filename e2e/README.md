@@ -33,7 +33,10 @@ No live backend is required. Mocking happens at two layers:
    and articles are **server-rendered**, so their data is fetched in Node, not the
    browser. `page.route` (browser-only) cannot intercept those. The Playwright
    config points the Next server's `API_URL` at this mock, which serves
-   `/posts` and `/posts/:slug` from `e2e/fixtures/posts.mjs`. The same mock also
+   `/posts` and `/posts/:slug` from `e2e/fixtures/posts.mjs` (filtered by `?locale=`
+   like the API), and the CMS — `/routes`, `/routes/resolve`, `/pages/:key` — from
+   `e2e/fixtures/cms.json`, a snapshot of the API's seeded pages (regenerate it from a
+   freshly seeded local API when the page contract changes). The same mock also
    backs browser `/api/*` calls via the Next rewrite.
 
 2. **`page.route` per test** (`e2e/helpers/auth.ts`) — client-side auth calls

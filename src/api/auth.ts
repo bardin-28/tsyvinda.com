@@ -1,21 +1,24 @@
-import type { User } from '@/shared/contexts/UserContext';
-import { API } from '@/api';
-import { TURNSTILE_TOKEN_FIELD } from '@/shared/turnstile';
+import type { User } from "@/shared/contexts/UserContext";
+import { API } from "@/api";
+import { TURNSTILE_TOKEN_FIELD } from "@/shared/turnstile";
 
 export type LoginCredentials = {
   email: string;
   password: string;
 };
 
-export function login(credentials: LoginCredentials, turnstileToken: string): Promise<User> {
-  return API.post<User>('/auth/login', {
+export function login(
+  credentials: LoginCredentials,
+  turnstileToken: string,
+): Promise<User> {
+  return API.post<User>("/auth/login", {
     ...credentials,
     [TURNSTILE_TOKEN_FIELD]: turnstileToken,
   });
 }
 
 export function logout(): Promise<void> {
-  return API.post<void>('/auth/logout');
+  return API.post<void>("/auth/logout");
 }
 
 export type PasswordResetMessage = {
@@ -40,7 +43,7 @@ export function register(
   payload: RegisterPayload,
   turnstileToken: string,
 ): Promise<PasswordResetMessage> {
-  return API.post<PasswordResetMessage>('/auth/register', {
+  return API.post<PasswordResetMessage>("/auth/register", {
     ...payload,
     [TURNSTILE_TOKEN_FIELD]: turnstileToken,
   });
@@ -52,7 +55,7 @@ export function register(
  * 400 when it is invalid, already used, or expired.
  */
 export function confirmEmail(token: string): Promise<PasswordResetMessage> {
-  return API.post<PasswordResetMessage>('/auth/confirm-email', { token });
+  return API.post<PasswordResetMessage>("/auth/confirm-email", { token });
 }
 
 export type ResetPasswordPayload = {
@@ -70,7 +73,7 @@ export function requestPasswordReset(
   email: string,
   turnstileToken: string,
 ): Promise<PasswordResetMessage> {
-  return API.post<PasswordResetMessage>('/auth/forgot-password', {
+  return API.post<PasswordResetMessage>("/auth/forgot-password", {
     email,
     [TURNSTILE_TOKEN_FIELD]: turnstileToken,
   });
@@ -84,7 +87,7 @@ export function resetPassword(
   payload: ResetPasswordPayload,
   turnstileToken: string,
 ): Promise<PasswordResetMessage> {
-  return API.post<PasswordResetMessage>('/auth/reset-password', {
+  return API.post<PasswordResetMessage>("/auth/reset-password", {
     ...payload,
     [TURNSTILE_TOKEN_FIELD]: turnstileToken,
   });

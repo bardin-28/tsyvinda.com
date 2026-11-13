@@ -1,8 +1,15 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+import { buildSecurityHeaders } from "./src/shared/lib/securityHeaders";
+
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const API_URL = process.env.API_URL ?? "http://localhost:4000";
 
 const nextConfig: NextConfig = {
+  // Don't advertise the framework (X-Powered-By: Next.js)
+  poweredByHeader: false,
   // Allow an alternate build directory so the e2e suite can run a second build
   // (with a Turnstile site key baked in) alongside the default keyless build
   // without the two `next build` outputs clobbering each other. Defaults to the
@@ -12,10 +19,23 @@ const nextConfig: NextConfig = {
   // Next dev blocks its dev resources (HMR) for hosts not listed here.
   allowedDevOrigins: ["tsyvinda.local"],
   images: {
+    // Local stack only: covers live on https://api.tsyvinda.local (127.0.0.1), which Next's SSRF
+    // guard rejects as a private IP. Set only by `dev:local`; never enable in production.
+    dangerouslyAllowLocalIP: process.env.NEXT_IMAGE_ALLOW_LOCAL_IP === "true",
     remotePatterns: [
       { protocol: "https", hostname: "**" },
       { protocol: "http", hostname: "localhost" },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: buildSecurityHeaders({
+          isDev: process.env.NODE_ENV === "development",
+        }),
+      },
+    ];
   },
   async rewrites() {
     return [
@@ -27,4 +47,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

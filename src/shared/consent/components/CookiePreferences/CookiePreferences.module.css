@@ -1,0 +1,134 @@
+.modal :global(.ant-modal-container),
+.modal :global(.ant-modal-content) {
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.modal :global(.ant-modal-title) {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-height: min(60vh, 520px);
+  overflow-y: auto;
+}
+
+.intro {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.link {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover {
+  color: var(--accent-strong);
+}
+
+.manageTitle {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.categories {
+  width: 100%;
+  list-style: none;
+}
+
+.category {
+  border-bottom: 1px solid var(--border);
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 52px;
+}
+
+.categoryToggle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text-strong);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.categoryToggle:hover {
+  color: var(--accent);
+}
+
+.categoryToggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.toggleIcon {
+  width: 14px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text-muted);
+}
+
+.alwaysActive {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+
+.categoryPanel {
+  margin: 0 0 14px 26px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.confirmButton {
+  flex: 1;
+}
+
+@media (max-width: 480px) {
+  .footer {
+    flex-direction: column-reverse;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categoryToggle {
+    transition: none;
+  }
+}

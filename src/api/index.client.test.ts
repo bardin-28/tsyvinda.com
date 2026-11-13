@@ -11,7 +11,10 @@ type MockResponse = {
   text: () => Promise<string>;
 };
 
-type FetchMock = jest.Mock<Promise<MockResponse>, [RequestInfo | URL, RequestInit?]>;
+type FetchMock = jest.Mock<
+  Promise<MockResponse>,
+  [RequestInfo | URL, RequestInit?]
+>;
 
 const jsonResponse = (
   body: unknown,
@@ -51,9 +54,12 @@ describe("API client (browser runtime)", () => {
   const originalFetch = globalThis.fetch;
 
   beforeEach(() => {
-    fetchMock = jest.fn().mockResolvedValue(jsonResponse({ ok: true })) as FetchMock;
+    fetchMock = jest
+      .fn()
+      .mockResolvedValue(jsonResponse({ ok: true })) as FetchMock;
     globalThis.fetch = fetchMock as unknown as typeof fetch;
-    document.cookie = "has_session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    document.cookie =
+      "has_session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
   });
 
   afterEach(() => {

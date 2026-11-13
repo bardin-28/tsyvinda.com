@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Personal website for Vladyslav Tsyvinda. Public routes: `/` (intro hero + "Get in touch" CTA), `/about` (bio/stack/experience), `/contacts` (contact channels), `/blog` (+ `/blog/[slug]` articles), `/login` (authenticated area, `noindex`), `/blog/cover` (internal generator, auth-gated via `src/proxy.ts`, `noindex`). Auth talks to a separate backend via a Next rewrite proxy. Deployed at https://tsyvinda.com.
+Personal website for Vladyslav Tsyvinda. Public pages come from the API's CMS (see "CMS pages"): `/` (home), about, contacts, blog (+ articles under the blog address), privacy and cookie policy — their content, SEO and **per-language addresses** are edited in the admin panel (defaults `/about`, `/contacts`, `/blog`, `/privacy-policy`, `/cookie-policy`). Fixed routes: `/login` (authenticated area, `noindex`), `/blog/cover` (internal generator, auth-gated via `src/proxy.ts`, `noindex`). `src/proxy.ts` runs on every page: it also adds `X-Robots-Tag: noindex, nofollow` while search engine indexing is off in the admin (Settings → General; read via `shared/lib/indexing.ts`, 60 s cache), and `sitemap.ts` returns no URLs then. Auth talks to a separate backend via a Next rewrite proxy. Deployed at https://tsyvinda.com.
 
 Stack: Next.js 16 (App Router) + React 19 + TypeScript. Tailwind is **not** used — styling is per-route CSS Modules (`page.module.css`) plus a single `globals.css`. Animations via `framer-motion`. Smooth momentum scrolling via `lenis` (the home page is wrapped in `SmoothScroll`). 3D scenes via `three` (raw `THREE.WebGLRenderer`, no `@react-three/fiber`). Forms via `formik` + `zod`. UI primitives from `antd ^6` (dark theme via `AntdProvider`). Unit tests: Jest 30 + `next/jest` + Testing Library, jsdom env. Component workshop: Storybook 10 with `@storybook/nextjs`.
 
@@ -38,7 +38,7 @@ Path alias: `@/*` → `./src/*` (set in `tsconfig.json`; mirrored in Jest `modul
 
 All app code lives under `src/app/` (App Router). Key files:
 
-- `src/app/layout.tsx` — root layout. Owns Metadata API (`metadataBase: https://tsyvinda.com`), JSON-LD `Person` + `WebSite` schemas (from `@/shared/lib/schemas`), GA bootstrap (`next/script` `afterInteractive`, gated on `process.env.GA_ID`), and wraps children in `<AntdProvider><UserProvider>`. Loads Roboto via `next/font/google` as `--font-roboto`. Imports `./(home)/globals.css` — the only global stylesheet.
+- `src/app/layout.tsx` — root layout. Owns Metadata API (`metadataBase: https://tsyvinda.com`), JSON-LD `Person` + `WebSite` schemas (from `@/shared/lib/schemas`), GA via the consent module's `GoogleAnalytics` (loads only after analytics consent, see Cookie consent), and wraps children in `<AntdProvider><UserProvider>`. Loads Roboto via `next/font/google` as `--font-roboto`. Imports `./(home)/globals.css` — the only global stylesheet.
 - `src/app/(home)/page.tsx` — home, route group keeps URL `/`. Client component. Wrapped in `SmoothScroll` (`./components/SmoothScroll`, a `lenis` provider, reduced-motion-aware). `ScrollOloidScene` loaded via `next/dynamic` with `ssr: false` — do **not** import statically; SSR will break on `window`/WebGL.
 - `src/app/(home)/components/ScrollOloidScene/ScrollOloidScene.tsx` — full-screen fixed three.js scene: a metallic oloid that tumbles, its rotation coupled to page-scroll progress (read from `window.scrollY`, smoothed). Cleanup disposes every geometry/material/renderer and removes all listeners (incl. `scroll`). **If you add a new geometry/material/texture, add it to the disposal arrays — otherwise you leak GPU memory on route changes.**
 - `src/app/about/page.tsx` — client. Metadata in `src/app/about/layout.tsx`. `AboutScene` (`src/app/about/components/AboutScene/AboutScene.tsx`) follows the same disposal rule.
@@ -54,6 +54,7 @@ All app code lives under `src/app/` (App Router). Key files:
 - `contexts/UserContext.tsx` — `UserProvider` + `useUser()`. Fetches `GET /auth/me` only when `has_session` is present. `logout()` calls `POST /auth/logout` then clears all three cookie names client-side (best effort — HttpOnly clears come from the backend `Set-Cookie`). `useUser()` throws outside provider.
 - `providers/AntdProvider.tsx` — antd dark algorithm + `#fd7e14` token.
 - `const/routes.ts` — `ROUTES = { HOME, ABOUT, CONTACTS, BLOG, BLOG_COVER, LOGIN, blogPost(slug) }`. **Use `ROUTES.*`, not raw path strings.**
+- `const/pageUpdatedAt.ts` — `PAGE_UPDATED_AT.home`: `dateModified` of the home JSON-LD in `(home)/layout.tsx`. CMS pages use their publish date (sitemap `lastmod`, JSON-LD); legal pages their "Last updated" date.
 - `const/navigation.ts` — `NAV_LINKS` (Home/About/Blog/Contacts) drive the shared header + footer; `CHROME_HIDDEN_ROUTES` / `isChromeHidden()` suppress chrome (e.g. `/blog/cover`).
 - `const/social.tsx` — `SOCIAL_NAV` (label/href/handle/icon) is the single source for contact channels (footer + `/contacts`).
 - `app/opengraph-image.tsx` — site-wide branded OG/Twitter card (`next/og`); per-route metadata `openGraph.images` is omitted so this card is inherited (articles override with the post image).
@@ -76,8 +77,53 @@ Page-local data/copy lives in `const/`; route-only components in `components/`. 
 ### Assets
 
 - `public/favicon/*` — referenced from `layout.tsx` metadata icons.
-- `public/images/avatar.jpg` — 88×88, rendered via `next/image` with `priority`.
+- `public/images/avatar.jpg` — default hero photo (`AVATAR`); Home/About heroes show the CMS `avatar` (uploaded in the admin) when set. JSON-LD still uses `AVATAR`.
 - OG/Twitter card is generated by `app/opengraph-image.tsx` (`next/og`, 1200×630, branded). No static `public/og.png`.
+
+## CMS pages
+
+Plan/report: `docs/plans/cms-pages.md`, `docs/reports/cms-pages.md` (API side: `../be/docs/…/cms-pages.md`).
+
+- `src/shared/cms/` — `schemas.ts` (zod copy of the API contract: page keys, every section's `data`; **change it
+  when the API changes a section**), `parsePage.ts` (bad envelope throws, a drifted section is dropped + logged),
+  `api.ts` (server only: `getWebsitePage`, `resolveRoute`, `getRouteMap` — fetch cache 60 s + tags; route map
+  falls back to default slugs), `routes.ts` (`pagePath`, `postPath`, `DEFAULT_PAGE_PATHS`), `RouteMapProvider`
+  + `usePagePath(key)` / `usePaths()` for client links, `Markup` (`<accent>`, `<strong>`, `<br>` only),
+  `RichText` (HTML sanitized by the API), `metadata.ts` (`cmsPageMetadata`, per-language hreflang).
+- `src/app/[locale]/[...rest]/page.tsx` — **load-bearing catch-all**: resolves the path with the API → page view by
+  key, blog post (`views/post/PostView`), 308/307 redirect (old or other-language slug, admin redirect), or
+  the localised 404. Home keeps `(home)/page.tsx` (fixed address) and reads CMS page `home`.
+- `src/views/<page>/` — one view per CMS page (`AboutView`, `ContactsView`, `BlogPageView`/`BlogView`,
+  `LegalView` for both policies, `PostView`), rendering sections in the editor's order; shared sections in
+  `views/shared/` (`CtaBanner`, `RichTextSection`); JSON-LD in `views/structuredData.ts`.
+- **Never hard-code a CMS page path**: use `usePagePath("about")` (client) or `pagePath(await getRouteMap(), …)`
+  (server). `NAV_LINKS` / `LEGAL_LINKS` carry a `pageKey`. `ROUTES.ABOUT` etc. are only the default slugs.
+- Page copy is in the CMS, not `src/messages` (namespaces `home`, `about`, `privacy` removed; `contacts`,
+  `cookies`, `blog` keep UI strings only).
+- `src/app/api/revalidate/route.ts` — the API's cache webhook (`Authorization: Bearer $REVALIDATE_SECRET`,
+  `{ tags }` → `revalidateTag(tag, { expire: 0 })`); unset secret → 404 and edits appear within a minute.
+- Sitemap and `llms.txt` list published pages at their CMS addresses (pages with `noindex` left out).
+
+## Languages (next-intl)
+
+English (default, unprefixed: `/about`) and Ukrainian (`/uk/about`). All pages live under
+`src/app/[locale]/`; `src/app/layout.tsx` only passes children through (the `<html lang>` is in
+`[locale]/layout.tsx`). Config: `src/i18n/` — `locales.ts` (`LOCALES`, `localizePath`,
+`splitLocalePath`, `OG_LOCALES`), `routing.ts` (`localePrefix: "as-needed"`, no browser/cookie
+detection), `navigation.ts` (locale-aware `Link`/`useRouter`/`usePathname` — **use these, not
+next/link**, hrefs stay unprefixed), `request.ts`, `messages.ts` (namespace list), `seo.ts`
+(`pageMetadata`, `localizedAlternates`, `absoluteUrl`). Texts: `src/messages/<locale>/<namespace>.json`;
+`messages.test.ts` fails on missing/empty keys. Tests render with `renderWithIntl` /
+`IntlTestProvider` (`src/shared/testing/intl.tsx`); Jest transforms next-intl (ESM) via
+`transformIgnorePatterns`.
+
+- `src/proxy.ts` runs next-intl's middleware (after the auth gate and before the noindex header);
+  its matcher skips `opengraph-image` (one card per language under `[locale]`).
+- Header `LanguageSwitcher` saves the choice to localStorage (`locale`) and opens the page's hreflang
+  alternate; `LocalePreference` redirects a returning visitor once per load to their stored language
+  when the page has that version. Crawlers have no stored choice.
+- Blog API calls pass `locale`; a post page 404s when the post has no version in that language and
+  lists hreflang only for `post.locales`. Sitemap has every page in both languages with alternates.
 
 ## API & Auth
 
@@ -86,10 +132,36 @@ Page-local data/copy lives in `const/`; route-only components in `components/`. 
 - Local dev gotcha: HttpOnly `Secure` cookies with `Domain=.tsyvinda.com` will **not** attach on `http://localhost:3000`. Use `npm run dev:https` (cert covers `local.tsyvinda.com`) for end-to-end auth testing.
 - Never read/write `access` or `refresh` from JS — they are HttpOnly. Only `has_session` is observable client-side.
 
+## Cookie consent
+
+Module `src/shared/consent/` (self-contained; mounted in `[locale]/layout.tsx`):
+`ConsentProvider`/`useConsent()` (choice read via `useSyncExternalStore`, so server HTML is never
+"decided"), `CookieBanner` (first visit), `CookiePreferences` (antd Modal, "Your cookie options"),
+`CookieSettingsButton` (footer legal row + Cookie Policy page), `GoogleAnalytics` (gtag only with
+analytics consent; withdrawal sets `ga-disable-<ID>` and deletes `_ga*`). Choice is stored in the
+`cookie_consent` cookie (`{ version, analytics, updatedAt }`, 6 months). Categories: **Strictly
+necessary** (always on — includes the remembered `locale`) and **Analytics**. Bump
+`CONSENT_VERSION` when categories change (everyone is asked again).
+
+- **Adding a cookie / tracker:** list it in `src/views/legal/const/index.ts` (`COOKIE_ROWS`) +
+  `cookies.list.rows` texts (en/uk), update the Cookie Policy's "Last updated" date in the admin panel; if it is not strictly
+  necessary, gate it on `useConsent().preferences` like `GoogleAnalytics` and add it to the CSP.
+- Tests: `renderWithConsent`, `clearConsentCookie`, `ignorePseudoElementStyles` in
+  `src/shared/consent/testing.tsx` (antd modals call `getComputedStyle` with pseudo elements).
+
+## Security headers
+
+`src/shared/lib/securityHeaders.ts` → `next.config.ts` `headers()` for every route (+ `poweredByHeader: false`).
+CSP uses `'unsafe-inline'` scripts because pages are prerendered/edge-cached (no per-request nonces);
+`script-src-attr 'none'` still blocks inline event handlers. **A new third-party script, iframe, API
+or font origin must be added to the CSP there** (today: GA, Turnstile, OSM tiles via `img-src https:`).
+No COEP (would break Turnstile/GA/OSM). Dev adds `'unsafe-eval'` + `ws:` and skips HSTS/upgrade.
+
 ## Environment
 
-- `API_URL` — backend origin for the `/api` proxy. Default `http://localhost:4000`. Set per env.
-- `GA_ID` — Google Analytics measurement ID. If unset, GA `<Script>` tags are skipped.
+- `API_URL` — backend origin for the `/api` proxy and the server-side CMS fetches. Default `http://localhost:4000`. Set per env.
+- `REVALIDATE_SECRET` — bearer secret of `/api/revalidate` (same as the API's `WEBSITE_REVALIDATE_SECRET`); optional.
+- `GA_ID` — Google Analytics measurement ID. If unset, `GoogleAnalytics` is not mounted; if set, gtag still loads **only after the visitor allows analytics cookies**.
 - `.env.example` is committed; `.env.local` / `.env.production` are gitignored.
 
 ## Deployment

@@ -1,154 +1,184 @@
+import { absoluteUrl } from "@/i18n/seo";
+import type { Locale } from "@/i18n/locales";
+import { PAGE_UPDATED_AT, ROUTES } from "@/shared/const";
 import {
   ALTERNATE_NAME,
   ALUMNI_OF,
   AVATAR,
-  DESCRIPTION,
+  EMAIL,
   EMPLOYER,
-  JOB_TITLE,
   KNOWS_ABOUT,
   LOCATION,
-  NAME,
   SITE_URL,
   SOCIAL_LINKS,
 } from "./site";
 
-export const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": `${SITE_URL}/#person`,
-  name: NAME,
-  alternateName: ALTERNATE_NAME,
-  url: SITE_URL,
-  mainEntityOfPage: SITE_URL,
-  image: {
-    "@type": "ImageObject",
-    url: `${SITE_URL}${AVATAR.url}`,
-    width: AVATAR.width,
-    height: AVATAR.height,
-  },
-  jobTitle: JOB_TITLE,
-  description: DESCRIPTION,
-  gender: "Male",
-  nationality: { "@type": "Country", name: LOCATION.country },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: LOCATION.city,
-    addressCountry: LOCATION.countryCode,
-  },
-  worksFor: {
-    "@type": "Organization",
-    name: EMPLOYER.name,
-    url: EMPLOYER.url,
-  },
-  alumniOf: ALUMNI_OF.map((school) => ({
-    "@type": "CollegeOrUniversity",
-    name: school,
-  })),
-  hasOccupation: {
-    "@type": "Occupation",
-    name: JOB_TITLE,
-    occupationLocation: { "@type": "City", name: LOCATION.city },
-    skills: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "GraphQL",
-      "Apollo",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "Redux Toolkit",
-      "Storybook",
-      "Jest",
-      "SCSS",
-      "Docker",
-    ].join(", "),
-  },
-  knowsAbout: KNOWS_ABOUT,
-  knowsLanguage: ["English", "Ukrainian"],
-  sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram],
+/** Translated texts the site-wide schemas need (from the `common` messages). */
+export type SiteSchemaCopy = {
+  name: string;
+  jobTitle: string;
+  description: string;
+  city: string;
+  country: string;
+  nav: Record<
+    "home" | "about" | "blog" | "contacts",
+    { name: string; description: string }
+  >;
+  /** Unprefixed CMS addresses in this language (default slugs when omitted) */
+  paths?: Partial<Record<"about" | "blog" | "contacts", string>>;
 };
 
-export const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": `${SITE_URL}/#website`,
-  url: SITE_URL,
-  name: NAME,
-  alternateName: "Bardin28",
-  description: DESCRIPTION,
-  inLanguage: "en",
-  publisher: { "@id": `${SITE_URL}/#person` },
-};
+export function buildPersonSchema(locale: Locale, copy: SiteSchemaCopy) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/#person`,
+    name: copy.name,
+    alternateName: ALTERNATE_NAME,
+    url: absoluteUrl("/", locale),
+    mainEntityOfPage: absoluteUrl("/", locale),
+    image: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}${AVATAR.url}`,
+      width: AVATAR.width,
+      height: AVATAR.height,
+    },
+    jobTitle: copy.jobTitle,
+    description: copy.description,
+    email: EMAIL,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "professional inquiries",
+      email: EMAIL,
+      url: absoluteUrl(copy.paths?.contacts ?? ROUTES.CONTACTS, locale),
+      availableLanguage: ["English", "Ukrainian"],
+    },
+    gender: "Male",
+    nationality: { "@type": "Country", name: copy.country },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: copy.city,
+      addressCountry: LOCATION.countryCode,
+    },
+    worksFor: {
+      "@type": "Organization",
+      name: EMPLOYER.name,
+      url: EMPLOYER.url,
+    },
+    alumniOf: ALUMNI_OF.map((school) => ({
+      "@type": "CollegeOrUniversity",
+      name: school,
+    })),
+    hasOccupation: {
+      "@type": "Occupation",
+      name: copy.jobTitle,
+      occupationLocation: { "@type": "City", name: copy.city },
+      skills: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "GraphQL",
+        "Apollo",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Redux Toolkit",
+        "Storybook",
+        "Jest",
+        "SCSS",
+        "Docker",
+      ].join(", "),
+    },
+    knowsAbout: KNOWS_ABOUT,
+    knowsLanguage: ["English", "Ukrainian"],
+    sameAs: [SOCIAL_LINKS.linkedin, SOCIAL_LINKS.telegram],
+  };
+}
 
-export const siteNavigationSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SiteNavigationElement",
-      "@id": `${SITE_URL}/#nav-home`,
-      name: "Home",
-      description: "Intro and quick links.",
-      url: SITE_URL,
-      isPartOf: { "@id": `${SITE_URL}/#website` },
-    },
-    {
-      "@type": "SiteNavigationElement",
-      "@id": `${SITE_URL}/#nav-about`,
-      name: "About",
-      description: "Bio, stack, experience, education.",
-      url: `${SITE_URL}/about`,
-      isPartOf: { "@id": `${SITE_URL}/#website` },
-    },
-    {
-      "@type": "SiteNavigationElement",
-      "@id": `${SITE_URL}/#nav-blog`,
-      name: "Blog",
-      description: "Articles on frontend engineering, React, Next.js, and product delivery.",
-      url: `${SITE_URL}/blog`,
-      isPartOf: { "@id": `${SITE_URL}/#website` },
-    },
-    {
-      "@type": "SiteNavigationElement",
-      "@id": `${SITE_URL}/#nav-contacts`,
-      name: "Contacts",
-      description: "Get in touch — LinkedIn, Telegram, and email.",
-      url: `${SITE_URL}/contacts`,
-      isPartOf: { "@id": `${SITE_URL}/#website` },
-    },
-  ],
-};
+export function buildWebsiteSchema(locale: Locale, copy: SiteSchemaCopy) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    url: absoluteUrl("/", locale),
+    name: copy.name,
+    alternateName: ALTERNATE_NAME,
+    description: copy.description,
+    inLanguage: locale,
+    publisher: { "@id": `${SITE_URL}/#person` },
+  };
+}
 
-export const homeBreadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": `${SITE_URL}/#breadcrumb`,
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: SITE_URL,
-    },
-  ],
-};
+const NAV_SCHEMA_PATHS = {
+  home: "/",
+  about: "/about",
+  blog: "/blog",
+  contacts: "/contacts",
+} as const;
 
-export const homePageSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": `${SITE_URL}/#webpage`,
-  url: SITE_URL,
-  name: NAME,
-  description: DESCRIPTION,
-  inLanguage: "en",
-  isPartOf: { "@id": `${SITE_URL}/#website` },
-  primaryImageOfPage: {
-    "@type": "ImageObject",
-    url: `${SITE_URL}${AVATAR.url}`,
-    width: AVATAR.width,
-    height: AVATAR.height,
-  },
-  about: { "@id": `${SITE_URL}/#person` },
-  mainEntity: { "@id": `${SITE_URL}/#person` },
-  breadcrumb: { "@id": `${SITE_URL}/#breadcrumb` },
-};
+export function buildSiteNavigationSchema(
+  locale: Locale,
+  copy: SiteSchemaCopy,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": (
+      Object.keys(NAV_SCHEMA_PATHS) as (keyof typeof NAV_SCHEMA_PATHS)[]
+    ).map((key) => ({
+      "@type": "SiteNavigationElement",
+      "@id": `${SITE_URL}/#nav-${key}`,
+      name: copy.nav[key].name,
+      description: copy.nav[key].description,
+      url: absoluteUrl(
+        key === "home" ? "/" : (copy.paths?.[key] ?? NAV_SCHEMA_PATHS[key]),
+        locale,
+      ),
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+    })),
+  };
+}
+
+export function buildHomeBreadcrumbSchema(locale: Locale, homeName: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": `${absoluteUrl("/", locale)}#breadcrumb`,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: homeName,
+        item: absoluteUrl("/", locale),
+      },
+    ],
+  };
+}
+
+export function buildHomePageSchema(locale: Locale, copy: SiteSchemaCopy) {
+  const url = absoluteUrl("/", locale);
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name: copy.name,
+    description: copy.description,
+    inLanguage: locale,
+    dateModified: PAGE_UPDATED_AT.home,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}${AVATAR.url}`,
+      width: AVATAR.width,
+      height: AVATAR.height,
+    },
+    about: { "@id": `${SITE_URL}/#person` },
+    mainEntity: { "@id": `${SITE_URL}/#person` },
+    breadcrumb: { "@id": `${url}#breadcrumb` },
+  };
+}
+
+/** JSON for a `<script type="application/ld+json">`; `<` escaped so text cannot close the tag. */
+export function jsonLd(schema: unknown): string {
+  return JSON.stringify(schema).replace(/</g, "\\u003c");
+}

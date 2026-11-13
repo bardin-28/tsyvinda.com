@@ -9,6 +9,7 @@ export const ROUTES = {
   RESET_PASSWORD: "/reset-password",
   PROFILE: "/profile",
   PRIVACY_POLICY: "/privacy-policy",
+  COOKIE_POLICY: "/cookie-policy",
   blogPost: (slug: string) => `/blog/${slug}`,
 } as const;
 
@@ -23,4 +24,5 @@ export type Route =
   | "/reset-password"
   | "/profile"
   | "/privacy-policy"
+  | "/cookie-policy"
   | `/blog/${string}`;

@@ -1,0 +1,27 @@
+{
+  "filter": {
+    "label": "Filter posts by category",
+    "all": "All"
+  },
+  "list": {
+    "loadError": "Could not load posts. Please try again.",
+    "loadMoreError": "Could not load more posts.",
+    "retry": "Retry",
+    "emptyTitle": "No posts yet",
+    "emptyText": "New articles will appear here. Check back soon.",
+    "loadingMore": "Loading more…",
+    "end": "— end of feed —"
+  },
+  "card": {
+    "readArticle": "Read article: {title}",
+    "categories": "Categories",
+    "author": "Author"
+  },
+  "article": {
+    "notFound": "Article not found",
+    "categories": "Categories",
+    "author": "Author",
+    "updated": "Updated",
+    "back": "Back to all posts"
+  }
+}

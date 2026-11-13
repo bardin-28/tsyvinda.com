@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+import { ConsentProvider } from "@/shared/consent";
+
 import { SiteFooter } from "./SiteFooter";
 
 const meta: Meta<typeof SiteFooter> = {
@@ -7,17 +9,19 @@ const meta: Meta<typeof SiteFooter> = {
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          background: "#080810",
-        }}
-      >
-        <Story />
-      </div>
+      <ConsentProvider>
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            background: "#080810",
+          }}
+        >
+          <Story />
+        </div>
+      </ConsentProvider>
     ),
   ],
 };

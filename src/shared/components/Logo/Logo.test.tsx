@@ -4,7 +4,9 @@ import { Logo } from "./Logo";
 describe("Logo", () => {
   it("exposes an accessible name when a title is provided", () => {
     render(<Logo title="Vladyslav Tsyvinda" />);
-    expect(screen.getByRole("img", { name: "Vladyslav Tsyvinda" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Vladyslav Tsyvinda" }),
+    ).toBeInTheDocument();
   });
 
   it("is decorative (hidden from a11y tree) without a title", () => {

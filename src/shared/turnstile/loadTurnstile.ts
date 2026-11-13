@@ -25,7 +25,9 @@ export function loadTurnstile(): Promise<TurnstileApi> {
         resolve(window.turnstile);
       } else {
         loadPromise = null;
-        reject(new Error("Turnstile script loaded but window.turnstile is missing"));
+        reject(
+          new Error("Turnstile script loaded but window.turnstile is missing"),
+        );
       }
     };
 
