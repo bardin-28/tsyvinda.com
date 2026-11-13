@@ -2,9 +2,6 @@ export const SITE_URL = "https://tsyvinda.com";
 export const NAME = "Vladyslav Tsyvinda";
 export const ALTERNATE_NAME = "Bardin28";
 
-export const DESCRIPTION =
-  "Vladyslav Tsyvinda — Full-Stack Lead Developer with 6+ years building scalable React, Next.js, and TypeScript products across MedTech, FinTech, PropTech, TravelTech, and EdTech.";
-
 export const EMAIL = "bardindeveloper@gmail.com";
 
 export const SOCIAL_LINKS = {
@@ -29,8 +26,6 @@ export const EMPLOYER = {
   name: "Tallium Inc.",
   url: "https://www.tallium.com",
 } as const;
-
-export const JOB_TITLE = "Full-Stack Lead Developer";
 
 export const KEYWORDS = [
   "Vladyslav Tsyvinda",

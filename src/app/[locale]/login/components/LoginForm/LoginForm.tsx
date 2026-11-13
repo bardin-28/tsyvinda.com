@@ -1,0 +1,109 @@
+"use client";
+
+import { useMemo } from "react";
+import { useTranslations } from "next-intl";
+import { Formik, Form, Field, FieldProps } from "formik";
+import { Input, Button } from "antd";
+
+import { useTurnstile } from "@/shared/turnstile";
+
+import styles from "./LoginForm.module.css";
+import { buildLoginSchema, buildValidate, initialValues } from "./validation";
+import { useLoginSubmit } from "./submitHandler";
+
+type LoginFormProps = {
+  redirectTo?: string;
+};
+
+export function LoginForm({ redirectTo }: LoginFormProps = {}) {
+  const t = useTranslations("auth");
+  const tValidation = useTranslations("auth.validation");
+  const validate = useMemo(
+    () => buildValidate(buildLoginSchema((key: string) => tValidation(key))),
+    [tValidation],
+  );
+  const { containerRef, execute } = useTurnstile();
+  const { onSubmit, submitError } = useLoginSubmit({
+    redirectTo,
+    verifyTurnstile: execute,
+  });
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validate={validate}
+      validateOnBlur
+      validateOnChange={false}
+      onSubmit={onSubmit}
+    >
+      {({ isSubmitting, errors, touched, handleSubmit }) => (
+        <Form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <div className={styles.field}>
+            <label htmlFor="email" className={styles.label}>
+              {t("fields.email")}
+            </label>
+            <Field name="email">
+              {({ field }: FieldProps<string>) => (
+                <Input
+                  {...field}
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  size="large"
+                  status={errors.email && touched.email ? "error" : undefined}
+                />
+              )}
+            </Field>
+            {errors.email && touched.email && (
+              <span className={styles.fieldError}>{errors.email}</span>
+            )}
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="password" className={styles.label}>
+              {t("fields.password")}
+            </label>
+            <Field name="password">
+              {({ field }: FieldProps<string>) => (
+                <Input.Password
+                  {...field}
+                  id="password"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  size="large"
+                  status={
+                    errors.password && touched.password ? "error" : undefined
+                  }
+                />
+              )}
+            </Field>
+            {errors.password && touched.password && (
+              <span className={styles.fieldError}>{errors.password}</span>
+            )}
+          </div>
+
+          {submitError && (
+            <div className={styles.submitError} role="alert">
+              {submitError}
+            </div>
+          )}
+
+          {/* Invisible Cloudflare Turnstile widget; runs on submit. */}
+          <div ref={containerRef} className={styles.turnstile} />
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            block
+            loading={isSubmitting}
+            className={styles.submitBtn}
+          >
+            {isSubmitting ? t("login.submitting") : t("login.submit")}
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
+}

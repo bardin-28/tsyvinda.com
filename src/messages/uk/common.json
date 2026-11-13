@@ -1,0 +1,59 @@
+{
+  "site": {
+    "name": "Владислав Цивінда",
+    "jobTitle": "Full-Stack Lead Developer",
+    "description": "Владислав Цивінда — Full-Stack Lead Developer із понад 6 роками досвіду створення масштабованих продуктів на React, Next.js і TypeScript у сферах MedTech, FinTech, PropTech, TravelTech та EdTech.",
+    "city": "Київ",
+    "country": "Україна"
+  },
+  "nav": {
+    "home": "Головна",
+    "about": "Про мене",
+    "blog": "Блог",
+    "contacts": "Контакти",
+    "privacyPolicy": "Політика конфіденційності",
+    "profile": "Профіль",
+    "homeDescription": "Знайомство та швидкі посилання.",
+    "aboutDescription": "Біографія, стек, досвід, освіта.",
+    "blogDescription": "Статті про фронтенд-розробку, React, Next.js і доставку продуктів.",
+    "contactsDescription": "Звʼязатися зі мною — LinkedIn, Telegram та email."
+  },
+  "header": {
+    "homeLabel": "{name} — головна",
+    "toggleMenu": "Відкрити або закрити меню",
+    "menu": "Меню",
+    "close": "Закрити",
+    "siteNav": "Сайт",
+    "signIn": "Увійти",
+    "logOut": "Вийти"
+  },
+  "language": {
+    "label": "Мова",
+    "choose": "Обрати мову"
+  },
+  "footer": {
+    "nav": "Нижня навігація",
+    "social": "Соціальні мережі",
+    "legal": "Правова інформація",
+    "rights": "© 2023 - {year} {name}. Усі права захищено."
+  },
+  "notFound": {
+    "title": "Сторінку не знайдено",
+    "headline": "Ця сторінка кудись поділася",
+    "lead": "Сторінки, яку ви шукаєте, не існує або її перенесено. Повернімося на правильний шлях.",
+    "home": "На головну",
+    "blog": "Читати блог"
+  },
+  "error": {
+    "headline": "Щось пішло не так",
+    "lead": "Через неочікувану помилку сторінка не завантажилася. Спробуйте ще раз або поверніться на головну, якщо це повторюється.",
+    "retry": "Спробувати ще раз",
+    "home": "На головну",
+    "reference": "Код: {digest}"
+  },
+  "social": {
+    "linkedin": "LinkedIn",
+    "telegram": "Telegram",
+    "email": "Пошта"
+  }
+}

@@ -1,7 +1,8 @@
 // Public site key, injected at build time. Must stay NEXT_PUBLIC_-prefixed so it
 // is readable in the browser, where the widget renders. Empty when unset, which
 // disables the check (see useTurnstile).
-export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+export const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
 // Explicit render mode: the script does not auto-render widgets, so useTurnstile
 // controls when each widget is created.

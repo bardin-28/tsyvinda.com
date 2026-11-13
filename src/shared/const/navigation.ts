@@ -1,7 +1,11 @@
 import { ROUTES } from "./routes";
 
+/** Key under `common.nav` in the message files */
+export type NavLabelKey =
+  "home" | "about" | "blog" | "contacts" | "privacyPolicy";
+
 export type NavLink = {
-  label: string;
+  labelKey: NavLabelKey;
   href: string;
 };
 
@@ -11,10 +15,10 @@ export type NavLink = {
  * as a distinct auth action inside the header menu).
  */
 export const NAV_LINKS: NavLink[] = [
-  { label: "Home", href: ROUTES.HOME },
-  { label: "About", href: ROUTES.ABOUT },
-  { label: "Blog", href: ROUTES.BLOG },
-  { label: "Contacts", href: ROUTES.CONTACTS },
+  { labelKey: "home", href: ROUTES.HOME },
+  { labelKey: "about", href: ROUTES.ABOUT },
+  { labelKey: "blog", href: ROUTES.BLOG },
+  { labelKey: "contacts", href: ROUTES.CONTACTS },
 ];
 
 /**
@@ -22,7 +26,7 @@ export const NAV_LINKS: NavLink[] = [
  * menu stays limited to the primary pages.
  */
 export const LEGAL_LINKS: NavLink[] = [
-  { label: "Privacy Policy", href: ROUTES.PRIVACY_POLICY },
+  { labelKey: "privacyPolicy", href: ROUTES.PRIVACY_POLICY },
 ];
 
 /**
@@ -32,10 +36,11 @@ export const LEGAL_LINKS: NavLink[] = [
 export const CHROME_HIDDEN_ROUTES: string[] = [ROUTES.BLOG_COVER];
 
 /**
- * Returns true when the shared header/footer must be hidden for `pathname`.
+ * Returns true when the shared header/footer must be hidden for `pathname` (without the
+ * language prefix, as next-intl's usePathname returns it).
  */
 export function isChromeHidden(pathname: string): boolean {
   return CHROME_HIDDEN_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
   );
 }

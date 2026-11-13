@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "title": "Cover generator",
+    "description": "Generate branded cover images for blog posts."
+  },
+  "page": {
+    "backToBlog": "Back to blog",
+    "preview": "Preview",
+    "canvasLabel": "Cover preview"
+  },
+  "controls": {
+    "heading": "Cover generator",
+    "lede": "Compose a branded cover with the blog scene. Adjust text and styling, then download as JPEG.",
+    "textGroup": "Text",
+    "eyebrow": "Eyebrow",
+    "title": "Title",
+    "subtitle": "Subtitle",
+    "layoutGroup": "Layout",
+    "outputSize": "Output size",
+    "alignment": "Alignment",
+    "alignLeft": "Left",
+    "alignCenter": "Center",
+    "alignRight": "Right",
+    "titleSize": "Title size",
+    "styleGroup": "Style",
+    "accentColor": "Accent color",
+    "brandPreset": "Brand",
+    "vignette": "Vignette",
+    "reset": "Reset",
+    "download": "Download JPEG"
+  }
+}

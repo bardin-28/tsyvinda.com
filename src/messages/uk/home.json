@@ -1,0 +1,31 @@
+{
+  "hero": {
+    "firstName": "Владислав",
+    "lastName": "Цивінда",
+    "rolePrimary": "Software Engineer",
+    "roleSecondary": "Full-Stack Lead Developer у Tallium Inc.",
+    "avatarAlt": "Владислав Цивінда",
+    "contactLabel": "Звʼязатися з Владиславом Цивіндою",
+    "contact": "Звʼязатися",
+    "about": "Більше про мене",
+    "scroll": "Гортайте"
+  },
+  "about": {
+    "title": "Хто я",
+    "lede": "Full-stack лід, який створює продакшн-рішення на React і Next.js у великому масштабі.",
+    "lead": "Шість років створюю масштабовані продукти у сферах MedTech, FinTech, PropTech, TravelTech та EdTech — від full-stack архітектури до керування розробкою."
+  },
+  "experience": {
+    "title": "Де я працював",
+    "lede": "Останні ролі: лідерство, фронтенд і full-stack розробка.",
+    "seeAll": "Увесь досвід"
+  },
+  "recommendation": {
+    "title": "Що про мене кажуть",
+    "lede": "Слово від людини, з якою я тісно співпрацював."
+  },
+  "contact": {
+    "title": "Поговорімо",
+    "lede": "Відкритий до нових проєктів — пишіть у будь-який зручний канал."
+  }
+}

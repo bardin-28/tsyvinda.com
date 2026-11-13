@@ -64,15 +64,22 @@ export function useTurnstile(): UseTurnstileResult {
           execution: "execute",
           appearance: "interaction-only",
           callback: (token) => resolvePending(token),
-          "error-callback": () => failPending(new Error("Turnstile challenge failed")),
-          "expired-callback": () => failPending(new Error("Turnstile challenge expired")),
-          "timeout-callback": () => failPending(new Error("Turnstile challenge timed out")),
+          "error-callback": () =>
+            failPending(new Error("Turnstile challenge failed")),
+          "expired-callback": () =>
+            failPending(new Error("Turnstile challenge expired")),
+          "timeout-callback": () =>
+            failPending(new Error("Turnstile challenge timed out")),
         });
       })
       .catch((error: unknown) => {
         if (cancelled) return;
         // A load failure only matters when a challenge is awaiting it.
-        failPending(error instanceof Error ? error : new Error("Turnstile failed to load"));
+        failPending(
+          error instanceof Error
+            ? error
+            : new Error("Turnstile failed to load"),
+        );
       });
 
     return () => {

@@ -2,6 +2,9 @@
 
 import { ReactNode } from "react";
 import { ConfigProvider, theme } from "antd";
+import enUS from "antd/locale/en_US";
+import ukUA from "antd/locale/uk_UA";
+import { useLocale } from "next-intl";
 
 const antdTheme = {
   algorithm: theme.darkAlgorithm,
@@ -32,5 +35,11 @@ const antdTheme = {
 };
 
 export function AntdProvider({ children }: { children: ReactNode }) {
-  return <ConfigProvider theme={antdTheme}>{children}</ConfigProvider>;
+  // antd's own texts (empty states, pickers, …) follow the page language
+  const locale = useLocale();
+  return (
+    <ConfigProvider theme={antdTheme} locale={locale === "uk" ? ukUA : enUS}>
+      {children}
+    </ConfigProvider>
+  );
 }

@@ -50,7 +50,9 @@ describe("loadTurnstile", () => {
     const promise = loadTurnstile();
     turnstileScripts()[0].dispatchEvent(new Event("error"));
 
-    await expect(promise).rejects.toThrow("Failed to load the Turnstile script");
+    await expect(promise).rejects.toThrow(
+      "Failed to load the Turnstile script",
+    );
 
     // After a failure a fresh call starts a new load rather than reusing it.
     const retry = loadTurnstile();

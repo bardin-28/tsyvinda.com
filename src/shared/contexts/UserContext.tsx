@@ -1,10 +1,18 @@
-'use client';
+"use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  ReactNode,
+} from "react";
 
-import { API, ApiError } from '@/api';
-import { getProfile } from '@/api/profile';
-import { AUTH_COOKIES, deleteCookie, hasCookie } from '@/shared/lib/cookies';
+import { API, ApiError } from "@/api";
+import { getProfile } from "@/api/profile";
+import { AUTH_COOKIES, deleteCookie, hasCookie } from "@/shared/lib/cookies";
 
 export type User = {
   id: string;
@@ -13,7 +21,6 @@ export type User = {
   lastName: string;
   profileImageUrl: string | null;
   emailVerified: boolean;
-  approvedByAdmin: boolean;
   createdAt: string;
 };
 
@@ -33,9 +40,14 @@ type UserProviderProps = {
   initialUser?: User | null;
 };
 
-export function UserProvider({ children, initialUser = null }: UserProviderProps) {
+export function UserProvider({
+  children,
+  initialUser = null,
+}: UserProviderProps) {
   const [user, setUser] = useState<User | null>(initialUser);
-  const [loading, setLoading] = useState(initialUser === null && hasCookie(AUTH_COOKIES.SESSION_FLAG));
+  const [loading, setLoading] = useState(
+    initialUser === null && hasCookie(AUTH_COOKIES.SESSION_FLAG),
+  );
   const [error, setError] = useState<ApiError | null>(null);
 
   // State updates run only in promise callbacks (after the request settles), so the mount
@@ -67,7 +79,7 @@ export function UserProvider({ children, initialUser = null }: UserProviderProps
 
   const logout = useCallback(async () => {
     try {
-      await API.post('/auth/logout');
+      await API.post("/auth/logout");
     } finally {
       deleteCookie(AUTH_COOKIES.ACCESS);
       deleteCookie(AUTH_COOKIES.REFRESH);
@@ -95,7 +107,7 @@ export function useUser() {
   const ctx = useContext(UserContext);
 
   if (ctx === undefined) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error("useUser must be used within a UserProvider");
   }
 
   return ctx;

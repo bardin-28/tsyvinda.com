@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { renderWithIntl } from "@/shared/testing/intl";
 import userEvent from "@testing-library/user-event";
 
 import { usePathname } from "next/navigation";
@@ -8,6 +9,11 @@ import { SiteHeader } from "./SiteHeader";
 
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  }),
 }));
 
 jest.mock("@/shared/contexts/UserContext", () => ({
@@ -48,35 +54,49 @@ beforeEach(() => {
 
 describe("SiteHeader", () => {
   it("renders the menu trigger collapsed by default", () => {
-    render(<SiteHeader />);
-    const trigger = screen.getByRole("button", { name: /toggle navigation menu/i });
+    renderWithIntl(<SiteHeader />);
+    const trigger = screen.getByRole("button", {
+      name: /toggle navigation menu/i,
+    });
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   });
 
   it("opens the dropdown with all page links on click", async () => {
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
-
-    expect(screen.getByRole("button", { name: /toggle navigation menu/i })).toHaveAttribute(
-      "aria-expanded",
-      "true",
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
     );
+
+    expect(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    ).toHaveAttribute("aria-expanded", "true");
     const menu = screen.getByRole("menu");
     expect(menu).toBeInTheDocument();
-    expect(screen.getByRole("menuitem", { name: "Home" })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("menuitem", { name: "About" })).toHaveAttribute("href", "/about");
-    expect(screen.getByRole("menuitem", { name: "Blog" })).toHaveAttribute("href", "/blog");
+    expect(screen.getByRole("menuitem", { name: "Home" })).toHaveAttribute(
+      "href",
+      "/",
+    );
+    expect(screen.getByRole("menuitem", { name: "About" })).toHaveAttribute(
+      "href",
+      "/about",
+    );
+    expect(screen.getByRole("menuitem", { name: "Blog" })).toHaveAttribute(
+      "href",
+      "/blog",
+    );
   });
 
   it("marks the active route with aria-current", async () => {
     usePathnameMock.mockReturnValue("/about");
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    );
 
     expect(screen.getByRole("menuitem", { name: "About" })).toHaveAttribute(
       "aria-current",
@@ -89,23 +109,29 @@ describe("SiteHeader", () => {
 
   it("shows a Sign in link when logged out", async () => {
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    );
 
     expect(screen.getByRole("menuitem", { name: /sign in/i })).toHaveAttribute(
       "href",
       "/login",
     );
-    expect(screen.queryByRole("menuitem", { name: /log out/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: /log out/i }),
+    ).not.toBeInTheDocument();
   });
 
   it("shows Log out and calls logout when logged in", async () => {
     mockUser({ firstName: "Vladyslav" });
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    );
     await user.click(screen.getByRole("menuitem", { name: /log out/i }));
 
     expect(logoutMock).toHaveBeenCalledTimes(1);
@@ -114,9 +140,11 @@ describe("SiteHeader", () => {
   it("shows a Profile link in the menu when logged in", async () => {
     mockUser({ firstName: "Vladyslav" });
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    );
 
     expect(screen.getByRole("menuitem", { name: "Profile" })).toHaveAttribute(
       "href",
@@ -126,42 +154,60 @@ describe("SiteHeader", () => {
 
   it("hides the Profile link when logged out", async () => {
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    );
 
-    expect(screen.queryByRole("menuitem", { name: "Profile" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: "Profile" }),
+    ).not.toBeInTheDocument();
   });
 
   it("hides Sign in, Log out and Profile while the auth UI is disabled", async () => {
     mockAuthUiEnabled = false;
     mockUser({ firstName: "Vladyslav" });
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    );
 
     expect(screen.getByRole("menuitem", { name: "Home" })).toBeInTheDocument();
-    expect(screen.queryByRole("menuitem", { name: /sign in/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("menuitem", { name: /log out/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("menuitem", { name: "Profile" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: /sign in/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: /log out/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: "Profile" }),
+    ).not.toBeInTheDocument();
   });
 
   it("closes on Escape", async () => {
     const user = userEvent.setup();
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
 
-    await user.click(screen.getByRole("button", { name: /toggle navigation menu/i }));
+    await user.click(
+      screen.getByRole("button", { name: /toggle navigation menu/i }),
+    );
     expect(screen.getByRole("menu")).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
-    await waitFor(() => expect(screen.queryByRole("menu")).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.queryByRole("menu")).not.toBeInTheDocument(),
+    );
   });
 
   it("renders nothing on chrome-hidden routes", () => {
     usePathnameMock.mockReturnValue("/blog/cover");
-    render(<SiteHeader />);
+    renderWithIntl(<SiteHeader />);
     expect(screen.queryByRole("banner")).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /toggle navigation menu/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /toggle navigation menu/i }),
+    ).not.toBeInTheDocument();
   });
 });

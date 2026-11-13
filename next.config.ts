@@ -1,4 +1,7 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const API_URL = process.env.API_URL ?? "http://localhost:4000";
 
@@ -12,6 +15,9 @@ const nextConfig: NextConfig = {
   // Next dev blocks its dev resources (HMR) for hosts not listed here.
   allowedDevOrigins: ["tsyvinda.local"],
   images: {
+    // Local stack only: covers live on https://api.tsyvinda.local (127.0.0.1), which Next's SSRF
+    // guard rejects as a private IP. Set only by `dev:local`; never enable in production.
+    dangerouslyAllowLocalIP: process.env.NEXT_IMAGE_ALLOW_LOCAL_IP === "true",
     remotePatterns: [
       { protocol: "https", hostname: "**" },
       { protocol: "http", hostname: "localhost" },
@@ -27,4 +33,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

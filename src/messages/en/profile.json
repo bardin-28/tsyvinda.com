@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "Profile",
+    "description": "Manage the {name} account profile."
+  },
+  "page": {
+    "headline": "Profile",
+    "lead": "View and update your account details."
+  },
+  "status": {
+    "loading": "Loading your profile…",
+    "loadFailed": "We couldn't load your profile.",
+    "signedOut": "You are not signed in.",
+    "retry": "Try again"
+  },
+  "avatar": {
+    "alt": "Profile photo",
+    "uploadLabel": "Upload a new photo",
+    "change": "Change photo",
+    "upload": "Upload photo",
+    "removeLabel": "Remove photo",
+    "remove": "Remove",
+    "hint": "{types}, up to {maxSizeMb} MB.",
+    "types": "JPEG, PNG or WebP",
+    "unsupported": "Unsupported file. Use {types}.",
+    "tooLarge": "Image must be {maxSizeMb} MB or smaller."
+  },
+  "fields": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "memberSince": "Member since",
+    "accountId": "Account ID"
+  },
+  "validation": {
+    "firstNameRequired": "First name is required",
+    "firstNameTooLong": "First name is too long",
+    "lastNameRequired": "Last name is required",
+    "lastNameTooLong": "Last name is too long"
+  },
+  "actions": {
+    "save": "Save changes",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "edit": "Edit profile"
+  },
+  "messages": {
+    "updated": "Profile updated.",
+    "verificationFailed": "Verification failed. Please try again.",
+    "saveFailed": "Could not save profile",
+    "unexpected": "Unexpected error. Try again."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "Профіль",
+    "description": "Керування профілем облікового запису на сайті {name}."
+  },
+  "page": {
+    "headline": "Профіль",
+    "lead": "Переглядайте та оновлюйте дані свого облікового запису."
+  },
+  "status": {
+    "loading": "Завантажуємо ваш профіль…",
+    "loadFailed": "Не вдалося завантажити ваш профіль.",
+    "signedOut": "Ви не увійшли в обліковий запис.",
+    "retry": "Спробувати ще раз"
+  },
+  "avatar": {
+    "alt": "Фото профілю",
+    "uploadLabel": "Завантажити нове фото",
+    "change": "Змінити фото",
+    "upload": "Завантажити фото",
+    "removeLabel": "Видалити фото",
+    "remove": "Видалити",
+    "hint": "{types}, до {maxSizeMb} МБ.",
+    "types": "JPEG, PNG або WebP",
+    "unsupported": "Непідтримуваний файл. Використайте {types}.",
+    "tooLarge": "Розмір зображення має бути не більше {maxSizeMb} МБ."
+  },
+  "fields": {
+    "firstName": "Імʼя",
+    "lastName": "Прізвище",
+    "email": "Email",
+    "verified": "Підтверджено",
+    "unverified": "Не підтверджено",
+    "memberSince": "З нами від",
+    "accountId": "ID облікового запису"
+  },
+  "validation": {
+    "firstNameRequired": "Вкажіть імʼя",
+    "firstNameTooLong": "Імʼя задовге",
+    "lastNameRequired": "Вкажіть прізвище",
+    "lastNameTooLong": "Прізвище задовге"
+  },
+  "actions": {
+    "save": "Зберегти зміни",
+    "saving": "Збереження…",
+    "cancel": "Скасувати",
+    "edit": "Редагувати профіль"
+  },
+  "messages": {
+    "updated": "Профіль оновлено.",
+    "verificationFailed": "Не вдалося пройти перевірку. Спробуйте ще раз.",
+    "saveFailed": "Не вдалося зберегти профіль",
+    "unexpected": "Неочікувана помилка. Спробуйте ще раз."
+  }
+}

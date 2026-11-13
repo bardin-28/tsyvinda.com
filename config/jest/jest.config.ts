@@ -19,4 +19,24 @@ const config: Config = {
   ],
 };
 
-export default createJestConfig(config);
+// next-intl and its runtime ship ES modules only; let Jest's SWC transform compile them
+const ESM_PACKAGES = [
+  "next-intl",
+  "use-intl",
+  "@formatjs",
+  "intl-messageformat",
+  "icu-minify",
+];
+
+const jestConfig = async (): Promise<Config> => {
+  const resolved = await createJestConfig(config)();
+  return {
+    ...resolved,
+    transformIgnorePatterns: [
+      `/node_modules/(?!(${ESM_PACKAGES.join("|")})/)`,
+      "^.+\\.module\\.(css|sass|scss)$",
+    ],
+  };
+};
+
+export default jestConfig;

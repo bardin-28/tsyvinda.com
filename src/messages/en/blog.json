@@ -1,0 +1,72 @@
+{
+  "seo": {
+    "title": "Blog",
+    "socialTitle": "Blog — Vladyslav Tsyvinda",
+    "description": "Notes on frontend engineering, React, Next.js, TypeScript, and product delivery from Vladyslav Tsyvinda.",
+    "keywords": "Vladyslav Tsyvinda blog, Frontend engineering, React, Next.js, TypeScript, Software engineering notes, Web development blog"
+  },
+  "hero": {
+    "titleStart": "Notes on",
+    "titleAccent": "building software",
+    "lead": "Articles on frontend engineering, React, Next.js, TypeScript, and shipping production-grade web products."
+  },
+  "filter": {
+    "label": "Filter posts by category",
+    "all": "All"
+  },
+  "list": {
+    "loadError": "Could not load posts. Please try again.",
+    "loadMoreError": "Could not load more posts.",
+    "retry": "Retry",
+    "emptyTitle": "No posts yet",
+    "emptyText": "New articles will appear here. Check back soon.",
+    "loadingMore": "Loading more…",
+    "end": "— end of feed —"
+  },
+  "card": {
+    "readArticle": "Read article: {title}",
+    "categories": "Categories",
+    "author": "Author"
+  },
+  "article": {
+    "notFound": "Article not found",
+    "categories": "Categories",
+    "author": "Author",
+    "updated": "Updated",
+    "back": "Back to all posts"
+  },
+  "error": {
+    "titleStart": "Couldn't load",
+    "titleAccent": "the blog",
+    "lead": "Something went wrong while loading the latest articles. Please try again in a moment.",
+    "retry": "Try again"
+  },
+  "topics": {
+    "heading": "What I write about",
+    "intro": "Posts here are practical rather than theoretical: problems hit on real client projects, the options weighed, what got chosen, and what it cost. Expect code, numbers, and the occasional retraction when a decision aged badly. Published when there is something worth writing down, not on a schedule.",
+    "react": {
+      "title": "React & Next.js in production",
+      "description": "App Router patterns, server and client component boundaries, data fetching, caching and revalidation, and the trade-offs behind rendering strategies on real products."
+    },
+    "typescript": {
+      "title": "TypeScript at scale",
+      "description": "Typing API layers and shared contracts, keeping generics readable, and the conventions that keep a growing codebase reviewable instead of clever."
+    },
+    "architecture": {
+      "title": "Frontend architecture",
+      "description": "Folder conventions, state management with Redux Toolkit and React Query, design systems in Storybook, and where abstractions actually pay for themselves."
+    },
+    "performance": {
+      "title": "Performance & Core Web Vitals",
+      "description": "Bundle budgets, image and font strategy, animation without jank, WebGL scenes that clean up after themselves, and measuring LCP, INP, and CLS on real devices."
+    },
+    "testing": {
+      "title": "Testing & delivery",
+      "description": "Jest and Testing Library where they earn their keep, end-to-end coverage of critical flows, Docker builds, and CI pipelines that stay fast enough to trust."
+    },
+    "team": {
+      "title": "Team & engineering practice",
+      "description": "Lessons from leading frontend teams — code review that catches real problems, estimation that survives contact with a deadline, and shipping without burning the team."
+    }
+  }
+}
