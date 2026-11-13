@@ -15,12 +15,21 @@
  *
  * @typedef {Object} Post
  * @property {string} id
+ * @property {"en" | "uk"} locale
+ * @property {Array<"en" | "uk">} locales
  * @property {string} slug
  * @property {string} title
  * @property {string} description
  * @property {string} htmlContent
  * @property {string} imageUrl
+ * @property {string | null} coverAlt
  * @property {PostAuthor} author
+ * @property {Array<{ id: string, name: string, slug: string }>} categories
+ * @property {string | null} publishedAt
+ * @property {string | null} seoTitle
+ * @property {string | null} seoDescription
+ * @property {string | null} ogImageUrl
+ * @property {string | null} canonicalUrl
  * @property {string} createdAt
  * @property {string} updatedAt
  */
@@ -32,9 +41,22 @@ const author = {
   profileImageUrl: "",
 };
 
+/** Fields every fixture post shares (same shape as the API's `Post`). */
+const common = {
+  locale: "en",
+  locales: ["en"],
+  coverAlt: null,
+  categories: [],
+  seoTitle: null,
+  seoDescription: null,
+  ogImageUrl: null,
+  canonicalUrl: null,
+};
+
 /** @type {Post[]} */
 export const POSTS = [
   {
+    ...common,
     id: "post-1",
     slug: "first-post",
     title: "Shipping Production-Grade Next.js",
@@ -42,10 +64,12 @@ export const POSTS = [
     htmlContent: "<p>First post body paragraph for e2e coverage.</p>",
     imageUrl: "",
     author,
+    publishedAt: "2026-01-10T09:00:00.000Z",
     createdAt: "2026-01-10T09:00:00.000Z",
     updatedAt: "2026-01-10T09:00:00.000Z",
   },
   {
+    ...common,
     id: "post-2",
     slug: "second-post",
     title: "Type-Safe Forms with Formik and Zod",
@@ -53,6 +77,7 @@ export const POSTS = [
     htmlContent: "<p>Second post body paragraph for e2e coverage.</p>",
     imageUrl: "",
     author,
+    publishedAt: "2026-02-15T09:00:00.000Z",
     createdAt: "2026-02-15T09:00:00.000Z",
     updatedAt: "2026-02-15T09:00:00.000Z",
   },
@@ -73,4 +98,14 @@ export function buildPostsPage(items = POSTS) {
  */
 export function findPostBySlug(slug) {
   return POSTS.find((post) => post.slug === slug);
+}
+
+/**
+ * Posts translated into `locale` (the real API's `?locale=` filter; default English).
+ * @param {string | null} locale
+ * @returns {Post[]}
+ */
+export function postsInLocale(locale) {
+  const wanted = locale ?? "en";
+  return POSTS.filter((post) => post.locales.includes(wanted));
 }
