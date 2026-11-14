@@ -7,7 +7,7 @@ import {
   MARKDOWN_PATH_HEADER,
   MARKDOWN_ROUTE,
 } from "@/shared/lib/markdown/markdownRoute";
-import { NOINDEX_HEADER, proxy } from "./proxy";
+import { NOINDEX_HEADER, config, proxy } from "./proxy";
 
 jest.mock("@/shared/lib/indexing", () => ({ isIndexingEnabled: jest.fn() }));
 
@@ -79,6 +79,26 @@ describe("proxy markdown for agents", () => {
     const response = await proxy(withAccept("/profile", "text/markdown"));
     expect(response.status).toBeGreaterThanOrEqual(300);
     expect(response.status).toBeLessThan(400);
+  });
+});
+
+describe("proxy matcher", () => {
+  const matcher = new RegExp(`^${config.matcher[0]}$`);
+
+  it("skips everything under /_next/, the dev HMR socket included", () => {
+    for (const path of [
+      "/_next/webpack-hmr",
+      "/_next/static/chunks/app.js",
+      "/_next/image",
+    ]) {
+      expect(matcher.test(path)).toBe(false);
+    }
+  });
+
+  it("still runs on pages", () => {
+    for (const path of ["/", "/about", "/uk/blog/post", "/blog"]) {
+      expect(matcher.test(path)).toBe(true);
+    }
   });
 });
 

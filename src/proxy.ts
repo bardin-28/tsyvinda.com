@@ -87,10 +87,11 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Pages only: skip API proxying, the MCP endpoint and its discovery files, Next assets, static
+  // Pages only: skip API proxying, the MCP endpoint and its discovery files, everything under /_next/ (assets and the dev
+  // HMR socket: rewriting it to /en/_next/... breaks hot reload and the page reloads forever), static
   // files (sitemap/robots/images) and the generated OG cards (they live under app/[locale] and
   // are requested with their prefix).
   matcher: [
-    "/((?!api/|mcp$|\\.well-known/|_next/static|_next/image|favicon|.*opengraph-image|.*\\.(?:png|jpe?g|gif|svg|webp|ico|txt|xml|json|webmanifest)$).*)",
+    "/((?!api/|mcp$|\\.well-known/|_next/|favicon|.*opengraph-image|.*\\.(?:png|jpe?g|gif|svg|webp|ico|txt|xml|json|webmanifest)$).*)",
   ],
 };
