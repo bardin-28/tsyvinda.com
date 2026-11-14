@@ -56,6 +56,21 @@ async function pageLastModified(
   return { lastModified: page.publishedAt };
 }
 
+/** Posts fetched per API request while walking the whole feed. */
+const POSTS_PER_REQUEST = 50;
+
+/** Every published post in `locale`: the API pages by cursor, so follow it to the end. */
+async function allPublishedPosts(locale: Locale): Promise<Post[]> {
+  const posts: Post[] = [];
+  let cursor: string | undefined;
+  do {
+    const page = await getPosts({ cursor, limit: POSTS_PER_REQUEST, locale });
+    posts.push(...page.items);
+    cursor = page.nextCursor ?? undefined;
+  } while (cursor);
+  return posts;
+}
+
 /** One entry per language version of every published page and post, each listing its alternates. */
 export async function sitemapEntries(): Promise<MetadataRoute.Sitemap> {
   // Indexing off (admin: Settings → General): nothing to submit to search engines
@@ -65,7 +80,7 @@ export async function sitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const postsByLocale = new Map<Locale, Post[]>();
   for (const locale of LOCALES) {
     try {
-      postsByLocale.set(locale, (await getPosts({ limit: 50, locale })).items);
+      postsByLocale.set(locale, await allPublishedPosts(locale));
     } catch {
       // Backend unavailable — ship the pages rather than failing the route.
       postsByLocale.set(locale, []);
