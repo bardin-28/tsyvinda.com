@@ -43,7 +43,7 @@ All app code lives under `src/app/` (App Router). Key files:
 - `src/app/(home)/components/ScrollOloidScene/ScrollOloidScene.tsx` — full-screen fixed three.js scene: a metallic oloid that tumbles, its rotation coupled to page-scroll progress (read from `window.scrollY`, smoothed). Cleanup disposes every geometry/material/renderer and removes all listeners (incl. `scroll`). **If you add a new geometry/material/texture, add it to the disposal arrays — otherwise you leak GPU memory on route changes.**
 - `src/app/about/page.tsx` — client. Metadata in `src/app/about/layout.tsx`. `AboutScene` (`src/app/about/components/AboutScene/AboutScene.tsx`) follows the same disposal rule.
 - `src/app/login/page.tsx` — login route. `LoginForm` (`./components/LoginForm`) uses Formik + Zod + antd `Input`/`Button`. `layout.tsx` sets `robots: noindex`.
-- `src/app/sitemap.ts`, `src/app/manifest.ts` — file-based metadata routes. `/robots.txt` is a route handler (`app/robots.txt/route.ts` + `shared/lib/robots.ts`) because it carries a `Content-Signal: search=yes, ai-input=yes, ai-train=no` line that `MetadataRoute.Robots` can't emit. Sitemap lists `/` and `/about` only (login is excluded). Manifest theme color is brand orange `#fd7e14`.
+- `src/app/manifest.ts` — file-based metadata route. `/sitemap.xml` is a route handler (`app/sitemap.xml/route.ts`; entries in `shared/lib/sitemap/sitemapEntries.ts`, XML in `sitemapXml.ts`) so it is plain sitemaps.org XML without hreflang `<xhtml:link>` alternates (Next's `sitemap.ts` puts them before `<lastmod>`, failing the schema, and Chrome shows any XML with XHTML elements as bare text). hreflang lives in each page's `<head>` and Link header. `/robots.txt` is a route handler (`app/robots.txt/route.ts` + `shared/lib/robots.ts`) because it carries a `Content-Signal: search=yes, ai-input=yes, ai-train=no` line that `MetadataRoute.Robots` can't emit. Sitemap lists `/` and `/about` only (login is excluded). Manifest theme color is brand orange `#fd7e14`.
 
 ### Shared layout (`src/shared/`)
 
@@ -140,7 +140,7 @@ next/link**, hrefs stay unprefixed), `request.ts`, `messages.ts` (namespace list
   alternate; `LocalePreference` redirects a returning visitor once per load to their stored language
   when the page has that version. Crawlers have no stored choice.
 - Blog API calls pass `locale`; a post page 404s when the post has no version in that language and
-  lists hreflang only for `post.locales`. Sitemap has every page in both languages with alternates.
+  lists hreflang only for `post.locales`. Sitemap lists every page in both languages (hreflang alternates are in the pages, not the sitemap).
 
 ## API & Auth
 
