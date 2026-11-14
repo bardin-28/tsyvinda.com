@@ -103,6 +103,22 @@ describe("sitemap", () => {
     });
   });
 
+  it("lists every published post, following the API's pages to the end", async () => {
+    const older = { ...post, slug: "older" } as Post;
+    mockGetPosts.mockImplementation(async ({ locale, cursor }) => {
+      if (locale !== "en") return { items: [], nextCursor: null };
+      return cursor
+        ? { items: [older], nextCursor: null }
+        : { items: [post], nextCursor: "page-2" };
+    });
+    const urls = (await sitemap()).map((entry) => entry.url);
+    expect(urls).toContain("https://tsyvinda.com/blog/hello");
+    expect(urls).toContain("https://tsyvinda.com/blog/older");
+    expect(mockGetPosts).toHaveBeenCalledWith(
+      expect.objectContaining({ cursor: "page-2", locale: "en" }),
+    );
+  });
+
   it("is empty while indexing is off", async () => {
     mockIndexing.mockResolvedValue(false);
     expect(await sitemap()).toEqual([]);
