@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 
 import type { Post } from "@/api/posts";
+import { Link } from "@/i18n/navigation";
 import { PostCard } from "../PostCard/PostCard";
 import styles from "./PostsList.module.css";
 
@@ -15,6 +16,11 @@ type PostsListProps = {
   error: Error | null;
   onLoadMore: () => void;
   onRetry: () => void;
+  /**
+   * Plain links to the neighbouring feed pages (`?page=N`), rendered in the HTML so crawlers
+   * reach every post; infinite scroll still loads older posts in place. Null = no such page.
+   */
+  pagination?: { newerHref: string | null; olderHref: string | null };
 };
 
 const SKELETON_COUNT = 6;
@@ -46,6 +52,7 @@ export function PostsList({
   error,
   onLoadMore,
   onRetry,
+  pagination,
 }: PostsListProps) {
   const t = useTranslations("blog.list");
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -130,6 +137,21 @@ export function PostsList({
 
       {!hasMore && !isLoadingMore && items.length > 0 && (
         <div className={styles.end}>{t("end")}</div>
+      )}
+
+      {pagination && (pagination.newerHref || pagination.olderHref) && (
+        <nav className={styles.pagination} aria-label={t("pagination")}>
+          {pagination.newerHref && (
+            <Link className={styles.pageLink} href={pagination.newerHref} rel="prev">
+              {t("newerPosts")}
+            </Link>
+          )}
+          {pagination.olderHref && (
+            <Link className={styles.pageLink} href={pagination.olderHref} rel="next">
+              {t("olderPosts")}
+            </Link>
+          )}
+        </nav>
       )}
     </div>
   );

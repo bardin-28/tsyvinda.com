@@ -140,3 +140,37 @@ describe("PostsList", () => {
     expect(screen.getByText(/end of feed/i)).toBeInTheDocument();
   });
 });
+
+describe("PostsList pagination links", () => {
+  const items = [makePost("a", "First")];
+
+  it("links to the older and newer feed pages in plain HTML", () => {
+    renderWithIntl(
+      <PostsList
+        {...baseProps}
+        items={items}
+        hasMore
+        pagination={{ newerHref: "/blog", olderHref: "/blog?page=3" }}
+      />,
+    );
+    expect(screen.getByRole("link", { name: /older posts/i })).toHaveAttribute(
+      "href",
+      "/blog?page=3",
+    );
+    expect(screen.getByRole("link", { name: /newer posts/i })).toHaveAttribute(
+      "href",
+      "/blog",
+    );
+  });
+
+  it("renders no navigation without page links", () => {
+    renderWithIntl(
+      <PostsList
+        {...baseProps}
+        items={items}
+        pagination={{ newerHref: null, olderHref: null }}
+      />,
+    );
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+  });
+});

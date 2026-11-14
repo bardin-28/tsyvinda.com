@@ -172,3 +172,28 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pageLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+  color: inherit;
+  font-size: 14px;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.pageLink:hover,
+.pageLink:focus-visible {
+  border-color: #fd7e14;
+}

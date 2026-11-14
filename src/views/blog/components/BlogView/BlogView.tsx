@@ -8,7 +8,11 @@ import { RichTextSection } from "@/views/shared/RichTextSection/RichTextSection"
 import { BlogTopics } from "../BlogTopics/BlogTopics";
 import { PostsList } from "../PostsList/PostsList";
 import { CategoryFilter } from "../CategoryFilter/CategoryFilter";
-import { POSTS_PAGE_SIZE } from "../../const/posts";
+import {
+  BLOG_PAGE_PARAM,
+  POSTS_PAGE_SIZE,
+  blogPageHref,
+} from "../../const/posts";
 import {
   useInfinitePosts,
   type InitialPostsData,
@@ -23,6 +27,8 @@ type BlogViewProps = {
   blocks: Block[];
   initialData?: InitialPostsData;
   categories?: PostCategory[];
+  /** Unprefixed address of the blog in this language, e.g. "/blog" */
+  blogPath: string;
 };
 
 // `?category=` is the source of truth for the filter; this event tells subscribers it changed.
@@ -69,6 +75,7 @@ export function BlogView({
   blocks,
   initialData,
   categories = [],
+  blogPath,
 }: BlogViewProps) {
   const categoryParam = useSyncExternalStore(
     subscribeToCategory,
@@ -85,12 +92,15 @@ export function BlogView({
     const url = new URL(window.location.href);
     if (slug) url.searchParams.set(CATEGORY_PARAM, slug);
     else url.searchParams.delete(CATEGORY_PARAM);
+    // A filtered feed starts from its first page
+    url.searchParams.delete(BLOG_PAGE_PARAM);
     window.history.replaceState(null, "", url);
     window.dispatchEvent(new Event(CATEGORY_CHANGE_EVENT));
   }, []);
 
-  const { items, isLoading, isLoadingMore, hasMore, error, loadMore, retry } =
+  const { items, isLoading, isLoadingMore, hasMore, error, page, loadMore, retry } =
     useInfinitePosts(POSTS_PAGE_SIZE, initialData, category);
+  const firstPage = category === null ? (initialData?.page ?? 1) : 1;
 
   return (
     <div className={styles.page}>
@@ -133,6 +143,20 @@ export function BlogView({
                     error={error}
                     onLoadMore={loadMore}
                     onRetry={retry}
+                    pagination={
+                      // Page links only for the unfiltered feed (filters are not paged by URL)
+                      category === null
+                        ? {
+                            newerHref:
+                              firstPage > 1
+                                ? blogPageHref(blogPath, firstPage - 1)
+                                : null,
+                            olderHref: hasMore
+                              ? blogPageHref(blogPath, page + 1)
+                              : null,
+                          }
+                        : undefined
+                    }
                   />
                 </motion.section>
               );

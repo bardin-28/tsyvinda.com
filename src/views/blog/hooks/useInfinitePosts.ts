@@ -10,6 +10,8 @@ import { POSTS_PAGE_SIZE } from "../const/posts";
 export type InitialPostsData = {
   items: Post[];
   nextCursor: string | null;
+  /** Feed page the items are (`?page=N`, 1 = newest) */
+  page: number;
 };
 
 export type UseInfinitePostsState = {
@@ -18,6 +20,8 @@ export type UseInfinitePostsState = {
   isLoadingMore: boolean;
   hasMore: boolean;
   error: Error | null;
+  /** Last feed page shown (grows as infinite scroll loads more) */
+  page: number;
   loadMore: () => void;
   retry: () => void;
 };
@@ -43,6 +47,7 @@ export function useInfinitePosts(
     isSeeded ? Boolean(initialData.nextCursor) : true,
   );
   const [error, setError] = useState<Error | null>(null);
+  const [page, setPage] = useState<number>(isSeeded ? initialData.page : 1);
 
   const isFetchingRef = useRef<boolean>(false);
   const cursorRef = useRef<string | null>(
@@ -70,7 +75,7 @@ export function useInfinitePosts(
       }
 
       try {
-        const page = await getPosts({
+        const result = await getPosts({
           cursor: nextCursor ?? undefined,
           limit: pageSize,
           category: category ?? undefined,
@@ -78,9 +83,10 @@ export function useInfinitePosts(
         });
         if (requestId !== requestIdRef.current) return;
 
-        setItems((prev) => (isInitial ? page.items : [...prev, ...page.items]));
-        cursorRef.current = page.nextCursor;
-        const more = Boolean(page.nextCursor);
+        setItems((prev) => (isInitial ? result.items : [...prev, ...result.items]));
+        setPage((previous) => (isInitial ? 1 : previous + 1));
+        cursorRef.current = result.nextCursor;
+        const more = Boolean(result.nextCursor);
         hasMoreRef.current = more;
         setHasMore(more);
       } catch (e) {
@@ -120,5 +126,5 @@ export function useInfinitePosts(
     }
   }, [fetchPage, items.length]);
 
-  return { items, isLoading, isLoadingMore, hasMore, error, loadMore, retry };
+  return { items, isLoading, isLoadingMore, hasMore, error, page, loadMore, retry };
 }

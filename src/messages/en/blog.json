@@ -10,7 +10,11 @@
     "emptyTitle": "No posts yet",
     "emptyText": "New articles will appear here. Check back soon.",
     "loadingMore": "Loading more…",
-    "end": "— end of feed —"
+    "end": "— end of feed —",
+    "pagination": "Blog pages",
+    "newerPosts": "← Newer posts",
+    "olderPosts": "Older posts →",
+    "pageTitle": "Page {page}"
   },
   "card": {
     "readArticle": "Read article: {title}",

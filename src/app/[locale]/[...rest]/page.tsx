@@ -14,6 +14,11 @@ import { ContactsView } from "@/views/contacts/ContactsView";
 import { JsonLd } from "@/views/JsonLd";
 import { LegalView } from "@/views/legal/LegalView";
 import { PostView, postMetadata } from "@/views/post/PostView";
+import {
+  BLOG_PAGE_PARAM,
+  blogPageHref,
+  parseBlogPage,
+} from "@/views/blog/const/posts";
 import { cmsPageSchemas } from "@/views/structuredData";
 
 /**
@@ -27,18 +32,23 @@ import { cmsPageSchemas } from "@/views/structuredData";
 
 type CatchAllProps = {
   params: Promise<{ locale: string; rest: string[] }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 type ViewRenderer = (props: {
   page: WebsitePage;
   locale: Locale;
+  /** Blog feed page from `?page=` (only the blog uses it) */
+  feedPage: number;
 }) => React.ReactNode | Promise<React.ReactNode>;
 
 /** Page key → its view. Home has its own route (fixed address). */
 const VIEWS: Record<Exclude<PageKey, "home">, ViewRenderer> = {
   about: ({ page }) => <AboutView blocks={page.blocks} />,
   contacts: ({ page }) => <ContactsView blocks={page.blocks} />,
-  blog: (props) => <BlogPageView {...props} />,
+  blog: ({ page, locale, feedPage }) => (
+    <BlogPageView page={page} locale={locale} feedPage={feedPage} />
+  ),
   "privacy-policy": (props) => <LegalView {...props} />,
   "cookie-policy": (props) => <LegalView {...props} />,
 };
@@ -65,8 +75,16 @@ function decodeSegment(segment: string): string {
   }
 }
 
+/** `?page=` of the blog feed: 1 when absent, null when invalid (rendered as a 404). */
+async function readFeedPage(
+  searchParams: CatchAllProps["searchParams"],
+): Promise<number | null> {
+  return parseBlogPage((await searchParams)[BLOG_PAGE_PARAM]);
+}
+
 export async function generateMetadata({
   params,
+  searchParams,
 }: CatchAllProps): Promise<Metadata> {
   const { locale, path } = await readParams(params);
   const route = await resolveRoute(path, locale);
@@ -77,13 +95,26 @@ export async function generateMetadata({
   const page = await getWebsitePage(route.key, locale);
   if (!page) return {};
   const t = await getTranslations({ locale, namespace: "common.site" });
-  return cmsPageMetadata(page, {
+  const metadata = cmsPageMetadata(page, {
     siteName: t("name"),
     openGraphType: OPEN_GRAPH_TYPES[route.key],
   });
+  const feedPage = route.key === "blog" ? await readFeedPage(searchParams) : 1;
+  if (feedPage === null || feedPage === 1) return metadata;
+  // Later feed pages: own title and canonical; no hreflang (each language pages differently)
+  const blog = await getTranslations({ locale, namespace: "blog.list" });
+  const ownPath = blogPageHref(page.paths[locale] ?? "/blog", feedPage);
+  return {
+    ...metadata,
+    title: `${page.seo.title} — ${blog("pageTitle", { page: feedPage })}`,
+    alternates: { canonical: ownPath },
+  };
 }
 
-export default async function CatchAllPage({ params }: CatchAllProps) {
+export default async function CatchAllPage({
+  params,
+  searchParams,
+}: CatchAllProps) {
   const { locale, path } = await readParams(params);
   setRequestLocale(locale);
   const route = await resolveRoute(path, locale);
@@ -103,13 +134,15 @@ export default async function CatchAllPage({ params }: CatchAllProps) {
   if (!page) notFound();
   const common = await getTranslations({ locale, namespace: "common" });
   const View = VIEWS[route.key];
+  const feedPage = route.key === "blog" ? await readFeedPage(searchParams) : 1;
+  if (feedPage === null) notFound();
 
   return (
     <>
       {!OWN_SCHEMAS.has(route.key) && (
         <JsonLd schemas={cmsPageSchemas(page, common("nav.home"))} />
       )}
-      {await View({ page, locale })}
+      {await View({ page, locale, feedPage })}
     </>
   );
 }
