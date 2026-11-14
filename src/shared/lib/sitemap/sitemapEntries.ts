@@ -13,8 +13,6 @@ import { postPaths } from "@/shared/cms/routes";
 import { isIndexingEnabled } from "@/shared/lib/indexing";
 import { latestPostUpdate } from "@/views/blog/const/seo";
 
-// Short enough that switching indexing off in the admin empties the sitemap within minutes
-export const revalidate = 300;
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
@@ -59,7 +57,7 @@ async function pageLastModified(
 }
 
 /** One entry per language version of every published page and post, each listing its alternates. */
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function sitemapEntries(): Promise<MetadataRoute.Sitemap> {
   // Indexing off (admin: Settings → General): nothing to submit to search engines
   if (!(await isIndexingEnabled())) return [];
 

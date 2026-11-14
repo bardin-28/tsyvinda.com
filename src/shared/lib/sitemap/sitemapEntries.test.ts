@@ -2,7 +2,7 @@ import { getPosts, type Post } from "@/api/posts";
 import { getRouteMap, getWebsitePage } from "@/shared/cms/api";
 import type { WebsitePage } from "@/shared/cms";
 import { isIndexingEnabled } from "@/shared/lib/indexing";
-import sitemap from "./sitemap";
+import { sitemapEntries as sitemap } from "./sitemapEntries";
 
 jest.mock("@/api/posts", () => ({
   ...jest.requireActual("@/api/posts"),
